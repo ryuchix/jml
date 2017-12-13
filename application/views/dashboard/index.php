@@ -1,0 +1,465 @@
+<?php $this->load->view( 'partials/header' ); ?>
+
+<style>
+	.bg-blue-grey{
+		background: #607D8B;
+	}
+	.bg-blue-grey .inner{
+		color: #fff;
+	}
+	.bg-blue-grey .small-box-footer{
+		background: #455A64;
+	}
+
+	.small-box.bg-green{
+		background: #009688 !important;
+	}
+	.bg-green .inner{
+		color: #fff;
+	}
+	.bg-green .small-box-footer{
+		background: #00796B;
+	}
+	.users-list>li img{
+		width: 125px;
+		height: 125px;
+	}
+
+/**************************** Weather Location ****************************/
+
+
+#setting {
+  margin: 20px 0;
+}
+
+#display {
+	padding: 20px 16px 24px 16px;
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 0 0 1px rgba(0, 0, 0, 0.08);
+	background: white;
+	margin-bottom: 20px;
+	display: none;
+}
+
+#top {
+  	margin-bottom: 20px;
+}
+
+#top .location {
+	font-size: 24px;
+	line-height: 1.2;
+}
+
+#top .time {
+	font-size: 16px;
+	line-height: 2;
+}
+
+#top .status {
+	font-size: 13px;
+	line-height: 1.4
+}
+
+#left-information {
+  	color: #212121;
+}
+
+#left-information .thumbnail {
+	float: left;
+	height: 100px;
+	width: 100px;
+}
+
+#left-information .temperature {
+	float: left;
+	margin-top: -3px;
+	padding-left: 10px;
+	font-size: 64px;
+}
+
+#left-information .unit {
+	float: left;
+	margin-top: 6px;
+	font-size: 20px;
+}
+
+#right-information {
+	/*float: right;*/
+	/*padding-left: 5px;*/
+	line-height: 22px;
+	/*padding-top: 2px;*/
+	/*min-width: 43%;*/
+	font-weight: lighter;
+}
+
+#forecast {
+	padding-top: 10px;
+	clear: both;
+    text-align: center;
+}
+
+#forecast ul {
+	padding: 0;
+	margin: 15px 0 5px 0;
+}
+
+#forecast ul li {
+	display: inline-block;
+	height: 90px;
+	width: 73px;
+	text-align: center;
+	line-height: 1;
+}
+.small-box .ion img {
+    width: 100px;
+    opacity: 0.3;
+    position: relative;
+    top: -7px;
+    right: -7px;
+}
+
+
+
+</style>
+
+<div class="content-wrapper">
+	<!-- Content Header (Page header) -->        
+	<section class="content-header">          
+		<h1>Dashboard <small>Version <?php echo $this->config->item('site_info')['version'];?></small></h1>
+		<ol class="breadcrumb">
+			<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+			<li class="active">Dashboard</li>
+		</ol>
+	</section>        
+	<!-- Main content -->
+	<section class="content">
+
+		<div class="row">
+			<?php if(has_access('dashboard')): ?>
+			<div class="col-lg-3 col-xs-6">
+	          <!-- small box -->
+	          	<div class="small-box bg-aqua">
+	            	<div class="inner">
+	              		<h3><?php echo $count_all_client; ?></h3>
+	              		<p>Clients</p>
+	            	</div>
+	            	<div class="icon">
+	              		<i class="ion ion-android-contact"></i>
+	            	</div>
+	            	<a href="<?php echo site_url( 'client/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+	          	</div>
+	        </div>
+			
+			<div class="col-lg-3 col-xs-6">
+	          <!-- small box -->
+	          	<div class="small-box bg-blue-grey">
+	            	<div class="inner">
+	              		<h3><?php echo $count_all_prospect; ?></h3>
+	              		<p>Prospects</p>
+	            	</div>
+	            	<div class="icon">
+	              		<i class="ion ion-android-contacts"></i>
+	            	</div>
+	            	<a href="<?php echo site_url( 'client/index/0/0/1' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+	          	</div>
+	        </div>
+			<div class="col-lg-3 col-xs-6">
+              <!-- small box -->
+              	<div class="small-box bg-yellow">
+                	<div class="inner">
+	                  	<h3><?php echo $count_all_supplier; ?></h3>
+	                  	<p>Suppliers</p>
+	                </div>
+	                <div class="icon">
+	                  	<i class="ion ion-person-add"></i>
+	                </div>
+                	<a href="<?php echo site_url( 'supplier/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              	</div>
+            </div>
+
+			<div class="col-lg-3 col-xs-6">
+              	<!-- small box -->
+              	<div class="small-box bg-green">
+                	<div class="inner">
+	                  	<h3><?php echo $count_all_property; ?></h3>
+	                  	<p>Properties</p>
+                	</div>
+	                <div class="icon">
+	                  	<i class="ion ion-home"></i>
+	                </div>
+	                <a href="<?php echo site_url( 'property/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              	</div>
+            </div>
+
+			<div class="col-lg-3 col-xs-6">
+              	<!-- small box -->
+              	<div class="small-box bg-red">
+                	<div class="inner">
+	                  	<h3><?php echo $count_open_or_assigned_complaints; ?></h3>
+	                  	<p>Issues/Complaints</p>
+                	</div>
+	                <div class="icon">
+	                  	<i class="ion ion-bug"></i>
+	                </div>
+	                <a href="<?php echo site_url( 'complaints/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              	</div>
+            </div>
+
+			<div class="col-lg-3 col-xs-6">
+              	<!-- small box -->
+              	<div class="small-box bg-green">
+                	<div class="inner">
+	                  	<h3><?php echo $count_all_equipment; ?></h3>
+	                  	<p>Equipments</p>
+                	</div>
+	                <div class="icon">
+	                  	<i class="ion ion-filing"></i>
+	                </div>
+	                <a href="<?php echo site_url( 'equipments/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              	</div>
+            </div>
+
+			<div class="col-lg-3 col-xs-6">
+              	<!-- small box -->
+              	<div class="small-box bg-aqua">
+                	<div class="inner">
+	                  	<h3><?php echo $count_pending_quotes; ?></h3>
+	                  	<p>Pending Quotes</p>
+                	</div>
+	                <div class="icon">
+	                  	<i class="ion ion-quote"></i>
+	                </div>
+	                <a href="<?php echo site_url( 'quote/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              	</div>
+            </div>
+
+			<div class="col-lg-3 col-xs-6">
+              	<!-- small box -->
+              	<div class="small-box sk bg-blue-grey">
+                	<div class="inner">
+	                  	<h3><?php echo $count_all_vehicle; ?></h3>
+	                  	<p>Vehicles</p>
+                	</div>
+	                <div class="icon">
+	                  	<i class="ion ion-model-s"></i>
+	                </div>
+	                <a href="<?php echo site_url( 'vehicle/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              	</div>
+            </div>
+			<?php endif; ?>
+			<div class="col-lg-3 col-xs-6">
+              	<!-- small box -->
+              	<div class="small-box sk bg-blue-grey">
+                	<div class="inner">
+	                  	<h3><span class="temperature"></span> °C</h3>
+	                  	<p>Weather</p>
+                	</div>
+	                <div class="icon">
+	                  	<i class="ion ion-android-cloud-outline"><!-- <img src="" alt="status" id="thumbnail" /> --></i>
+	                </div>
+	                <a href="#" class="small-box-footer" id="showForecast">More info <i class="fa fa-arrow-circle-down"></i></a>
+              	</div>
+            </div>
+
+            <?php if ($this->session->userdata('user_role')!=ADMIN_ROLE && has_access('consumables_request')): ?>
+			<div class="col-lg-3 col-xs-6">
+              	<!-- small box -->
+              	<div class="small-box bg-green">
+                	<div class="inner">
+	                  	<h3><?php echo $count_consumable_open_request; ?></h3>
+	                  	<p>Consumable Request</p>
+                	</div>
+	                <div class="icon">
+	                  	<i class="ion ion-filing"></i>
+	                </div>
+	                <a href="<?php echo site_url( 'consumable_request/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              	</div>
+            </div>
+            <?php endif ?>
+		</div>
+
+		<div class="row" id="weather">
+			<div class="col-sm-12">
+				<div id="display" class="box box-danger">
+					<div class="row">
+						
+					    <div id="top" class="col-sm-4">
+					      	<div class="location"></div>
+					      	<div class="time"></div>
+					      	<div class="status"></div>
+					    </div>
+
+					    <div id="left-information" class="col-sm-4">
+					      	<img src="" alt="status" class="thumbnail" id="thumbnail" />
+					      	<div class="temperature"></div>
+					      	<div class="unit">°C</div>
+					    </div>
+
+					    <div id="right-information" class="col-sm-4">
+					      	<span></span><br/>     
+					      	<span></span><br/>
+					      	<span>km/h</span>
+					    </div>
+
+					</div>
+
+			    	<div id="forecast">
+			      		<ul class="upcoming-forecast">
+			        		
+			      		</ul>
+			    	</div>
+				</div>
+			</div>
+		</div>
+
+		<?php if(has_access('dashboard')): ?>
+		<div class="row">
+			<div class="col-md-6">
+              	<!-- USERS LIST -->
+              	<div class="box box-danger">
+	                <div class="box-header with-border">
+	                  	<h3 class="box-title">Upcoming Birthdays</h3>
+	                  	<div class="box-tools pull-right">
+	                    	<span class="label label-danger"><?php echo count($bday_users) ?> events</span>
+	                    	<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+	                    	<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+	                  	</div>
+	                </div><!-- /.box-header -->
+                <div class="box-body no-padding">
+                  	<ul class="users-list clearfix">
+                 		<?php foreach ($bday_users as $user): ?>
+	                    <li>
+	                    	<?php if (file_exists("./uploads/profile_images/$user->image") && $user->image): ?>
+	                      		<img src="<?php echo base_url("uploads/profile_images/$user->image"); ?>" alt="User Image">
+	                    	<?php else: ?>
+	                      		<img src="<?php echo base_url("uploads/profile_images/user-placeholder.jpg"); ?>" alt="User Image">
+	                    	<?php endif; ?>
+	                      	<a class="users-list-name" href="<?php echo site_url( "users/view/$user->id" ); ?>" target="_blank">
+	                      		<?php echo $user->first_name .' '. $user->last_name; ?>
+	                      	</a>
+	                      	<span class="users-list-date"><?php echo local_date($user->dob); ?></span>
+	                    </li>
+                 		<?php endforeach ?>
+                  	</ul><!-- /.users-list -->
+                </div><!-- /.box-body -->
+                <div class="box-footer text-center">
+                  <a href="<?php echo site_url( 'users' ); ?>" class="uppercase">View All Users</a>
+                </div><!-- /.box-footer -->
+              </div><!--/.box -->
+            </div>
+		</div>
+		<?php endif; ?>
+
+	</section>
+</div>
+
+<?php $this->load->view( 'partials/footer' ); ?>
+
+
+<script>
+
+var endPoint = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20(select%20woeid%20from%20geo.places(1)%20where%20text%3D%22perth%22)%20and%20u%3D'c'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+
+
+function getThumbnail(status, size) {
+	var url = "https://ssl.gstatic.com/onebox/weather/";
+    switch (status.toLowerCase()) {
+        case "hot":
+            return url + size + "/hot.png";
+        case "sunny":
+        case "mostly sunny":
+            return url + size + "/sunny.png";
+        case "thunderstorms":
+        case "severe thunderstorms":
+            return url + size + "/thunderstorms.png";
+        case "scattered thunderstorms":
+          return url + size + "/rain_s_cloudy.png";
+        case "partly cloudy":
+        case "mostly cloudy":
+          return url + size + "/partly_cloudy.png";
+        case "cloudy":
+          return url + size + "/cloudy.png";
+        case "showers":
+        case "scattered showers":
+          return url + size + "/rain_light.png";
+        case "rain":
+          return url + size + "/rain.png";
+        case "snow":
+        case "heavy snow":
+        case "snow flurries":
+        case "blowing snow":
+          return url + size + "/snow.png";
+        case "sleet":
+          return url + size + "/sleet.png";
+        case "windy":
+          return url + size + "/windy.png";
+        default:
+          return url + size + "/cloudy.png";
+    }
+}
+
+function getDay(day) {
+    switch (day.toLowerCase()) {
+        case "sun":
+            return "Sunday";
+        case "mon":
+            return "Monday";
+        case "tue":
+            return "Tuesday";
+        case "wed":
+          return "Wednesday";
+        case "thu":
+          return "Thursday";
+        case "fri":
+          return "Friday";
+        case "sat":
+          return "Saturday";
+    }
+}
+
+
+jQuery.get(endPoint, function(data, textStatus, xhr) {
+  	
+  	// $('.sk').after($('<img src="'+data.query.results.channel.image.url+'">'));
+  	var location = data.query.results.channel.location;
+  	$(".location").text(location.city+" "+location.region+", "+location.country);
+  	$(".time").text(getDay(data.query.results.channel.lastBuildDate.substring(0,3)));
+  	$(".status").text(data.query.results.channel.item.condition.text);
+
+  	$(".temperature").text(data.query.results.channel.item.condition.temp);
+  	$('.thumbnail').attr('src', getThumbnail(data.query.results.channel.item.condition.text, 128));
+  	
+  	$('#right-information span:eq(0)')
+  		.text("Humidity: "+data.query.results.channel.atmosphere.humidity+" %");
+  	$('#right-information span:eq(1)')
+  		.text("Pressure: "+data.query.results.channel.atmosphere.pressure+" "+data.query.results.channel.units.distance);
+  	$('#right-information span:eq(2)')
+  		.text("Wind speed: "+data.query.results.channel.wind.speed+" "+data.query.results.channel.units.speed);
+
+  	var upcomingForecast = data.query.results.channel.item.forecast,
+  		html = '';
+
+  	jQuery.each(upcomingForecast, function(index, f) {
+  	  	// console.log(f);
+	  	html += '<li>'+
+					'<div>'+f.day+'</div>'+
+					'<img src="'+getThumbnail(f.text, 64)+'" alt="'+f.text+'" />'+
+					'<b>'+f.high+'°</b> '+ f.low +'°'+
+				'</li>';
+  	});
+
+  	$('.upcoming-forecast').html(html);
+  	// console.log(data);
+
+  	$('#showForecast').on('click', function(event) {
+  		event.preventDefault();
+  		$('#display').slideToggle('slow');
+  		$(this).find('i').toggleClass('fa-arrow-circle-down fa-arrow-circle-up');
+  	});	
+
+
+});
+
+
+	
+
+</script>

@@ -1,0 +1,52 @@
+[
+    {
+        "name": "quickbooks/v3-php-sdk",
+        "version": "v3.2.3",
+        "version_normalized": "3.2.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/intuit/QuickBooks-V3-PHP-SDK.git",
+            "reference": "b5012d0ebbc2601b98df25370b9800cbffd3f839"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/intuit/QuickBooks-V3-PHP-SDK/zipball/b5012d0ebbc2601b98df25370b9800cbffd3f839",
+            "reference": "b5012d0ebbc2601b98df25370b9800cbffd3f839",
+            "shasum": ""
+        },
+        "require": {
+            "ext-oauth": "*",
+            "php": ">=5.6.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^5.7"
+        },
+        "time": "2017-05-17 21:37:35",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "QuickBooksOnline\\API\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "Apache-2.0"
+        ],
+        "authors": [
+            {
+                "name": "hlu2",
+                "email": "Hao_Lu@intuit.com"
+            }
+        ],
+        "description": "The Official PHP SDK for QuickBooks Online Accounting API",
+        "homepage": "http://developer.intuit.com",
+        "keywords": [
+            "api",
+            "http",
+            "quickbooks",
+            "rest",
+            "smallbusiness"
+        ]
+    }
+]
