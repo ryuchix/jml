@@ -23,7 +23,7 @@
                     <?php else: ?>
                     <li><?php echo anchor(site_url($class_name.'/activation/'.$row->id.'/1'),'<i class="fa fa-unlock"></i> Enable', 'class="reactivate"')?></li>
                     <?php endif; ?>
-                    <li><?php echo anchor(site_url("vehicle_rego/save/$row->id"),'<i class="fa fa-fax"></i> Rego')?></li>
+                    <li><?php echo anchor(site_url("vehicle_rego/index/$row->id"),'<i class="fa fa-fax"></i> Rego')?></li>
                     <li><?php echo anchor(site_url("$class_name/finance/$row->id"),'<i class="fa fa-money"></i> Finance')?></li>
                     <li><?php echo anchor(site_url("$class_name/insurance/$row->id"),'<i class="fa fa-fire-extinguisher"></i> Insurance')?></li>
                     <li><?php echo anchor(site_url("odometer/lists/$row->id"),'<i class="fa fa-tachometer"></i> Odometer')?></li>

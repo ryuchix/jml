@@ -3,22 +3,4 @@ application/config/database.php
 application/config/config.php
 
 # Ignore All Folders contents which is uploaded
-uploads/bin_types/*
-uploads/client_files/*
-uploads/client_notes/*
-uploads/complain_files/*
-uploads/consumable/*
-uploads/equipment_tags/*
-uploads/equipments/*
-uploads/gallery/*
-uploads/job_attachments/*
-uploads/key_types/*
-uploads/memos/*
-uploads/profile_images/*
-uploads/property_keys/*
-uploads/quotes/*
-uploads/services/*
-uploads/user_files/*
-uploads/vehicle_regos/*
-uploads/vehicle_services/*
-uploads/vehicles/*
+uploads/*/*

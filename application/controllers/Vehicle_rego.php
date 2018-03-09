@@ -56,6 +56,18 @@ class Vehicle_rego extends MY_Controller
 		$this->load->view('vehicle_regos/form',$this->get_data());
 	}
 
+	function delete($vehicle_id, $id){
+
+		$record = new Vehicle_rego_model();
+		$record->load($id);
+
+		if ( $record->save() ) {
+			set_flash_message(0, "Record Deleted Successfully!");
+			redirect( site_url( "$this->data['class_name']/index/$vehicle_id" ) );
+		}
+
+	}
+
 	function validate_form($id)
 	{
        	// $this->form_validation->set_rules('data[vehicle_id]','Vehicle','required');
