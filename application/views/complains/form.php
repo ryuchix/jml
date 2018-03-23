@@ -167,7 +167,7 @@ $(function () {
 
     $('#datetimepicker').datetimepicker({
          format: 'DD/MM/YYYY'
-   });
+    });
 
     $(".dropdown_lists").select2({
         placeholder: $(this).data('placeholder'),

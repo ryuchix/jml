@@ -7,7 +7,7 @@
         <ul class="sidebar-menu">
             
             <li class="header">MAIN NAVIGATION</li>
-            <?php if (has_access('quotes')) { ?>
+            <?php if (has_access('quotes')) { /* ?>
                 
             <li class="treeview <?php set_active_menu('quote', $active_menu); ?>">
 
@@ -31,7 +31,7 @@
 
             </li>
            
-            <?php } // end if quotes access
+            <?php */ } // end if quotes access
              if (has_access('memos')) { ?>
 
             <li class="treeview <?php set_active_menu('memo', $active_menu); ?>">
@@ -53,7 +53,7 @@
             </li>
            
             <?php } // end if memos access
-             if (has_access('jobs')) { ?>
+             if (has_access('jobs')) { /* ?>
             
             <li class="treeview <?php set_active_menu('jobs', $active_menu); ?>">
 
@@ -73,14 +73,15 @@
 
             </li>
            
-            <?php } // end if jobs access
-             if (has_access('daily_runs')) { ?>
+            <?php */ } // end if jobs access
+
+             if (has_access('daily_runs')) { /* ?>
             
             <li>
                 <a href="<?php echo site_url('dailyrun'); ?>"> <i class="fa fa-trash"></i> <span>Daily Run</span></i></a>
             </li>
            
-            <?php } // end if daily_runs access
+            <?php */ } // end if daily_runs access
              if (has_access('vehicles')) { ?>
              
             <li class="treeview <?php set_active_menu('vehicle', $active_menu); ?>">
@@ -116,7 +117,7 @@
             </li>
            
             <?php } // end if equipments access
-             if (has_access('issues')) { ?>
+             if (has_access('issues')) { /* ?>
 
             <li class="treeview <?php set_active_menu('complaints', $active_menu); ?>">
 
@@ -131,8 +132,8 @@
                 </ul>
             </li>
            
-            <?php } // end if issues access
-             if (has_access('services')) { ?>
+            <?php */ } // end if issues access
+             if (has_access('services')) { /* ?>
 
             <li class="treeview <?php set_active_menu('services', $active_menu); ?>">
 
@@ -148,7 +149,7 @@
                 </ul>
             </li>
            
-            <?php } // end if services access
+            <?php */ } // end if services access
              if (has_access('users')) { ?>
 
             <li class="treeview <?php set_active_menu('users', $active_menu); ?>">
@@ -168,7 +169,7 @@
             </li>
 
             <?php } // end if users access
-            if (has_access('client_types')) { ?>
+            if (has_access('client_types')) { /* ?>
 
             <li class="treeview <?php set_active_menu('client_type', $active_menu); ?>">
 
@@ -187,8 +188,8 @@
                 </ul>
             </li>
 
-            <?php } // end if client_types access
-            if(has_access('clients')) { ?>
+            <?php */ } // end if client_types access
+            if(has_access('clients')) { /* ?>
 
             <li class="treeview <?php set_active_menu('client', $active_menu); ?>">
 
@@ -204,8 +205,8 @@
                 </ul>
             </li>
 
-            <?php } // end if clients access
-            if (has_access('properties')) { ?>
+            <?php */ } // end if clients access
+            if (has_access('properties')) { /* ?>
 
             <li class="treeview <?php set_active_menu('property', $active_menu); ?>">
 
@@ -224,8 +225,8 @@
                 </ul>
             </li>
 
-            <?php } // end if properties access
-            if(has_access('bin_types')) {?>
+            <?php */ } // end if properties access
+            if(has_access('bin_types')) { /* ?>
 
             <li class="treeview <?php set_active_menu('bin_type', $active_menu); ?>">
 
@@ -244,8 +245,8 @@
                 </ul>
             </li>
 
-            <?php } // end if bin_types access
-            if(has_access('document_types')) { ?>
+            <?php */ } // end if bin_types access
+            if(has_access('document_types')) { /* ?>
 
             <li class="treeview <?php set_active_menu('document_type', $active_menu); ?>">
 
@@ -264,7 +265,7 @@
                 </ul>
             </li>
 
-            <?php } // end if document_types access
+            <?php */ } // end if document_types access
             if(has_access('gallery_types')) { ?>
 
             <li class="treeview <?php set_active_menu('gallery_type', $active_menu); ?>">
@@ -305,7 +306,7 @@
             </li>
 
             <?php } // end if key_types access
-            if(has_access('lead_types')) { ?>
+            if(has_access('lead_types')) { /* ?>
 
             <li class="treeview <?php set_active_menu('lead_type', $active_menu); ?>">
 
@@ -324,8 +325,8 @@
                 </ul>
             </li>
 
-            <?php } // end if lead_types access 
-            if(has_access('suppliers')) { ?>
+            <?php */ } // end if lead_types access 
+            if(has_access('suppliers')) { /* ?>
 
             <li class="treeview <?php set_active_menu('supplier', $active_menu); ?>">
 
@@ -344,8 +345,8 @@
                 </ul>
             </li>
 
-            <?php } // end if suppliers access
-            if(has_access('consumables')||has_access('consumables_request')) { ?>
+            <?php */ } // end if suppliers access
+            if(has_access('consumables')||has_access('consumables_request')) { /* ?>
 
             <li class="treeview <?php set_active_menu('consumable', $active_menu); ?>">
 
@@ -370,8 +371,8 @@
                 </ul>
             </li>
 
-            <?php } // end if consumables access 
-            if(has_access('councils')) { ?>
+            <?php */ } // end if consumables access 
+            if(has_access('councils')) { /* ?>
 
             <li class="treeview <?php set_active_menu('council', $active_menu); ?>">
 
@@ -391,8 +392,8 @@
 
             </li>
 
-            <?php } // end if councils access
-            if(has_access('bin_liners_management')) { ?>
+            <?php */ } // end if councils access
+            if(has_access('bin_liners_management')) { /* ?>
 
             <li class="treeview <?php set_active_menu('bin_liner', $active_menu); ?>">
 
@@ -406,6 +407,28 @@
 
                     <li class="<?php echo set_sub_menu('view_bin_liner', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'bin_liner/record_list' ); ?>"><i class="fa fa-circle-o"></i> View Bin Liners</a>
+                    </li>
+
+                </ul>
+
+            </li>
+
+            <?php */ } // end if bin_liners_managements access
+            
+            if(has_access('bin_liners_management')) { ?>
+
+            <li class="treeview <?php set_active_menu('daily_balance', $active_menu); ?>">
+
+                <a href="#"><i class="fa fa-balance-scale"></i> <span>Daily Balance</span> <i class="fa fa-angle-left pull-right"></i></a>
+
+                <ul class="treeview-menu">
+                    
+                    <li class="<?php echo set_sub_menu('add_daily_balance', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'daily_balances/save' ); ?>"><i class="fa fa-circle-o"></i> Add new balance</a>
+                    </li>
+
+                    <li class="<?php echo set_sub_menu('view_daily_balance', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'daily_balances' ); ?>"><i class="fa fa-circle-o"></i> View Balances</a>
                     </li>
 
                 </ul>

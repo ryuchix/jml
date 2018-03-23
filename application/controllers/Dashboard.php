@@ -21,14 +21,14 @@ class Dashboard extends MY_Controller {
 
 	public function index()
 	{
-		$this->set_data('count_all_client', $this->Client_model->get_count(0));
-		$this->set_data('count_all_prospect', $this->Client_model->get_count(1));
-		$this->set_data('count_all_supplier', $this->Supplier_model->get_count());
-		$this->set_data('count_all_property', $this->Property_model->get_count());
+		// $this->set_data('count_all_client', $this->Client_model->get_count(0));
+		// $this->set_data('count_all_prospect', $this->Client_model->get_count(1));
+		// $this->set_data('count_all_supplier', $this->Supplier_model->get_count());
+		// $this->set_data('count_all_property', $this->Property_model->get_count());
 		$this->set_data('count_all_equipment', $this->Equipment_model->get_count());
 		$this->set_data('count_open_or_assigned_complaints', $this->Complain_model->count_open_or_assigned());
-		$this->set_data('count_total_complaints', $this->Complain_model->count());
-		$this->set_data('count_pending_quotes', $this->Quote_model->count_where(['status'=>STATUS_PENDING]));
+		// $this->set_data('count_total_complaints', $this->Complain_model->count());
+		// $this->set_data('count_pending_quotes', $this->Quote_model->count_where(['status'=>STATUS_PENDING]));
 		$this->set_data('bday_users', $this->User_model->get_birthday_users());
 		$this->set_data('count_all_vehicle', $this->Vehicle_model->count());
 		$this->set_data('count_consumable_open_request', $this->Consumable_request_model->count_where(['status'=>STATUS_OPEN]));

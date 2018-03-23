@@ -117,9 +117,8 @@
     right: -7px;
 }
 
-
-
 </style>
+
 
 <div class="content-wrapper">
 	<!-- Content Header (Page header) -->        
@@ -135,6 +134,8 @@
 
 		<div class="row">
 			<?php if(has_access('dashboard')): ?>
+
+			<?php if (false): ?>
 			<div class="col-lg-3 col-xs-6">
 	          <!-- small box -->
 	          	<div class="small-box bg-aqua">
@@ -148,7 +149,9 @@
 	            	<a href="<?php echo site_url( 'client/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 	          	</div>
 	        </div>
+			<?php endif ?>
 			
+			<?php if (false): ?>
 			<div class="col-lg-3 col-xs-6">
 	          <!-- small box -->
 	          	<div class="small-box bg-blue-grey">
@@ -162,6 +165,9 @@
 	            	<a href="<?php echo site_url( 'client/index/0/0/1' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
 	          	</div>
 	        </div>
+			<?php endif ?>
+			
+			<?php if (false): ?>
 			<div class="col-lg-3 col-xs-6">
               <!-- small box -->
               	<div class="small-box bg-yellow">
@@ -175,7 +181,9 @@
                 	<a href="<?php echo site_url( 'supplier/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               	</div>
             </div>
+			<?php endif ?>
 
+			<?php if (false): ?>
 			<div class="col-lg-3 col-xs-6">
               	<!-- small box -->
               	<div class="small-box bg-green">
@@ -189,7 +197,9 @@
 	                <a href="<?php echo site_url( 'property/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               	</div>
             </div>
+			<?php endif ?>
 
+			<?php if (false): ?>
 			<div class="col-lg-3 col-xs-6">
               	<!-- small box -->
               	<div class="small-box bg-red">
@@ -203,6 +213,7 @@
 	                <a href="<?php echo site_url( 'complaints/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               	</div>
             </div>
+			<?php endif ?>
 
 			<div class="col-lg-3 col-xs-6">
               	<!-- small box -->
@@ -218,6 +229,7 @@
               	</div>
             </div>
 
+			<?php if (false): ?>
 			<div class="col-lg-3 col-xs-6">
               	<!-- small box -->
               	<div class="small-box bg-aqua">
@@ -231,6 +243,7 @@
 	                <a href="<?php echo site_url( 'quote/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               	</div>
             </div>
+			<?php endif ?>
 
 			<div class="col-lg-3 col-xs-6">
               	<!-- small box -->

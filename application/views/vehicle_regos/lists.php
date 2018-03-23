@@ -78,8 +78,8 @@
 
 <script>
 
-    $('.disable').on('click', function (e) {
-        if (!confirm("do you really want to disable this record?")) { e.preventDefault(); }
+    $('.delete').on('click', function (e) {
+        if (!confirm("do you really want to delete this record?")) { e.preventDefault(); }
     });
 
     $('.reactivate').on('click', function (e) {

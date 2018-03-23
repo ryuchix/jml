@@ -46,7 +46,7 @@
         
                     <li><?php echo anchor(site_url("vehicle_rego/save/$row->vehicle_id/$row->id"),'<i class="fa fa-pencil"></i> Edit')?></li>
         
-                    <li><?php echo anchor(site_url("vehicle_rego/delete/$row->vehicle_id/$row->id"),'<i class="fa fa-trash"></i> Delete')?></li>
+                    <li><?php echo anchor(site_url("vehicle_rego/delete/$row->vehicle_id/$row->id"),'<i class="fa fa-trash"></i> Delete', 'class="delete"')?></li>
         
                 </ul>
         

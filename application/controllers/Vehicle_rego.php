@@ -59,11 +59,12 @@ class Vehicle_rego extends MY_Controller
 	function delete($vehicle_id, $id){
 
 		$record = new Vehicle_rego_model();
+
 		$record->load($id);
 
-		if ( $record->save() ) {
+		if ( $record->delete() ) {
 			set_flash_message(0, "Record Deleted Successfully!");
-			redirect( site_url( "$this->data['class_name']/index/$vehicle_id" ) );
+			redirect( site_url( $this->data['class_name']."/index/$vehicle_id" ) );
 		}
 
 	}
