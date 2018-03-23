@@ -17,6 +17,16 @@ class Daily_balance_model extends MY_Model
     public $updated_by;
     // public $updated_time;
 
+    public function get_progress()
+    {
+        $last_30_days = date('Y-m-d', strtotime('-30 days'));
+
+        $query = $this->db->query("SELECT * FROM `" . self::DB_TABLE . "` WHERE `date` >= '$last_30_days' ORDER BY `date`");
+
+        return $query->result();
+    }
+
+
 }
 
 // CREATE TABLE `jean_gex_binx`.`daily_balances` ( 

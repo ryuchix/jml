@@ -20,12 +20,13 @@ class Daily_balances extends MY_Controller
 		$this->set_data('sub_menu', 'view_daily_balance');
 		
 		$this->set_data( 'records', $this->Daily_balance_model->get() );
+
 		$this->load->view('daily_balances/lists', $this->get_data());
 	}
 
 	function save($id=false)
 	{
-		
+
 		$this->set_data('sub_menu', 'add_daily_balance');
 		
 		$record = new Daily_balance_model();
@@ -76,6 +77,29 @@ class Daily_balances extends MY_Controller
    		$this->form_validation->set_rules('data[date]','Date','required');
 
    		$this->form_validation->set_rules('data[balance]','Balance','required|numeric');
+
+	}
+
+	public function get_progress()
+	{
+
+		$balances = $this->Daily_balance_model->get_progress();
+
+		$data = [];
+		
+		foreach ($balances as $balance) {
+			$date = DateTime::createFromFormat('Y-m-d', $balance->date);
+			$data[] = [
+				'y' => $date->format('d/m/y'),
+				'item1' => $balance->balance
+			];
+		}
+
+
+		return $this->output
+        ->set_status_header(200, "")
+        ->set_content_type('application/json', 'utf-8')
+        ->set_output(json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 
 	}
 
