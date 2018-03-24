@@ -233,6 +233,54 @@ class Users extends MY_Controller
         }
     }
 
+    public function export()
+    {
+        $this->load->dbutil();
+
+        $exclude = [
+            "id",
+            // "user_role",
+            "address_location",
+            "kin_address_location",
+            // "image",
+            "password",
+            "user_title",
+            "added_by",
+            "added_time",
+            "updated_by",
+            "updated_time"
+        ];
+
+        $columns = $this->db->query("SELECT * FROM " . $this->User_model::DB_TABLE . ' LIMIT 1')->row_array();
+
+        if (!$columns) {
+
+            set_flash_message(2, "There is not result!");
+
+            redirect( site_url() );
+
+        }
+
+        $columns = array_filter(array_keys($columns), function($key) use($exclude){
+
+            return !in_array($key, $exclude);
+
+        });
+
+        $query = $this->db->query("SELECT ". join($columns, ', ') ." FROM " . $this->User_model::DB_TABLE);
+
+        $data = $this->dbutil->csv_from_result($query);
+
+        header('Content-Type: application/csv');
+        
+        header('Content-Disposition: attachment; filename="users.csv";');
+
+        echo $data;
+
+        // exit();
+
+    }
+
     /****************************************** User Files *******************************************/
 
     function files($client_id, $action='', $file_id=0)

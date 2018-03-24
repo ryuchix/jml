@@ -266,7 +266,7 @@
             </li>
 
             <?php */ } // end if document_types access
-            if(has_access('gallery_types')) { ?>
+            if(has_access('gallery_types')) { /* ?>
 
             <li class="treeview <?php set_active_menu('gallery_type', $active_menu); ?>">
 
@@ -285,8 +285,8 @@
                 </ul>
             </li>
 
-            <?php } // end if gallery_types access
-            if(has_access('key_types')) { ?>
+            <?php */ } // end if gallery_types access
+            if(has_access('key_types')) { /* ?>
 
             <li class="treeview <?php set_active_menu('key_type', $active_menu); ?>">
 
@@ -305,7 +305,7 @@
                 </ul>
             </li>
 
-            <?php } // end if key_types access
+            <?php */ } // end if key_types access
             if(has_access('lead_types')) { /* ?>
 
             <li class="treeview <?php set_active_menu('lead_type', $active_menu); ?>">
@@ -438,8 +438,32 @@
             <?php } // end if bin_liners_managements access
             if(has_access('reports')) { ?>
 
-            <li>
-                <a href="<?php echo site_url('reports'); ?>"><i class="fa fa-file-pdf-o"></i> <span>Reports</span></i></a>
+            <li class="treeview <?php set_active_menu('daily_balance', $active_menu); ?>">
+                
+                <a href="#"><i class="fa fa-file-pdf-o"></i>
+                
+                    <span>Reports</span> 
+                
+                    <i class="fa fa-angle-left pull-right"></i>
+                
+                </a>
+
+                <ul class="treeview-menu">
+                    
+                    <li>
+
+                        <a href="<?php echo site_url( 'users/export' ); ?>">
+
+                            <i class="fa fa-circle-o"></i> 
+                            
+                            Export Users
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
             </li>
 
             <?php } // end if reports access ?>

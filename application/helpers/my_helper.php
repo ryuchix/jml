@@ -344,4 +344,26 @@ function has_access($module_name)
     }
     return false;
 }
+
+function csv_download($data, $filename = "export.csv", $delimiter=";") 
+{    
+    header('Content-Type: application/csv');
+    
+    header('Content-Disposition: attachment; filename="'.$filename.'";');
+
+    $f = fopen('php://output', 'w');
+
+    if ( !is_array($data) ) {
+    
+        write_file($f, $data);
+
+        return;
+    }
+
+    foreach ($array as $line) {
+        fputcsv($f, $line, $delimiter);
+    }
+
+}  
+
 ?>
