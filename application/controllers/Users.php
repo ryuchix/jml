@@ -251,7 +251,9 @@ class Users extends MY_Controller
             "updated_time"
         ];
 
-        $columns = $this->db->query("SELECT * FROM " . $this->User_model::DB_TABLE . ' LIMIT 1')->row_array();
+        $refl = new ReflectionClass('User_model');
+
+        $columns = $this->db->query("SELECT * FROM " . $refl->getConstants()['DB_TABLE'] . ' LIMIT 1')->row_array();
 
         if (!$columns) {
 
@@ -267,7 +269,7 @@ class Users extends MY_Controller
 
         });
 
-        $query = $this->db->query("SELECT ". join($columns, ', ') ." FROM " . $this->User_model::DB_TABLE);
+        $query = $this->db->query("SELECT ". join($columns, ', ') ." FROM " . $refl->getConstants()['DB_TABLE']);
 
         $data = $this->dbutil->csv_from_result($query);
 
@@ -277,7 +279,7 @@ class Users extends MY_Controller
 
         echo $data;
 
-        // exit();
+        exit();
 
     }
 
