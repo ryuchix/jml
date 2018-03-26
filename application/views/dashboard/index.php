@@ -397,6 +397,20 @@
                 hideHover: 'auto',
                 parseTime: false,
                 preUnits: "$",
+                hoverCallback: function (index, options, content, row) {
+                    
+                    if(row.item1<0){
+                        options.preUnits = "";
+                        options.postUnits = "$ ";
+                    }
+                    
+                    if(row.item1>=0){
+                        options.preUnits = " $";
+                        options.postUnits = "";
+                    }
+
+                    return content;
+                }
             });
 
         }).fail(function() {

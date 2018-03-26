@@ -24,8 +24,12 @@
     
         <td><?php echo local_date($row->date); ?></td>
     
-        <td>$<?php echo number_format($row->balance, 2); ?></td>
-    
+        <td>
+            <?php echo $row->balance>=0?"$":""; ?>
+            <?php echo number_format($row->balance, 2); ?>
+            <?php echo $row->balance<0?"$":""; ?>
+        </td>
+        
         <td><?php echo $row->notes; ?></td>
     
         <td>

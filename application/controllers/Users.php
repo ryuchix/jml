@@ -237,6 +237,10 @@ class Users extends MY_Controller
     {
         $this->load->dbutil();
 
+        $replace_columns = [
+            "cell" => "mobile"
+        ];
+
         $exclude = [
             "id",
             // "user_role",
@@ -268,6 +272,15 @@ class Users extends MY_Controller
             return !in_array($key, $exclude);
 
         });
+
+        foreach ($columns as $index => $column) {
+
+            if(array_key_exists($column, $replace_columns))
+            {
+                $columns[$index] = $column . ' AS ' . $replace_columns[$column];
+            }
+
+        }
 
         $query = $this->db->query("SELECT ". join($columns, ', ') ." FROM " . $refl->getConstants()['DB_TABLE']);
 

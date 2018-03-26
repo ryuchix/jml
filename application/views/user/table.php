@@ -10,7 +10,9 @@
 
             <th>Email</th>
 
-            <th>Cell #</th>
+            <th>Mobile #</th>
+
+            <th>D.O.B</th>
 
             <th>User Role</th>
 
@@ -41,6 +43,8 @@
                 <td><a href="mailto:<?php echo $row->email; ?>"><?php echo $row->email; ?></a></td>
 
                 <td><?php echo $row->cell; ?></td>
+
+                <td><?php echo local_date($row->dob); ?></td>
 
                 <td><?php echo get_user_role($row->user_role); ?></td>
 
