@@ -398,19 +398,17 @@
                 parseTime: false,
                 preUnits: "$",
                 hoverCallback: function (index, options, content, row) {
-                    
-                    if(row.item1<0){
-                        options.preUnits = "";
-                        options.postUnits = "$ ";
-                    }
-                    
-                    if(row.item1>=0){
-                        options.preUnits = " $";
-                        options.postUnits = "";
+                
+                    if( row.item1 < 0 ){
+
+                    	return content.replace("$-", "-$");
+
                     }
 
                     return content;
+
                 }
+
             });
 
         }).fail(function() {
