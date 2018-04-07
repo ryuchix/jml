@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CLIENT TYPES MODAL
+ * GALLRY MODAL
  */
 class Gallery_model extends MY_Model
 {

@@ -17,6 +17,7 @@ class Vehicle_services extends MY_Controller
 
 	function lists($vehicle_id)
 	{
+		$this->redirectIfNotAllowed('view-vehicle-service');
 		$this->set_data('vehicle_id', $vehicle_id);
 		$this->set_data( 'records', $this->Vehicle_services_model->get_list_by_vehicle_id($vehicle_id) );
 		$this->load->view('vehicle_services/lists', $this->get_data());
@@ -24,6 +25,8 @@ class Vehicle_services extends MY_Controller
 
 	function save($vehicle_id, $id=false){
 
+		$this->redirectIfNotAllowed($id?'edit-vehicle-service':'add-vehicle-service');
+		
 		$record = new Vehicle_services_model();
 		$this->set_data( 'vehicle_id', $vehicle_id );
 		$vehicle = new vehicle_model();

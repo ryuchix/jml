@@ -19,12 +19,23 @@
                   <i class="fa fa-ellipsis-v "></i>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><?php echo anchor(site_url("memo/save/$row->id"),'<i class="fa fa-pencil"></i> Edit')?></li>
-                    <?php if ($row->active): ?>
-                    <li><?php echo anchor(site_url("memo/activation/$row->id/0"),'<i class="fa fa-lock"></i> Disabled', 'class="disable"')?></li>
-                    <?php else: ?>
-                    <li><?php echo anchor(site_url("memo/activation/$row->id/1"),'<i class="fa fa-unlock"></i> Enable', 'class="reactivate"')?></li>
-                    <?php endif; ?>
+                    
+                    <?php if ($controller->hasAccess('edit-memo')): ?>
+                        <li><?php echo anchor(site_url("memo/save/$row->id"),'<i class="fa fa-pencil"></i> Edit')?></li>
+                    <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('change-status-memo')): ?>
+                        
+                        <?php if ($row->active): ?>
+                        <li><?php echo anchor(site_url("memo/activation/$row->id/0"),'<i class="fa fa-lock"></i> Disabled', 'class="disable"')?></li>
+
+                        <?php else: ?>
+
+                        <li><?php echo anchor(site_url("memo/activation/$row->id/1"),'<i class="fa fa-unlock"></i> Enable', 'class="reactivate"')?></li>
+                        
+                        <?php endif; ?>
+
+                    <?php endif ?>
                 </ul>
             </div>
         </td>

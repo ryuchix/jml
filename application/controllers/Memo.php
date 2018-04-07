@@ -15,6 +15,8 @@ class Memo extends MY_Controller
 
 	function index($disable = false, $modified_item_id = 0)
 	{
+		$this->redirectIfNotAllowed('view-memo');
+
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -26,50 +28,74 @@ class Memo extends MY_Controller
 		$this->load->view('memos/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-memo':'add-memo');
+		
 		$this->set_data('sub_menu', 'add_memo');
+
 		$this->set_data('expected_memo_number', $this->Memo_model->max());
+
 		$record = new Memo_model();
+
 		if ($id) { $record->load($id); }
+
 		$this->set_data('record', $record);
+
 		$this->load->library('form_validation');
 
-		if( isset($_POST['submit']) ){
-       		
-       		$this->form_validation->set_rules('data[title]','Title','required');
-
-			if ( $this->form_validation->run() == TRUE ) {
-				foreach ($this->input->post('data') as $field => $value) {
-					$record->{$field} 	= $value;
-				}
-
-				$record->{$id? 'updated_by':'added_by'} = $this->session->userdata('user_id');
-
-				if ($record->save()) {
-					set_flash_message(0, "Record Submitted Successfully!");
-					redirect( site_url( 'memo/' ) );
-				}else{
-					set_flash_message(1, "No changes made!");
-				}
-
-			}
+		if( ! isset($_POST['submit']) )
+		{
+			$this->load->view('memos/form',$this->get_data());
+			return;
 		}
+       	$this->form_validation->set_rules('data[title]','Title','required');
+
+		if ( $this->form_validation->run() == FALSE )
+		{
+			$this->load->view('memos/form',$this->get_data());
+			return;
+		}
+
+		foreach ($this->input->post('data') as $field => $value) 
+		{
+			$record->{$field} 	= $value;
+		}
+
+		$record->{$id? 'updated_by':'added_by'} = $this->session->userdata('user_id');
+
+		if ($record->save()) 
+		{
+			set_flash_message(0, "Record Submitted Successfully!");
+			redirect( site_url( 'memo/' ) );
+		}
+
+		set_flash_message(1, "No changes made!");
+
 		$this->load->view('memos/form',$this->get_data());
 	}
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-status-memo');
+		
 		$record = new Memo_model();
+		
 		$record->load($id);
+		
 		$record->active = $boolean;
+		
 		$record->save();
-		if ($boolean) {
-			set_flash_message(0, 'Document Type status changed to active');
+
+		if ($boolean) 
+		{
+			set_flash_message(0, 'Memo status changed to active');
 			redirect( site_url( 'memo/index/0/'.$id ) );
-		}else{
-			set_flash_message(0, 'Document Type status changed to inactive');
-			redirect( site_url( 'memo/index/1/'.$id ) );
 		}
+
+		set_flash_message(0, 'Memo status changed to inactive');
+
+		redirect( site_url( 'memo/index/1/'.$id ) );
 	}
 
     /*************************************** FILES *****************************************/

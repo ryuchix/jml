@@ -43,10 +43,13 @@
                 </button>
         
                 <ul class="dropdown-menu">
-        
+                    <?php if ($controller->hasAccess('edit-vehicle-rego')): ?>
                     <li><?php echo anchor(site_url("vehicle_rego/save/$row->vehicle_id/$row->id"),'<i class="fa fa-pencil"></i> Edit')?></li>
+                    <?php endif ?>
         
+                    <?php if ($controller->hasAccess('delete-vehicle-rego')): ?>
                     <li><?php echo anchor(site_url("vehicle_rego/delete/$row->vehicle_id/$row->id"),'<i class="fa fa-trash"></i> Delete', 'class="delete"')?></li>
+                    <?php endif ?>
         
                 </ul>
         

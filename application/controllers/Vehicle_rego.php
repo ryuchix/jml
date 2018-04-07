@@ -16,6 +16,8 @@ class Vehicle_rego extends MY_Controller
 
 	function index($vehicle_id)
 	{
+		$this->redirectIfNotAllowed('view-vehicle-rego');
+		
 		$this->set_data('vehicle_id', $vehicle_id);
 		$this->set_data( 'records', $this->Vehicle_rego_model->getWhere(array('vehicle_id'=>$vehicle_id)) );
 		$this->load->view('vehicle_regos/lists', $this->get_data());
@@ -23,6 +25,8 @@ class Vehicle_rego extends MY_Controller
 
 	function save($vehicle_id, $id=false){
 
+		$this->redirectIfNotAllowed($id?'edit-vehicle-rego':'add-vehicle-rego');
+		
 		$record = new Vehicle_rego_model();
 		$this->set_data( 'vehicle_id', $vehicle_id );
 		$vehicle = new vehicle_model();
@@ -58,6 +62,8 @@ class Vehicle_rego extends MY_Controller
 
 	function delete($vehicle_id, $id){
 
+		$this->redirectIfNotAllowed('delete-vehicle-rego');
+		
 		$record = new Vehicle_rego_model();
 
 		$record->load($id);

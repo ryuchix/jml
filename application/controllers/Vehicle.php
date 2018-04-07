@@ -9,7 +9,8 @@ class Vehicle extends MY_Controller
 		parent::__construct();
 		$this->load->model(array(
 			'Vehicle_model',
-			'User_model'
+			'User_model',
+			'Vehicle_finance_link_model'
 		));
 		$this->set_data('active_menu', 'vehicle');
 		$this->set_data('class_name', strtolower(get_class($this)));
@@ -18,10 +19,14 @@ class Vehicle extends MY_Controller
 
 	function index($disable = false, $modified_item_id = 0)
 	{
+		$this->redirectIfNotAllowed('view-vehicle');
+
+		$this->delete_draft_entries();
+
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
-
+		
 		$this->set_data('sub_menu', 'view_vehicle');
 
 		$this->set_data( 'inactive_records', $this->Vehicle_model->getWhere(array('active'=>0)) );
@@ -31,8 +36,12 @@ class Vehicle extends MY_Controller
 
 	function save($id=false)
 	{
+		$this->redirectIfNotAllowed($id?'edit-vehicle':'add-vehicle');
+		
 		$this->load->library('form_validation');
 		
+		$this->delete_draft_entries();
+
 		$this->set_data('sub_menu', 'add_vehicle');
 		$this->set_data( 'users', $this->User_model->get_dropdown_lists() );
 
@@ -69,6 +78,17 @@ class Vehicle extends MY_Controller
 		    	$this->form_validation->set_rules('data[finance_company]','Company','required|max_length[255]');
 		    	$this->form_validation->set_rules('data[finance_amount]','Amount','required|numeric|max_length[255]');
 		    	$this->form_validation->set_rules('data[finance_monthly_payment]','Monthly Payment','required|numeric');
+
+		    	$this->form_validation->set_rules('data[finance_monthly_payment]','Monthly Payment','required|numeric');
+
+		    	foreach ($this->input->post('links') as $index => $link) {
+		    		
+		    		$this->form_validation->set_rules("links[$index][name]",'Link Name','required');
+
+		    		$this->form_validation->set_rules("links[$index][url]",'Url','required|valid_url');
+
+		    	}
+
 				break;
 
 			case 'insurance':
@@ -95,11 +115,14 @@ class Vehicle extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-vehicle-status');
+		
 		$record = new Vehicle_model();
 		$record->load($id);
 		$record->active = $boolean;
 		$record->save();
-		if ($boolean) {
+		if ($boolean) 
+		{
 			set_flash_message(0, 'Vehicle status changed to active');
 			redirect( site_url( 'vehicle/index/0/'.$id ) );
 		}else{
@@ -110,35 +133,80 @@ class Vehicle extends MY_Controller
 
 	function finance($id){
 
+		$this->redirectIfNotAllowed('view-vehicle-finance');
+		
 		$record = new vehicle_model();
+
 		$record->load($id);
+
 		$this->set_data('record', $record);
+
+		$this->set_data('links', $this->Vehicle_finance_link_model->getWhere(['vehicle_id' => $id, 'draft' => '0']));
+
 		$this->load->library('form_validation');
 
-		if( isset($_POST['submit']) ){
-			
-			$this->validate_fields("finance");
-       		
-			if ( $this->form_validation->run() == TRUE ) {
-				
-				foreach ($this->input->post('data') as $field => $value) { $record->{$field} = $value; }
-				$record->finance_end_date = $this->input->post('finance_end_date')? db_date($this->input->post('finance_end_date')):null;
+		if( !isset($_POST['submit']) ){
 
-				if ( $record->save() ) {
-					set_flash_message(0, "Record Submitted Successfully!");
-					redirect( site_url( "vehicle/index/$vehicle_id" ) );
-				}else{
-					set_flash_message(1, "No Changes Made!");
-					redirect( site_url( "vehicle/index/$vehicle_id" ) );
-				}
-			}
+			$this->delete_draft_entries();
+			
+			$this->load->view('vehicles/finance_form',$this->get_data());
+
+			return;
+		}
+			
+		$this->validate_fields("finance");
+       		
+		if ( $this->form_validation->run() == FALSE ) {
+
+			$this->load->view('vehicles/finance_form',$this->get_data());
+
+			return;
+
+		}
+				
+		foreach ($this->input->post('data') as $field => $value) 
+		{
+			$record->{$field} = $value;
 		}
 
-		$this->load->view('vehicles/finance_form',$this->get_data());
+		$record->finance_start_date = $this->input->post('finance_start_date')? db_date($this->input->post('finance_start_date')):null;
+
+		$this->db->trans_start();
+
+		$id = $id? $id: $record->save();
+
+		$link_queries = [];
+		
+		foreach ($this->input->post('links') as $index => $link) {
+		
+			$item = new Vehicle_finance_link_model();
+
+			$item->load($link['pk']);
+			
+			$item->vehicle_id = $id;
+			
+			$item->draft = 0;
+			
+			$item->name = $link['name'];
+			
+			$item->url = $link['url'];
+
+			$item->save();
+		
+		}
+
+		$this->db->trans_complete();
+
+		set_flash_message(0, "Record Submitted Successfully!");
+
+		redirect( site_url( "vehicle/index/$vehicle_id" ) );
+
 	}
 
 	function insurance($id){
 
+		$this->redirectIfNotAllowed('view-vehicle-insurance');
+		
 		$record = new vehicle_model();
 		$record->load($id);
 		$this->set_data('record', $record);
@@ -165,6 +233,11 @@ class Vehicle extends MY_Controller
 		}
 
 		$this->load->view('vehicles/insurance_form',$this->get_data());
+	}
+
+	protected function delete_draft_entries()
+	{
+		$this->db->simple_query("DELETE FROM vehicle_finance_links WHERE draft = 1");
 	}
 
     function upload($id='', $insurance_file=false)

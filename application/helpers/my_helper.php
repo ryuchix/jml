@@ -364,6 +364,17 @@ function csv_download($data, $filename = "export.csv", $delimiter=";")
         fputcsv($f, $line, $delimiter);
     }
 
-}  
+}
+
+function generate_url($url) {
+
+    if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
+
+        $url = "http://" . $url;
+
+    }
+
+    return $url;
+}
 
 ?>

@@ -16,6 +16,7 @@ class Dashboard extends MY_Controller {
 			'User_model',
 			'Vehicle_model',
 			'Consumable_request_model',
+			'Dashboard_vehicle_information_model',
 		));
 	}
 
@@ -32,6 +33,8 @@ class Dashboard extends MY_Controller {
 		$this->set_data('bday_users', $this->User_model->get_birthday_users());
 		$this->set_data('count_all_vehicle', $this->Vehicle_model->count());
 		$this->set_data('count_consumable_open_request', $this->Consumable_request_model->count_where(['status'=>STATUS_OPEN]));
+
+		$this->set_data('regoes', $this->Dashboard_vehicle_information_model->get());
 
 		$this->load->view('dashboard/index', $this->get_data());
 	}

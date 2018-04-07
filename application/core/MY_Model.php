@@ -162,22 +162,31 @@ class MY_Model extends CI_Model {
     /**
      * get by column name Record.
      */
-    public function getWhere($term,$first=false,$limit=500) {
-        // $this->db->where($col,$term);
-        $ret_val = array();
-        $query = $this->db->get_where($this::DB_TABLE,$term,($limit==='*')?null:$limit);
-        if ($first)
-            return $query->row();
-        else{
-            $class = get_class($this);
-            foreach ($query->result() as $row) {
-                $model = new $class;
-                $model->populate($row);
+    public function getWhere($term,$first=false,$limit=500, $key_as_id = true) 
+    {
 
-                $ret_val[$row->{$this::DB_TABLE_PK}] = $model;
-            }
-            return $ret_val;
+        $query = $this->db->get_where($this::DB_TABLE,$term, ($limit==='*')?null:$limit );
+        
+        if ($first){
+            return $query->row();
         }
+        
+        if (!$key_as_id) {
+            return $query->result();
+        }
+
+        $ret_val = array();
+
+        $class = get_class($this);
+        
+        foreach ($query->result() as $row) 
+        {
+            $model = new $class;
+            $model->populate($row);
+            $ret_val[$row->{$this::DB_TABLE_PK}] = $model;
+        }
+
+        return $ret_val;
     }
 
     /**

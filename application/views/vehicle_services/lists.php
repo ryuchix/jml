@@ -40,7 +40,13 @@
                                 <li class="active" style="visibility: hidden;">
                                     <a href="#tab_2-2" data-toggle="tab" aria-expanded="false">&nbsp;</a>
                                 </li>
-                              <li class="pull-left header"><a href="<?php echo site_url( "vehicle_services/save/$vehicle_id" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> Services</li>
+                                
+                                <li class="pull-left header">
+                                    <?php if ($controller->hasAccess('add-vehicle-service')): ?>
+                                        <a href="<?php echo site_url( "vehicle_services/save/$vehicle_id" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> 
+                                    <?php endif ?>
+                                Services
+                                </li>
                             </ul>
 
                             <div class="tab-content">

@@ -34,13 +34,21 @@
                         <div class="nav-tabs-custom">
                         
                             <ul class="nav nav-tabs pull-right">
+                                
                                 <li>
                                     <a href="#tab_1-1" data-toggle="tab" aria-expanded="true">&nbsp;</a>
                                 </li>
+                                
                                 <li class="active" style="visibility: hidden;">
                                     <a href="#tab_2-2" data-toggle="tab" aria-expanded="false">&nbsp;</a>
                                 </li>
-                              <li class="pull-left header"><a href="<?php echo site_url( "vehicle_rego/save/$vehicle_id" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> Rego</li>
+
+                                <li class="pull-left header">
+                                <?php if ($controller->hasAccess('add-vehicle-rego')): ?>
+                                    <a href="<?php echo site_url( "vehicle_rego/save/$vehicle_id" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> 
+                                <?php endif ?> Rego
+                                </li>
+
                             </ul>
 
                             <div class="tab-content">

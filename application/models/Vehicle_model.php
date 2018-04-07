@@ -24,7 +24,7 @@ class Vehicle_model extends MY_Model
     public $finance_amount = null;
     public $finance_monthly_payment = null;
     public $finance_term = null;
-    public $finance_end_date = null;
+    public $finance_start_date = null;
     public $finance_balloon = null;
 
     public $insurance_company = null;

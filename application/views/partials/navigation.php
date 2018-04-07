@@ -32,7 +32,8 @@
             </li>
            
             <?php */ } // end if quotes access
-             if (has_access('memos')) { ?>
+
+            if ($controller->hasAccess('add-memo') || $controller->hasAccess('view-memo')) { ?>
 
             <li class="treeview <?php set_active_menu('memo', $active_menu); ?>">
 
@@ -40,20 +41,24 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-memo')) { ?>
                     <li class="<?php echo set_sub_menu('add_memo', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'memo/save' ); ?>"><i class="fa fa-circle-o"></i> Add Memo</a>
                     </li>
+                    <?php } ?>
 
+                    <?php if ($controller->hasAccess('add-memo')) { ?>
                     <li class="<?php echo set_sub_menu('view_memo', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'memo/' ); ?>"><i class="fa fa-circle-o"></i> View Memos</a>
                     </li>
+                    <?php } ?>
 
                 </ul>
 
             </li>
-           
-            <?php } // end if memos access
-             if (has_access('jobs')) { /* ?>
+            <?php } ?>
+
+            <?php if (has_access('jobs')) { /* ?>
             
             <li class="treeview <?php set_active_menu('jobs', $active_menu); ?>">
 
@@ -82,7 +87,8 @@
             </li>
            
             <?php */ } // end if daily_runs access
-             if (has_access('vehicles')) { ?>
+
+            if ($controller->hasAccess('add-vehicle') || $controller->hasAccess('view-vehicle')) { ?>
              
             <li class="treeview <?php set_active_menu('vehicle', $active_menu); ?>">
                 
@@ -90,16 +96,18 @@
                 
                 <ul class="treeview-menu">
                 
+                    <?php if ($controller->hasAccess('add-vehicle')) { ?>
                     <li><a href="<?php echo site_url('vehicle/save'); ?>"><i class="fa fa-circle-o"></i> Add Vehicle</a></li>
-                
+                    <?php } ?>
+                    <?php if ($controller->hasAccess('add-vehicle') || $controller->hasAccess('view-vehicle')) { ?>
                     <li><a href="<?php echo site_url('vehicle/'); ?>"><i class="fa fa-circle-o"></i> View Vehicles</a></li>
-
+                    <?php } ?>
                 </ul>
             
             </li>
            
             <?php } // end if vehicles access
-             if (has_access('equipments')) { ?>
+             if ($controller->hasAccess('add-equipment') || $controller->hasAccess('view-equipment') || $controller->hasAccess('view-equipment-type')) { ?>
              
             <li class="treeview <?php set_active_menu('equipments', $active_menu); ?>">
 
@@ -107,11 +115,17 @@
 
                 <ul class="treeview-menu">
 
+                    <?php if ($controller->hasAccess('add-equipment')) { ?>
                     <li class="<?php set_sub_menu('add_equipment', $sub_menu); ?>"><a href="<?php echo site_url('equipments/save'); ?>"><i class="fa fa-circle-o"></i> Add Equipment</a></li>
+                    <?php } ?>
 
+                    <?php if ($controller->hasAccess('view-equipment')) { ?>
                     <li class="<?php set_sub_menu('view_equipment', $sub_menu); ?>"><a href="<?php echo site_url('equipments'); ?>"><i class="fa fa-circle-o"></i> View Equipments</a></li>
+                    <?php } ?>
 
+                    <?php if ($controller->hasAccess('view-equipment-type')) { ?>
                     <li class="<?php set_sub_menu('view_equipment_type', $sub_menu); ?>"><a href="<?php echo site_url('equipment_types'); ?>"><i class="fa fa-circle-o"></i> View Equipment Types</a></li>
+                    <?php } ?>
 
                 </ul>
             </li>
@@ -156,14 +170,29 @@
                 <a href="#"><i class="fa fa-users"></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i></a>
 
                 <ul class="treeview-menu">
-
+                    <?php if ($controller->hasAccess('add-user')) { ?>
                     <li class="<?php echo set_sub_menu('add_user', $sub_menu); ?>">
                         <a href="<?php echo site_url('users/save'); ?>"><i class="fa fa-circle-o"></i> Add User</a>
                     </li>
+                    <?php } ?>
 
+                    <?php if ($controller->hasAccess('view-user')) { ?>
                     <li class="<?php echo set_sub_menu('view_user', $sub_menu); ?>">
                         <a href="<?php echo site_url('users'); ?>"><i class="fa fa-circle-o"></i> View Users</a>
                     </li>
+                    <?php } ?>
+
+                    <?php if ($controller->hasAccess('add-role')) { ?>
+                    <li class="<?php echo set_sub_menu('add_role', $sub_menu); ?>">
+                        <a href="<?php echo site_url('roles/save'); ?>"><i class="fa fa-circle-o"></i> Add Role</a>
+                    </li>
+                    <?php } ?>
+
+                    <?php if ($controller->hasAccess('view-role')) { ?>
+                    <li class="<?php echo set_sub_menu('view_roles', $sub_menu); ?>">
+                        <a href="<?php echo site_url('roles'); ?>"><i class="fa fa-circle-o"></i> View Roles</a>
+                    </li>
+                    <?php } ?>
 
                 </ul>
             </li>
@@ -417,23 +446,29 @@
             
             if(has_access('bin_liners_management')) { ?>
 
+            <?php if ($controller->hasAccess('add-daily-balance') || $controller->hasAccess('view-daily-balance')) { ?>
             <li class="treeview <?php set_active_menu('daily_balance', $active_menu); ?>">
 
                 <a href="#"><i class="fa fa-balance-scale"></i> <span>Daily Balance</span> <i class="fa fa-angle-left pull-right"></i></a>
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-daily-balance')) { ?>
                     <li class="<?php echo set_sub_menu('add_daily_balance', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'daily_balances/save' ); ?>"><i class="fa fa-circle-o"></i> Add new balance</a>
                     </li>
+                    <?php } ?>
 
+                    <?php if ($controller->hasAccess('view-daily-balance')) { ?>
                     <li class="<?php echo set_sub_menu('view_daily_balance', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'daily_balances' ); ?>"><i class="fa fa-circle-o"></i> View Balances</a>
                     </li>
+                    <?php } ?>
 
                 </ul>
 
             </li>
+            <?php } ?>
 
             <?php } // end if bin_liners_managements access
             if(has_access('reports')) { ?>

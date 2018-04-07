@@ -21,14 +21,24 @@
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><?php echo anchor(site_url($class_name.'/save/'.$row->id),'<i class="fa fa-pencil"></i> Edit')?></li>
-                    <?php if ($row->active): ?>
-                    <li><?php echo anchor(site_url($class_name.'/activation/'.$row->id.'/0'),'<i class="fa fa-lock"></i> Disabled', 'class="disable"')?></li>
-                    <?php else: ?>
-                    <li><?php echo anchor(site_url($class_name.'/activation/'.$row->id.'/1'),'<i class="fa fa-unlock"></i> Enable', 'class="reactivate"')?></li>
-                    <?php endif; ?>
+                    <?php if ($controller->hasAccess('edit-equipment')): ?>
+                        <li><?php echo anchor(site_url($class_name.'/save/'.$row->id),'<i class="fa fa-pencil"></i> Edit')?></li>
+                    <?php endif ?>
+
+                    <?php if ($controller->hasAccess('change-equipment-status')): ?>
+                        <?php if ($row->active): ?>
+                            <li><?php echo anchor(site_url($class_name.'/activation/'.$row->id.'/0'),'<i class="fa fa-lock"></i> Disabled', 'class="disable"')?></li>
+                            <?php else: ?>
+                            <li><?php echo anchor(site_url($class_name.'/activation/'.$row->id.'/1'),'<i class="fa fa-unlock"></i> Enable', 'class="reactivate"')?></li>
+                        <?php endif; ?>
+                    <?php endif ?>
+
                     <li><?php echo anchor(site_url("$class_name/view/$row->id"),'<i class="fa fa-file-pdf-o"></i> PDF', 'target="_blank"')?></li>
+
+                    <?php // if ($controller->hasAccess('')): ?>
                     <li><?php echo anchor(site_url("equipment_tags/index/$row->id"),'<i class="fa fa-tag"></i> Service/Tag')?></li>
+                    <?php // endif ?>
+
                 </ul>
             </div>
         </td>

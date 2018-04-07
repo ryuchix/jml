@@ -21,6 +21,8 @@ class Equipments extends MY_Controller
 	function index($disable = false, $modified_item_id = 0)
 	{
 
+        $this->redirectIfNotAllowed('view-equipment');
+		
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -32,7 +34,10 @@ class Equipments extends MY_Controller
 		$this->load->view('equipments/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+        $this->redirectIfNotAllowed($id?'edit-equipment':'add-equipment');
+	
 		$this->set_data('sub_menu', 'add_equipment');
 		$record = new Equipment_model();
 		if ($id) { $record->load($id); }
@@ -79,6 +84,8 @@ class Equipments extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+        $this->redirectIfNotAllowed('change-equipment-status');
+		
 		$record = new Equipment_model();
 		$record->load($id);
 		$record->active = $boolean;

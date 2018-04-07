@@ -6,7 +6,7 @@ class Users extends MY_Controller
     function __construct()
     {
         parent::__construct();
-        $this->load->model(['User_model','User_file_model']);
+        $this->load->model(['User_model','User_file_model', 'Role_model', 'Role_user_model']);
         $this->set_data('active_menu', 'users');
     }
 
@@ -17,8 +17,8 @@ class Users extends MY_Controller
         $this->set_data( 'modified_item_id', $modified_item_id);
         $this->set_data( 'inactive_list', !($disable)?'':'active');
         $this->set_data( 'sub_menu', 'view_user');
-        $this->set_data( 'records', $this->User_model->getWhere( array( 'active' => 1 ) ) );
-        $this->set_data( 'inactive_records', $this->User_model->getWhere( array( 'active' => 0 ) ) );
+        $this->set_data( 'records', $this->User_model->getUsersByActiveStatus() );
+        $this->set_data( 'inactive_records', $this->User_model->getUsersByActiveStatus( false ) );
         $this->load->view('user/lists', $this->get_data());
     }
 
@@ -63,72 +63,127 @@ class Users extends MY_Controller
     /* Insert New User or Modifying users */
     function save($id=0, $profile = false)
     {
+        if ($this->hasAccess('add-user')) 
+        {
+            set_flash_message(2, $this->notPermittedMessage);
+            redirect(site_url());
+        }
+
         $record = new User_model();
+
         if ($id) {
             $record->load($id);
         }else{
             $this->set_data('sub_menu', 'add_user');            
         }
+        
         $this->set_data('profile', $profile);
+        
         $this->set_data('record', $record);
+        
+        $this->set_data('given_roles', $this->getGivenRoles($id));
+
+        $this->set_data('roles', $this->Role_model->get_dropdown_lists(false));
+
     	$this->load->library('form_validation');
 
-    	if( isset($_POST['submit']) ){
-            
-            $this->validate_fields($id);
-            if( $this->form_validation->run() == true )
-            {
-                foreach ($this->input->post('data') as $key => $value) {
-                    $record->{$key} = $value;
-                }
-                $record->expiry_date = $this->input->post('data[expiry_date]')? db_date($this->input->post('data[expiry_date]')):null;
-                $record->dob = $this->input->post('data[dob]')? db_date($this->input->post('data[dob]')):null;
-                if (!$id) {
-                    $record->user_title   = '';
-                    $record->password     = password_hash($this->input->post('password'), PASSWORD_BCRYPT, array('cost'=>12));
-                    $record->added_by     = $this->session->userdata('user_id');
-                }
+    	if( !isset($_POST['submit']) )
+        {
+            $this->load->view('user/register', $this->get_data() );
 
-                if($record->save()){
-                    if ($profile) {
-                        set_flash_message(0, 'Profile Saved');
-                        $this->session->set_userdata('fullname', $this->input->post('data[first_name]') . ' ' .$this->input->post('data[last_name]'));
-                        $this->session->set_userdata('username', $this->input->post('data[user_name]'));
-                        $this->session->set_userdata('email', $this->input->post('data[email]'));
-                        $this->session->set_userdata('dp', $this->input->post('data[image]'));
-                        redirect(site_url());
-                    }
-                    set_flash_message(0, 'User Successfully Added.');
-                    redirect(site_url('users/'));
-                }else{
-                    if ($id && $profile) {
-                        set_flash_message(1, 'No Changes Made.');
-                    }elseif ($id && !$profile) {
-                        set_flash_message(1, 'No Changes Made.');
-                        redirect(site_url('users/'));
-                    }
-                }
-            }
-
+            return;
         }
+            
+        $this->validate_fields($id);
+
+        if( $this->form_validation->run() === false )
+        {
+            $this->load->view('user/register', $this->get_data() );
+
+            return;
+        }
+
+        foreach ($this->input->post('data') as $key => $value) 
+        {
+            $record->{$key} = $value;
+        }
+    
+        $record->expiry_date = $this->input->post('data[expiry_date]')? db_date($this->input->post('data[expiry_date]')):null;
+    
+        $record->dob = $this->input->post('data[dob]')? db_date($this->input->post('data[dob]')):null;
+
+        if (!$id) 
+        {
+            $record->user_title   = '';
         
+            $record->password     = password_hash($this->input->post('password'), PASSWORD_BCRYPT, array('cost'=>12));
+        
+            $record->added_by     = $this->session->userdata('user_id');
+        }
+
+        // x($this->input->post());
+
+        // die();
+
+        $this->db->trans_start();
+
+        $inserted_id_or_effected_row = $record->save();
+
+        $record->assignRoles($this->input->post('role_ids'));
+
+        $this->db->trans_complete();
+
+        $id = $id? $id: $inserted_id_or_effected_row;
+
+        if ($profile) 
+        {
+            set_flash_message(0, 'Profile Saved');
+
+            $this->session->set_userdata('fullname', $this->input->post('data[first_name]') . ' ' .$this->input->post('data[last_name]'));
+
+            $this->session->set_userdata('username', $this->input->post('data[user_name]'));
+
+            $this->session->set_userdata('email', $this->input->post('data[email]'));
+
+            $this->session->set_userdata('dp', $this->input->post('data[image]'));
+
+            redirect(site_url());
+        }
+
+        set_flash_message(0, 'Save Changes.');
+
+        redirect(site_url("users/"));
 
         $this->load->view('user/register', $this->get_data() );
+
     } // end add method
+
+    function getGivenRoles($id)
+    {
+        if ( ! $id ) {
+            return [];
+        }
+        
+        return array_column($this->Role_user_model->getWhere(['user_id'=>$id], false, "*", false), 'role_id');
+    }
+
 
     /* User Profile to update his details */
     function profile()
     {
         $id = $this->session->userdata('user_id');
+        
         $this->save($id, true);
+
     } // edit prfile
+
 
     /* Profile Updated by users itself */
     function validate_fields($id)
     {
         $this->form_validation->set_rules('data[first_name]','First Name','required');
         $this->form_validation->set_rules('data[last_name]','Last Name','required');
-        $this->form_validation->set_rules('data[user_role]','User Role','required');
+        $this->form_validation->set_rules('role_ids[]','User Role','required');
         
         $this->form_validation->set_rules('data[address]','Address','required');
         $this->form_validation->set_rules('data[address_state]','State','required');
@@ -172,44 +227,60 @@ class Users extends MY_Controller
     function activation($id, $boolean=false)
     {
         $record = new User_model();
+        
         $record->load($id);
+        
         $record->active = $boolean;
+        
         $record->save();
-        if ($boolean) {
+        
+        if ($boolean) 
+        {
             set_flash_message(0, 'User status changed to active');
             redirect( site_url( 'users/index/0/'.$id ) );
-        }else{
-            set_flash_message(0, 'User status changed to inactive');
-            redirect( site_url( 'users/index/1/'.$id ) );
         }
+
+        set_flash_message(0, 'User status changed to inactive');
+        
+        redirect( site_url( "users/index/1/$id" ) );
     }
 
     /* Checking User Username is already exist or not while updated user information */
     public function custom_username_check($user_name,$id)
     {
         $this->db->where('user_name',$user_name);
+        
         $this->db->where('id !=',$id);
+        
         $users = $this->db->get('users');
-        if($users->row()){
+        
+        if($users->row())
+        {
             $this->form_validation->set_message('custom_username_check', 'The {field} must be unique. This is already in use.');
+
             return false;
-        }else{
-            return true;
         }
+
+        return true;
     }
 
     /* Checking User Email is already exist or not while updated user information */
     public function custom_email_check($email,$id)
     {
         $this->db->where('email',$email);
+
         $this->db->where('id !=',$id);
+
         $users = $this->db->get('users');
-        if($users->row()){
+
+        if($users->row())
+        {
             $this->form_validation->set_message('custom_email_check', 'The {field} must be unique. This is already in use.');
+        
             return false;
-        }else{
-            return true;
         }
+        
+        return true;
     }
 
     function view($id)

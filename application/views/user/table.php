@@ -46,7 +46,7 @@
 
                 <td><?php echo local_date($row->dob); ?></td>
 
-                <td><?php echo get_user_role($row->user_role); ?></td>
+                <td><?php echo $row->role; ?></td>
 
                 <td>
 
@@ -57,20 +57,28 @@
                         </button>
 
                         <ul class="dropdown-menu">
+                            <?php if ($controller->hasAccess('edit-user')): ?>
+                                <li><?php echo anchor(site_url('users/save/'.$row->id),'<i class="fa fa-pencil"></i> Edit')?></li>
+                            <?php endif ?>
                             
-                            <li><?php echo anchor(site_url('users/save/'.$row->id),'<i class="fa fa-pencil"></i> Edit')?></li>
-                            
-                            <?php if ($row->active): ?>
+                            <?php if ($controller->hasAccess('change-user-status')): ?>
                                 
-                                <li><?php echo anchor(site_url("users/activation/$row->id/0"),'<i class="fa fa-lock"></i> Disabled', 'class="disable"')?></li>
-                            
-                            <?php else: ?>
-                            
-                                <li><?php echo anchor(site_url("users/activation/$row->id/1"),'<i class="fa fa-unlock"></i> Enable', '')?></li>
-                            
-                            <?php endif; ?>
-                            
+                                <?php if ($row->active): ?>
+                                    
+                                    <li><?php echo anchor(site_url("users/activation/$row->id/0"),'<i class="fa fa-lock"></i> Disabled', 'class="disable"')?></li>
+                                
+                                <?php else: ?>
+                                
+                                    <li><?php echo anchor(site_url("users/activation/$row->id/1"),'<i class="fa fa-unlock"></i> Enable', '')?></li>
+                                
+                                <?php endif; ?>
+
+                            <?php endif ?>
+
+                            <?php if ($controller->hasAccess('view-user-file')): ?>
+                                
                             <li><?php echo anchor(site_url('users/files/'.$row->id),'<i class="fa fa-paperclip"></i> Files')?></li>
+                            <?php endif ?>
                             
                             <li><?php echo anchor(site_url('users/view/'.$row->id),'<i class="fa fa-file-pdf-o"></i> PDF', 'target="_blank"')?></li>
                         

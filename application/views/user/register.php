@@ -65,19 +65,13 @@
                             </div>
                             <?php endif ?>
 
-                            <div class="form-group <?php echo form_error('data[user_role]')? 'has-error':''; ?>">
-                                <label for="user_role">User Type</label>
-                                <?php $roles = array(
-                                    '' => 'Select user role',
-                                    ADMIN_ROLE => 'Admin',
-                                    STAFF_ROLE => 'Staff/Contractor',
-                                    OFFICE_MANAGER_ROLE => 'Office Manager',
-                                    OPERATION_MANAGER_ROLE => 'Operation Manager'
-                                ); 
+                            <div class="form-group <?php echo form_error('role_ids[]')? 'has-error':''; ?>">
+                                <label for="user_role">User Roles</label>
+                                <?php 
 
-                                echo form_dropdown('data[user_role]', $roles, $record->user_role, ' id="user_role" class="form-control"');
+                                echo form_dropdown('role_ids[]', $roles, $given_roles, ' id="user_role" class="form-control" multiple');
                                 ?>
-                                <?php echo form_error('data[user_role]','<p class="error-msg">','</p>'); ?>
+                                <?php echo form_error('role_ids[]','<p class="error-msg">','</p>'); ?>
                             </div>
 
                             <div class="form-group">

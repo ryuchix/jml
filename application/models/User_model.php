@@ -98,6 +98,49 @@ class User_model extends MY_Model
         return $this->db->query($sql)->result();
     }
 
+    public function getUsersByActiveStatus($is_active = true)
+    {
+        $sql = "
+                SELECT GROUP_CONCAT(r.name SEPARATOR ' | ') AS role, u.* FROM users AS u 
+                LEFT JOIN `role_user` AS ru ON ru.user_id = u.id
+                LEFT JOIN `roles` AS r ON r.id = ru.role_id
+                WHERE u.active = ?
+                GROUP BY u.id";
+
+        return $this->db->query($sql, [$is_active])->result();
+    }
+
+    public function assignRoles($roles)
+    {
+        $this->db->query("DELETE FROM role_user WHERE user_id = ?", [$this->id]);
+
+        $data = [];
+
+        foreach ($roles as $role_id) {
+            array_push($data, [
+                'role_id' => $role_id,
+                'user_id' => $this->id
+            ]);
+        }
+
+        return $this->db->insert_batch('role_user', $data);
+    }
+
+    public function getAllowedPermissions()
+    {
+        $sql = "SELECT r.name AS role, p.* FROM permissions AS p
+                JOIN permission_role AS pr ON pr.permission_id = p.id
+                JOIN roles AS r ON r.id = pr.role_id
+                JOIN role_user AS ru ON ru.role_id = r.id
+                JOIN users AS u ON u.id = ru.user_id
+                WHERE u.id = ?";
+
+        $query = $this->db->query($sql, [$this->id]);
+
+        return array_unique(array_column($query->result_array(), 'name'));
+
+    }
+
 }
 
 ?>

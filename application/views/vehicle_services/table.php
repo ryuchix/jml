@@ -25,7 +25,9 @@
                   <i class="fa fa-ellipsis-v "></i>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><?php echo anchor(site_url("vehicle_services/save/$row->vehicle_id/$row->id"),'<i class="fa fa-pencil"></i> Edit')?></li>
+                    <?php if ($controller->hasAccess('edit-vehicle-service')): ?>
+                        <li><?php echo anchor(site_url("vehicle_services/save/$row->vehicle_id/$row->id"),'<i class="fa fa-pencil"></i> Edit')?></li>
+                    <?php endif ?>
                 </ul>
             </div>
         </td>
