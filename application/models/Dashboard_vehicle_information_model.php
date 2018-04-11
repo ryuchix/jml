@@ -64,15 +64,19 @@ class Dashboard_vehicle_information_model extends Dashboard_table_base_model
     {
         switch(true)
         {
+            // background-color will be orange or warning if next odo less than 5000 km
             case $this->next_service_odo < 5000:
                 return 'bg-warning';
 
+            // background-color will be blur or info if next odo less than 1000 km
             case $this->next_service_odo < 1000:
                 return 'bg-info';
 
+            // background-color will be red or danger if nex service odo is less than odo finish km
             case $this->next_service_odo <= $this->odometer_finish:
                 return 'bg-danger';
 
+            // there wont be any integation if none of above criteria matched.
             default:
                 return '';
         }
@@ -92,6 +96,7 @@ class Dashboard_vehicle_information_model extends Dashboard_table_base_model
             return '';
         }
 
+        // otherwise return datewise highlighted roles and background colors.
         $this->get_class_based_on_date($this->next_service_date);
     }
 

@@ -1,3 +1,10 @@
+
+<style>
+	.equipment-table tr>td:first-child>a{
+		display: block;
+	}
+</style>
+
 <div class="row">
 
     <div class="col-sm-12">
@@ -22,7 +29,7 @@
 
             </div>
 
-            <div class="box-body chart-responsive">
+            <div class="box-body chart-responsive table-responsive equipment-table">
 				
 				<table class="table table-bordered">
 					
@@ -49,7 +56,9 @@
 							<tr>
 								
 								<td>
-									JML-<?php echo $equipment->id; ?>
+									<a href="<?php echo site_url( "equipments/save/$equipment->id" ); ?>" class="image-preview" data-url='<?php echo base_url("uploads/equipments/$equipment->image"); ?>'>
+										JML-<?php echo $equipment->id ?>
+									</a>
 								</td>
 								
 								<td>

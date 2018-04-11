@@ -66,13 +66,17 @@ class User_model extends MY_Model
     public function authenticate($user_name,$password)
     {
         $this->db->where("active = 1 AND (user_name = '$user_name' OR email = '$user_name')");
+
         $this->db->limit(1);
+
         $query = $this->db->get(SELF::DB_TABLE);
+
         $user = $query->row();
+
         if ( $user && password_verify($password,$user->password) )
             return $user;
-        else
-            return FALSE;
+        
+        return FALSE;
     }
 
     function get_dropdown_lists($first_empty=1, $active=1)

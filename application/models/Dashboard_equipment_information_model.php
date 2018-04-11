@@ -15,6 +15,7 @@ class Dashboard_equipment_information_model extends Dashboard_table_base_model
 			SELECT
 			    equipment.id,
 			    equipment.name,
+			    equipment.image,
 			    equipment_type.type,
 			    service.booked_date,
 			    service.next_service_date,

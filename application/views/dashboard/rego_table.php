@@ -22,7 +22,7 @@
 
             </div>
 
-            <div class="box-body chart-responsive">
+            <div class="box-body chart-responsive table-responsive">
 				
 				<table class="table table-bordered">
 					

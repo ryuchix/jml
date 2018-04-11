@@ -189,6 +189,7 @@
 <!-- Morris charts -->
 <script src="<?php echo site_url( 'assets/plugins/raphael/raphael.min.js' ); ?>"></script>
 <script src="<?php echo site_url( 'assets/plugins/morris/morris.min.js' ); ?>"></script>
+<script src="<?php echo site_url( 'assets/dist/js/image-preview.js' ); ?>"></script>
 
 <script>
 
