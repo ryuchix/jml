@@ -31,7 +31,7 @@
                 <div class="box">
 
                     <div class="box-header with-border">
-                      <h3 class="box-title"><a href="<?php echo site_url( "$class_name/save/$equipment_id" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> List</h3>
+                      <h3 class="box-title"><a href="<?php echo site_url( "$class_name/save/$equipment_id" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> Service/Tag</h3>
                     </div>
 
                     <div class="box-body">

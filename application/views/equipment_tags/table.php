@@ -1,7 +1,7 @@
 <table id="example1" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Booked Date.</th>
+            <th>Tagged Date.</th>
             <th>Cost</th>
             <th>Next Service Date</th>
             <th>Supplier</th>

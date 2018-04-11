@@ -54,7 +54,7 @@ class Equipment_view extends FPDF
 		$data = array(
 			// "id"			=> $this->data->id,
 		    "Equipment Type"=> $this->data->type,
-		    "Equipment Name"=> $this->data->name,
+		    "Reference"=> $this->data->name,
 		    "Serial No"		=> $this->data->serial_no,
 		    "Description"	=> $this->data->description,
 		    "Supplier"		=> $this->data->supplier,

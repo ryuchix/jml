@@ -43,7 +43,8 @@ class Roles extends MY_Controller
 
     	$this->load->library('form_validation');
 
-    	if( !isset($_POST['submit']) ){
+    	if( !isset($_POST['submit']) )
+        {
             
             $this->load->view( "user/roles/form", $this->get_data() );
 
@@ -71,10 +72,6 @@ class Roles extends MY_Controller
 
         $id = $id? $id : $i_r_e;
 
-        // x($this->db->last_query());
-
-        // die();
-
         $role->attach_permissions($this->input->post('permissions'));
 
         $this->db->trans_complete();
@@ -88,6 +85,7 @@ class Roles extends MY_Controller
     protected function get_permissions()
     {
         $this->db->order_by('name');
+
         $permissions = $this->Permission_model->get(0, 0, 0);
 
         $grouped_permissions = [];
@@ -99,7 +97,6 @@ class Roles extends MY_Controller
             unset($perm->display_group);
 
             $grouped_permissions[$display_group][] = $perm;
-
         }
         
         ksort($grouped_permissions);
@@ -109,13 +106,18 @@ class Roles extends MY_Controller
 
     protected function getSelectedPermissions($id)
     {
-        if (!$id) {
+        if ( ! $id )
+        {
             return [];
         }
         
         $permissions = $this->Permission_role_model->getWhere(['role_id'=>$id], false, "*", false);
-        
-        return array_column($permissions, 'permission_id');
+
+        return array_map(function($permission){
+            return $permission->permission_id;
+        }, $permissions);
+
+        // return array_column($permissions, 'permission_id');
     }
 
     public function show_permissions($id)
@@ -130,12 +132,12 @@ class Roles extends MY_Controller
     /* Validate fields */
     function validate_fields($id)
     {
+        $this->form_validation->set_rules('name','Role Name','required|is_unique[roles.name]');
+        
+        $this->form_validation->set_rules('permissions[]','Permssion','required', array('required' => 'You must select at least one perission in order to register new Role'));
+
         if($id)
             $this->form_validation->set_rules('name','Role Name','required|callback_custom_role_name_check['.$id.']');
-        else
-            $this->form_validation->set_rules('name','Role Name','required|is_unique[roles.name]');
-
-        $this->form_validation->set_rules('permissions[]','Permssion','required', array('required' => 'You must select at least one perission in order to register new Role'));
 
     } // edit validate_fields
 

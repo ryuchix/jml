@@ -53,12 +53,17 @@
                     <div class="btn-group">
 
                         <button data-toggle="dropdown" class="dropdown-toggle btn btn-icon-toggle btn-default ink-reaction">
-                            <i class="fa fa-ellipsis-v "></i>
+
+                            <i class="fa fa-ellipsis-v"></i>
+
                         </button>
 
                         <ul class="dropdown-menu">
+
                             <?php if ($controller->hasAccess('edit-user')): ?>
+
                                 <li><?php echo anchor(site_url('users/save/'.$row->id),'<i class="fa fa-pencil"></i> Edit')?></li>
+                                
                             <?php endif ?>
                             
                             <?php if ($controller->hasAccess('change-user-status')): ?>
@@ -78,6 +83,13 @@
                             <?php if ($controller->hasAccess('view-user-file')): ?>
                                 
                             <li><?php echo anchor(site_url('users/files/'.$row->id),'<i class="fa fa-paperclip"></i> Files')?></li>
+                            
+                            <?php endif ?>
+
+                            <?php if ($controller->hasAccess('change-user-password')): ?>
+                                
+                            <li><?php echo anchor(site_url('users/change_password/'.$row->id),'<i class="fa fa-key"></i> Change Password')?></li>
+                            
                             <?php endif ?>
                             
                             <li><?php echo anchor(site_url('users/view/'.$row->id),'<i class="fa fa-file-pdf-o"></i> PDF', 'target="_blank"')?></li>

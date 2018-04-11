@@ -49,15 +49,24 @@
 </style>
 
 <div class="content-wrapper">
+
     <!-- Content Header (Page header) -->
     <section class="content-header">
+
         <h1>Equipment Serivce/Tag <small><?php echo $record->id? 'edit': 'new'; ?></small></h1>
+
         <ol class="breadcrumb">
+
             <li><a href="<?php echo site_url(); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
+
             <li><a href="<?php echo site_url( "equipments/" ); ?>"><i class="fa fa-user"></i> Equipment</a></li>
+
             <li class="active"><?php echo $record->id? 'Edit': 'New'; ?></li>
+
         </ol>
+
     </section>
+
     <br>
 
     <!-- Main content -->
@@ -67,29 +76,47 @@
 
             <!-- form start -->
             <form role="form" method="post" action="<?php echo site_url( "$class_name/save/$equipment_id/$record->id" ); ?>">
+                
                 <input type="hidden" name="data[equipment_id]" value="<?php echo set_value('data[equipment_id]', $equipment_id); ?>">
+                
                 <div class="col-sm-8">
+                
                     <div class="box box-primary">
+                
                         <div class="box-header with-border">
+                
                           <h3 class="box-title"><?php echo $record->id? 'Edit': 'Add New'; echo ' '. ucfirst(str_replace('_', ' ', $class_name)); ?></h3>
+                
                         </div>
+                
                         <!-- /.box-header -->
                         <div class="box-body">
                             
                             <div class="form-group <?php echo form_error('booked_date')? 'has-error':''; ?>">
-                                <label for="booked_date">Booked Date:</label>
+                
+                                <label for="booked_date">Tagged Date:</label>
+                
                                 <div class='input-group date' id='datetimepicker'>
-                                    <input type="text" class="form-control" name="booked_date" id="booked_date" placeholder="Booked Date" value="<?php echo set_value('booked_date', $record->id? local_date($record->booked_date): date('d/m/Y')); ?>">
+                
+                                    <input type="text" class="form-control" name="booked_date" id="booked_date" placeholder="Tagged Date" value="<?php echo set_value('booked_date', $record->id? local_date($record->booked_date): date('d/m/Y')); ?>">
+                
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                     </span>
+                
                                 </div>
+                
                                 <?php echo form_error('booked_date','<p class="error-msg">','</p>'); ?>
+                
                             </div>
 
                             <div class="form-group <?php echo form_error('data[cost]')? 'has-error':''; ?>">
+                             
                                 <label for="cost">Cost</label>
+                             
                                 <input type="text" class="form-control" name="data[cost]" id="cost" placeholder="Cost" value="<?php echo set_value('data[cost]', $record->cost); ?>">
+                             
                                 <?php echo form_error('data[cost]','<p class="error-msg">','</p>') ?>
+                            
                             </div>
 
                             <div class="form-group">
@@ -110,58 +137,87 @@
                             </div>
                             
                             <div class="form-group <?php echo form_error('next_service_date')? 'has-error':''; ?>">
-                                <label for="next_service_date">Booked Date:</label>
+                                
+                                <label for="next_service_date">Tagged Date:</label>
+                                
                                 <div class='input-group date' id='datetimepicker'>
-                                    <input type="text" class="form-control" name="next_service_date" id="next_service_date" placeholder="Booked Date" value="<?php echo set_value('next_service_date', $record->id? local_date($record->next_service_date):''); ?>">
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
+                                
+                                    <input type="text" class="form-control" name="next_service_date" id="next_service_date" placeholder="Tagged Date" value="<?php echo set_value('next_service_date', $record->id? local_date($record->next_service_date):''); ?>">
+                                
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                
                                 </div>
+                                
                                 <?php echo form_error('next_service_date','<p class="error-msg">','</p>'); ?>
+                            
                             </div>
 
                             <div class="form-group <?php echo form_error('data[supplier_id]')? 'has-error':''; ?>">
+                            
                                 <label for="supplier_id">Supplier:</label>
+                            
                                 <?php echo form_dropdown('data[supplier_id]', $suppliers,
                                                 isset($_POST['data']['supplier_id'])? $_POST['data']['supplier_id']:$record->supplier_id
                                                 , 'class="dropdown_lists form-control" id="supplier_id" data-placeholder="Choose Supplier"'); ?>
+                            
                                 <?php echo form_error('data[supplier_id]','<p class="error-msg">','</p>') ?>
+                            
                             </div>
 
                         </div>
+
                         <!-- /.box-body -->
                         <div class="box-footer">
+                        
                             <button type="submit" class="btn btn-primary" name="submit">Submit</button>
+                        
                         </div>
+                    
                     </div>
+                
                 </div>
+                
                 <div class="col-sm-4">
+                
                     <div class="box box-primary">
+                
                         <div class="box-header with-border">
+                
                           <h3 class="box-title">Attachment</h3>
+                
                         </div>
+                
                         <!-- /.box-header -->
                         <div class="box-body" id="imagePreview">
 
                             <?php if ($record->id && $record->file): ?>
                                 
                                 <div class="imageview-container">
+                              
                                     <span class="delete" data-image-name="<?php echo $record->file; ?>">X</span>
+                              
                                     <a href="<?php echo base_url('uploads/equipment_tags/'.$record->file) ?>" 
                                     download="<?php echo base_url('uploads/equipment_tags/'.$record->file) ?>">
                                         <?php echo $record->file; ?>
                                     </a>
+                              
                                 </div>
 
                             <?php endif; ?>
 
                         </div> <!-- .body -->
+                    
                     </div> <!-- .box-primary -->
+
                 </div> <!-- .col-sm-4 -->
+
             </form>
 
         </div>
         <!-- /.row -->
+
     </section>
+    
 </div>
 
 <?php $this->load->view( 'partials/footer' ); ?>

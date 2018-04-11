@@ -139,6 +139,8 @@
 
 		<?php $this->load->view('dashboard/rego_table'); ?>
 
+		<?php $this->load->view('dashboard/equipment_table'); ?>
+
 		<?php $this->load->view('dashboard/daily_balances_progress'); ?>
 
 		<?php if(has_access('dashboard')): ?>

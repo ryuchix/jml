@@ -23,7 +23,7 @@
             </div>
 
             <div class="box-body chart-responsive">
-
+				
 				<table class="table table-bordered">
 					
 					<thead>

@@ -7,53 +7,74 @@ class Equipment_tags extends MY_Controller
 	function __construct()
 	{
 		parent::__construct();
-		$this->load->model([
+		
+        $this->load->model([
 			'Equipment_model',
 			'Equipment_tags_model',
 			'Supplier_model'
 		]);
+
 		$this->set_data('active_menu', 'equipments');
-		$this->set_data('class_name', strtolower(get_class($this)));
+		
+        $this->set_data('class_name', strtolower(get_class($this)));
 	}
 
 
 	function index($equipment_id, $disable = false, $modified_item_id = 0)
 	{
 		$this->set_data('equipment_id', $equipment_id);
+
 		$this->set_data('sub_menu', 'view_equipment');
+
 		$this->set_data( 'records', $this->Equipment_tags_model->get_lists_by_equipment_id($equipment_id) );
+
 		$this->load->view('equipment_tags/lists', $this->get_data());
 	}
 
-	function save($equipment_id, $id=false){
+	function save($equipment_id, $id=false)
+    {
 		$this->set_data('sub_menu', 'add_equipment_tag');
+
 		$this->set_data('equipment_id', $equipment_id);
+
 		$record = new Equipment_tags_model();
+
 		if ($id) { $record->load($id); }
 
 		$this->set_data('record', $record);
+
 		$this->set_data('suppliers', $this->Supplier_model->get_dropdown_lists());
 		
 		$this->load->library('form_validation');
 
-		if( isset($_POST['submit']) ){
-
-       		$this->validate_fields($id);
-
-			if ( $this->form_validation->run() == TRUE ) {
-				foreach ($this->input->post('data') as $field => $value) {
-					$record->{$field} 	= $value;
-				}
-				$record->booked_date = db_date($this->input->post('booked_date'));
-				$record->next_service_date = $this->input->post('next_service_date')? 
-												db_date($this->input->post('next_service_date')):null;
-				if ($record->save()) {
-					set_flash_message(0, "Record Submitted Successfully!");
-					redirect( site_url( "equipment_tags/index/$record->equipment_id" ) );
-				}
-
-			}
+		if( ! isset($_POST['submit']) )
+        {
+            $this->load->view('equipment_tags/form', $this->get_data());
+            return;
 		}
+        
+        $this->validate_fields($id);
+
+        if ( $this->form_validation->run() == FALSE ) 
+        {
+            $this->load->view('equipment_tags/form', $this->get_data());
+            return;
+        }
+
+        foreach ($this->input->post('data') as $field => $value) {
+            $record->{$field}   = $value;
+        }
+
+        $record->booked_date = db_date($this->input->post('booked_date'));
+        
+        $record->next_service_date = $this->input->post('next_service_date')? 
+                                        db_date($this->input->post('next_service_date')):null;
+        $record->save();
+
+        set_flash_message(0, "Record Submitted Successfully!");
+
+        redirect( site_url( "equipment_tags/index/$record->equipment_id" ) );
+
 		$this->load->view('equipment_tags/form', $this->get_data());
 	}
 
@@ -81,18 +102,25 @@ class Equipment_tags extends MY_Controller
     	if ($file_type) {
         	$config['allowed_types'] = $file_type;
     	}else{
+
     		$ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+
     		$not_allowed_types = array('exe', 'bat', 'php', 'js', 'java', 'asp', 'aspx');
+
     		if ( in_array($ext, $not_allowed_types) ) {
+
     			$config['allowed_types'] = 'gif|jpg|png|tif|doc|docx|word|pdf';
+
     		}else{
+
     			$config['allowed_types'] = $ext;
+
     		}
     	}
 
         $this->load->library('upload', $config);
 
-        if ( ! $this->upload->do_upload('file'))
+        if ( ! $this->upload->do_upload('file') )
         {
             $error = array('error' => $this->upload->display_errors());
 			$s = json_encode($error);

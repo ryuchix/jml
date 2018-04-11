@@ -1,9 +1,9 @@
 <table id="example1" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Tag No.</th>
+            <th>JML No.</th>
             <th>Equipment Type</th>
-            <th>Equipment Name</th>
+            <th>Reference</th>
             <th>Assigned</th>
             <th>Action</th>
         </tr>

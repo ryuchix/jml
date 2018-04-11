@@ -40,17 +40,27 @@ class Users extends MY_Controller
                     $this->session->set_userdata('username', $found->user_name);
                     $this->session->set_userdata('dp', $found->image);
                     $this->session->set_userdata('email', $found->email);
-                    if (isset($_GET['redirect'])&&$found->user_role==ADMIN_ROLE) {
+                    if (isset($_GET['redirect'])&&$found->user_role==ADMIN_ROLE) 
+                    {
+
                         redirect(site_url($_GET['redirect']));
+
                     }else{ 
-                        redirect(site_url());
+
+                        redirect( site_url() );
+
                     }
+
 	    		}else{
 	    			$this->set_data('flash_message', 'Username/Password Invalid!');
 	    		}
+
     		} // if form validation passes
+
     	}
+
     	$this->load->view( 'user/login', $this->get_data() );
+
     } // end login function
 
     /* Logging out the user from the system */
@@ -63,18 +73,14 @@ class Users extends MY_Controller
     /* Insert New User or Modifying users */
     function save($id=0, $profile = false)
     {
-        if ($this->hasAccess('add-user')) 
-        {
-            set_flash_message(2, $this->notPermittedMessage);
-            redirect(site_url());
-        }
+        $this->redirectIfNotAllowed($id?'edit-user':'add-user');
 
         $record = new User_model();
 
         if ($id) {
             $record->load($id);
         }else{
-            $this->set_data('sub_menu', 'add_user');            
+            $this->set_data('sub_menu', 'add_user');
         }
         
         $this->set_data('profile', $profile);
@@ -158,13 +164,72 @@ class Users extends MY_Controller
 
     } // end add method
 
+
+    public function change_password($user_id)
+    {
+        
+        $this->redirectIfNotAllowed($user_id?'edit-user':'add-user');
+
+        $this->load->library('form_validation');
+        
+        $record = new User_model();
+
+        $record->load($user_id);
+
+        $this->set_data('user_id', $user_id);
+
+        if( !isset($_POST['submit']) )
+        {
+            $this->load->view('user/change_password', $this->get_data() );
+            return;
+        }
+            
+        $this->validate_password_change($record->password);
+
+        if( $this->form_validation->run() === false )
+        {
+            $this->load->view('user/change_password', $this->get_data() );
+            return;
+        }
+        
+        $isOldPassword = !! $this->User_model->authenticate($record->user_name, $this->input->post('password'));
+
+        if( $isOldPassword )
+        {
+            set_flash_message(1, "You entered current password.");
+
+            redirect( site_url("users/change_password/$user_id") );
+
+            return;
+        }
+
+        $record->password = password_hash($this->input->post('password'), PASSWORD_BCRYPT, array('cost'=>12));
+
+        $record->save();
+
+        set_flash_message(0, 'Save Changes.');
+
+        redirect(site_url("users/"));
+
+        $this->load->view('user/change_password', $this->get_data() );
+    }
+
     function getGivenRoles($id)
     {
-        if ( ! $id ) {
+        if ( ! $id ) 
+        {
             return [];
         }
         
-        return array_column($this->Role_user_model->getWhere(['user_id'=>$id], false, "*", false), 'role_id');
+        return array_map(function($role)
+            {
+                return $role->role_id;
+            }, 
+
+            $this->Role_user_model->getWhere(['user_id'=>$id], false, "*", false)
+        );
+
+        // return array_column($this->Role_user_model->getWhere(['user_id'=>$id], false, "*", false), 'role_id');
     }
 
 
@@ -174,6 +239,15 @@ class Users extends MY_Controller
         $id = $this->session->userdata('user_id');
         
         $this->save($id, true);
+
+    } // edit prfile
+
+
+    function validate_password_change($oldpassword)
+    {
+        $this->form_validation->set_rules('password','Password','required|min_length[3]|max_length[15]');
+        
+        $this->form_validation->set_rules('confirm_password','Confirm Password','required|matches[password]');
 
     } // edit prfile
 
@@ -221,6 +295,7 @@ class Users extends MY_Controller
             $this->form_validation->set_rules('data[email]','Email','required|is_unique[users.email]');
             $this->form_validation->set_rules('data[user_name]', 'Username','required|is_unique[users.user_name]');
         } // else for update
+
     } // edit prfile
 
     /* Activation or deactivation */
@@ -286,13 +361,21 @@ class Users extends MY_Controller
     function view($id)
     {
         $user = new User_model();
+
         $user->load($id);
-        if (!$user) {
+
+        if ( ! $user )
+        {
             $this->load->library('fpdf');
+
             $pdf = new FPDF("L");
+
             $pdf->AddPage();
+
             $pdf->SetFont("Arial", "", 26);
+
             $pdf->Cell(0, 40, "No record found!", 0, 1, "C");
+            
             $pdf->Output();
         }
         else

@@ -1,19 +1,22 @@
 <?php
 
-class Dashboard_vehicle_information_model extends CI_Model
+require_once 'application/models/Dashboard_table_base_model.php';
+
+class Dashboard_vehicle_information_model extends Dashboard_table_base_model
 {
+    
     public function get()
     {
         $query = "
-            SELECT v.license_plate, v.id, vr.due_date, vr.expiry_date, vs.next_service_date, vs.next_service_odo, v.insurance_expiry_date, meter.odometer_finish
+            SELECT v.license_plate, v.id, vr.due_date, vr.expiry_date, vr.status, vs.next_service_date, vs.next_service_odo, v.insurance_expiry_date, meter.odometer_finish
                 FROM vehicle AS v
             LEFT JOIN
             (
-                SELECT MAX(r.id), r.vehicle_id, r.due_date, r.expiry_date
+                SELECT MAX(r.id), r.vehicle_id, r.due_date, r.expiry_date, r.status
                     FROM vehicle_rego AS r
                 GROUP BY r.vehicle_id
             ) AS vr 
-                ON vr.vehicle_id = v.id
+            ON vr.vehicle_id = v.id
 
             LEFT JOIN
             (
@@ -31,32 +34,14 @@ class Dashboard_vehicle_information_model extends CI_Model
             ) AS meter
             ON meter.vehicle_id = v.id";
 
-        $res = [];
-
-        foreach ($this->db->query($query)->result() as $row) 
-        {
-            array_push($res, $this->populate($row));
-        }
-
-        return $res;
-    }
-
-    protected function populate($data)
-    {
-        $class = get_class($this);
-
-        $info = new $class;
-
-        foreach (get_object_vars($data) as $key => $value) 
-        {
-            $info->{$key} = $value;
-        }
-
-        return $info;
+        return $this->get_result($query);
     }
 
     public function get_due_date_highlighted_class()
     {   
+        if ($this->status == STATUS_PAID) {
+            return 'bg-success';
+        }
         return $this->get_class_based_on_date($this->due_date);
     }
 
@@ -68,34 +53,6 @@ class Dashboard_vehicle_information_model extends CI_Model
     public function get_insurance_expiry_date_hightlighted_class()
     {
         return $this->get_class_based_on_date($this->insurance_expiry_date);
-    }
-
-    protected function get_class_based_on_date($dateToCheck)
-    {
-        if ( !$dateToCheck ) { return ''; }
-
-        $dateToCheck = new DateTime($dateToCheck);
-
-        $today = new DateTime();
-
-        $monthOffset = (new DateTime())->modify("+1 month");
-
-        $weekOffset = (new DateTime())->modify("+1 week");
-
-        switch(true)
-        {
-            case $dateToCheck <= $weekOffset && $dateToCheck > $today:
-                return 'bg-info';
-
-            case $dateToCheck <= $monthOffset && $dateToCheck > $today:
-                return 'bg-warning';
-
-            case $today > $dateToCheck:
-                return 'bg-danger';
-
-            default:
-                return '';
-        }
     }
 
     /*
