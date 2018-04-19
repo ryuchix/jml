@@ -24,12 +24,15 @@ class Dashboard_equipment_information_model extends Dashboard_table_base_model
 			    equipment
 			JOIN equipment_type ON equipment_type.id = equipment.equipment_type_id
 			LEFT JOIN(
-			    SELECT MAX(last_equipment_service.id) AS id,
+			    SELECT
+			        last_equipment_service.id,
 			        last_equipment_service.equipment_id,
 			        last_equipment_service.booked_date,
 			        last_equipment_service.next_service_date
 			    FROM
 			        equipment_tags AS last_equipment_service
+                WHERE booked_date = ( SELECT MAX(b.booked_date) FROM equipment_tags AS b
+    						WHERE last_equipment_service.equipment_id = b.equipment_id )
 			    GROUP BY
 			        last_equipment_service.equipment_id
 			) AS service

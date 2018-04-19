@@ -51,7 +51,7 @@
 							<tr>
 								
 								<td>
-									<a href="<?php echo site_url( "vehicle/save/$rego->id" ); ?>">
+									<a href="<?php echo site_url( "vehicle/save/$rego->id" ); ?>" class="image-preview" data-url='<?php echo base_url("uploads/vehicles/$rego->image") ?>'>
 										<?php echo $rego->license_plate; ?>
 									</a>
 								</td>

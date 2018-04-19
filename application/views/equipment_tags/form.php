@@ -120,29 +120,40 @@
                             </div>
 
                             <div class="form-group">
+
                                 <label for="file">Choose Files</label>
+                                
                                 <input type="hidden" name="data[file]" id="image" value="<?php echo set_value('data[file]', $record->file); ?>">
+                                
                                 <input type="file" class="form-control" id="imageFile">
+                                
                                 <input type="hidden" id="UPLOAD_URL" value="<?php echo site_url( 'equipment_tags/upload_equipment_tag_file/'.$record->id ); ?>">
+                                
                                 <input type="hidden" id="DELETE_URL" value="<?php echo site_url( 'equipment_tags/delete_via_ajax/' ); ?>">
+                                
                                 <input type="hidden" id="RECORD_ID" value="<?php echo $record->id; ?>">
+                                
                                 <input type="hidden" id="FOLDER" value="equipment_tags">
+                                
                                 <input type="hidden" id="MODEL" value="Equipment_tags">
+                                
                                 <div class="progress">
+                                
                                     <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
                                         0%
                                     </div>
+                                
                                 </div>
 
                             </div>
                             
                             <div class="form-group <?php echo form_error('next_service_date')? 'has-error':''; ?>">
                                 
-                                <label for="next_service_date">Tagged Date:</label>
+                                <label for="next_service_date">Next Service Date:</label>
                                 
                                 <div class='input-group date' id='datetimepicker'>
                                 
-                                    <input type="text" class="form-control" name="next_service_date" id="next_service_date" placeholder="Tagged Date" value="<?php echo set_value('next_service_date', $record->id? local_date($record->next_service_date):''); ?>">
+                                    <input type="text" class="form-control" name="next_service_date" id="next_service_date" placeholder="Next Service Date" value="<?php echo set_value('next_service_date', $record->id? local_date($record->next_service_date):''); ?>">
                                 
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 
@@ -156,8 +167,9 @@
                             
                                 <label for="supplier_id">Supplier:</label>
                             
-                                <?php echo form_dropdown('data[supplier_id]', $suppliers,
-                                                isset($_POST['data']['supplier_id'])? $_POST['data']['supplier_id']:$record->supplier_id
+                                <?php echo form_dropdown('data[supplier_id]'
+                                                , $suppliers
+                                                , isset($_POST['data']['supplier_id'])? $_POST['data']['supplier_id'] : $record->supplier_id
                                                 , 'class="dropdown_lists form-control" id="supplier_id" data-placeholder="Choose Supplier"'); ?>
                             
                                 <?php echo form_error('data[supplier_id]','<p class="error-msg">','</p>') ?>

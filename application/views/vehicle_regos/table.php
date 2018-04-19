@@ -4,6 +4,8 @@
     
         <tr>
     
+            <th>Ref #</th>
+
             <th>Rate</th>
     
             <th>Payment Due Date</th>
@@ -24,6 +26,8 @@
 
     <tr>
         
+        <td><?php echo $row->id ?></td>
+
         <td>$<?php echo $row->rate; ?></td>
         
         <td><?php echo local_date($row->due_date); ?></td>

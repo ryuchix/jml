@@ -19,7 +19,7 @@ class Daily_balances extends MY_Controller
 	function index($modified_item_id = 0)
 	{
 		$this->set_data('sub_menu', 'view_daily_balance');
-		
+
 		$this->set_data( 'records', $this->Daily_balance_model->get() );
 
 		$this->load->view('daily_balances/lists', $this->get_data());

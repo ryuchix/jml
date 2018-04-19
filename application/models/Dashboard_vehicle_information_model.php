@@ -8,31 +8,38 @@ class Dashboard_vehicle_information_model extends Dashboard_table_base_model
     public function get()
     {
         $query = "
-            SELECT v.license_plate, v.id, vr.due_date, vr.expiry_date, vr.status, vs.next_service_date, vs.next_service_odo, v.insurance_expiry_date, meter.odometer_finish
-                FROM vehicle AS v
-            LEFT JOIN
-            (
+            SELECT v.license_plate, v.id, vr.due_date, v.image, vr.expiry_date, vr.status, vs.next_service_date, vs.next_service_odo, v.insurance_expiry_date, meter.odometer_finish
+            FROM
+                vehicle AS v
+            LEFT JOIN(
                 SELECT MAX(r.id), r.vehicle_id, r.due_date, r.expiry_date, r.status
-                    FROM vehicle_rego AS r
-                GROUP BY r.vehicle_id
-            ) AS vr 
-            ON vr.vehicle_id = v.id
-
-            LEFT JOIN
-            (
-                SELECT MAX(s.id), s.vehicle_id, s.next_service_date, s.next_service_odo
-                    FROM vehicle_services AS s
-                GROUP BY s.vehicle_id
-            ) AS vs 
-            ON vs.vehicle_id = v.id
-
-            LEFT JOIN
-            (
-                SELECT MAX(odo.id), odo.vehicle_id, odo.odometer_finish
-                    FROM vehicle_odometer AS odo
-                GROUP BY odo.vehicle_id
+                FROM
+                vehicle_rego AS r
+                GROUP BY
+                r.vehicle_id
+            ) AS vr
+            ON
+                vr.vehicle_id = v.id
+            LEFT JOIN(
+                SELECT s.vehicle_id, s.next_service_date, s.next_service_odo
+                FROM
+                vehicle_services AS s
+                WHERE s.date = ( SELECT MAX(b.date) AS date FROM vehicle_services AS b WHERE s.vehicle_id = b.vehicle_id )
+                GROUP BY
+                s.vehicle_id
+            ) AS vs
+            ON
+                vs.vehicle_id = v.id
+            LEFT JOIN(
+                SELECT odo.date, odo.vehicle_id, odo.odometer_finish
+                FROM
+                vehicle_odometer AS odo
+                WHERE odo.date = ( SELECT MAX(b.date) as date FROM vehicle_odometer AS b WHERE odo.vehicle_id = b.vehicle_id )
+                GROUP BY
+                odo.vehicle_id
             ) AS meter
-            ON meter.vehicle_id = v.id";
+            ON
+                meter.vehicle_id = v.id";
 
         return $this->get_result($query);
     }
