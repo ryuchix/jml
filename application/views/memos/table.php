@@ -24,7 +24,7 @@
                         <li><?php echo anchor(site_url("memo/save/$row->id"),'<i class="fa fa-pencil"></i> Edit')?></li>
                     <?php endif ?>
                     
-                    <?php if ($controller->hasAccess('change-status-memo')): ?>
+                    <?php if ($controller->hasAccess('change-memo-status')): ?>
                         
                         <?php if ($row->active): ?>
                         <li><?php echo anchor(site_url("memo/activation/$row->id/0"),'<i class="fa fa-lock"></i> Disabled', 'class="disable"')?></li>

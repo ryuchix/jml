@@ -15,7 +15,7 @@ class Document_type extends MY_Controller
 
 	function index($disable = false, $modified_item_id = 0)
 	{
-
+		$this->redirectIfNotAllowed('view-document-type');
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -27,7 +27,9 @@ class Document_type extends MY_Controller
 		$this->load->view('document_types/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-document-type': 'add-document-type');
 		$this->set_data('sub_menu', 'add_document_type');
 		$record = new Document_type_model();
 		if ($id) {
@@ -65,6 +67,7 @@ class Document_type extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-document-type-status');
 		$record = new Document_type_model();
 		$record->load($id);
 		$record->active = $boolean;

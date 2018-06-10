@@ -1,8 +1,7 @@
+<?php if ($controller->hasAccess('view-equipment-table')): ?>
 
 <style>
-	.equipment-table tr>td:first-child>a{
-		display: block;
-	}
+	.equipment-table tr>td:first-child>a{ display: block; }
 </style>
 
 <div class="row">
@@ -98,3 +97,5 @@
 
 </div>
 <!-- .row -->
+
+<?php endif ?>

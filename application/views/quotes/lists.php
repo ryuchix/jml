@@ -46,14 +46,23 @@
                                 <li data-type="won"><a href="#tab_1-2" data-toggle="tab" aria-expanded="true"><?php echo $class_title ?> Won</a></li>
                                 <li data-type="pending" class="active"><a href="#tab_1-1" data-toggle="tab" aria-expanded="true"><?php echo $class_title ?> Pending</a></li>
                                 <li class="pull-left header">
+                                    
+                                    <?php if( $controller->hasAccess('add-quote') ): ?>
                                     <a href="<?php echo site_url( $class_name."/save" ); ?>" style="display: inline;">
                                         <i class="fa fa-plus"></i>
                                     </a>
+                                    <?php endif; ?>
+
                                     <a class="pdf_view" href="<?php echo site_url( $class_name."/pdf_view" ); ?>" style="display: inline;">
                                         <i class="fa fa-file-pdf-o"></i>
                                     </a>
-                                    <a href="<?php echo site_url( "quote/list_in_csv" ); ?>" class="exportCSV" style="display: inline;" target="_blank"><i class="fa fa-file-excel-o"></i></a> 
+                                    
+                                    <a href="<?php echo site_url( "quote/list_in_csv" ); ?>" class="exportCSV" style="display: inline;" target="_blank">
+                                        <i class="fa fa-file-excel-o"></i>
+                                    </a> 
+
                                     <?php echo $class_title ?> List
+                                    
                                 </li>
                             </ul>
 

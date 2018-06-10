@@ -16,7 +16,7 @@ class Bin_type extends MY_Controller
 
 	function index($disable = false, $modified_item_id = 0)
 	{
-
+		$this->redirectIfNotAllowed('view-bin-type');
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -28,7 +28,10 @@ class Bin_type extends MY_Controller
 		$this->load->view('bin_types/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-bin-type': 'add-bin-type', 'bin_type');
+
 		$this->set_data('sub_menu', 'add_bin_type');
 		$record = new Bin_type_model();
 		if ($id) {
@@ -89,6 +92,7 @@ class Bin_type extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-bin-type-status', 'bin_type');
 		$record = new Bin_type_model();
 		$record->load($id);
 		$record->active = $boolean;

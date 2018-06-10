@@ -22,14 +22,19 @@ class Complaints extends MY_Controller
 
 	function index($disable = false, $modified_item_id = 0)
 	{
+        $this->redirectIfNotAllowed('view-complaint');
+
         $this->set_data('sub_menu', 'view_complain');
+
         $this->set_data( 'open_records', $this->Complain_model->get_open_or_assinged_complaints_list() );
         $this->set_data( 'closed_records', $this->Complain_model->get_complaints_list(STATUS_CLOSED) );
         $this->set_data( 'resolved_records', $this->Complain_model->get_complaints_list(STATUS_RESOLVED) );
 		$this->load->view('complains/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+    {
+        $this->redirectIfNotAllowed( $id? 'edit-complaint': 'add-complaint', 'complaints');
 		$this->set_data('sub_menu', 'add_complain');
 		$record = new Complain_model();
 		if ($id) { $record->load($id); }
@@ -84,6 +89,8 @@ class Complaints extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+        $this->redirectIfNotAllowed( 'change-complaint-status', 'complaints');
+
 		$record = new Complain_model();
 		$record->load($id);
 		$record->active = $boolean;

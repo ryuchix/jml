@@ -29,6 +29,7 @@ class Property extends MY_Controller
 
 	function index($disable = false, $modified_item_id=0)
 	{
+		$this->redirectIfNotAllowed('view-property');
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -42,7 +43,10 @@ class Property extends MY_Controller
 		$this->load->view('properties/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-property': 'add-property', 'property');
+
 		$record = new Property_model();
 		$this->set_data( 'selected_services', array() );
 		
@@ -126,6 +130,7 @@ class Property extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-property-status', 'property');
 		$record = new Property_model();
 		$record->load($id);
 		$record->active = $boolean;
@@ -170,6 +175,7 @@ class Property extends MY_Controller
 
     function keys_list($property_id, $disable, $modified_item_id)
     {
+    	$this->redirectIfNotAllowed('view-property-key','property');
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -184,6 +190,7 @@ class Property extends MY_Controller
 
 	function save_keys($property_id, $property_key_id)
 	{
+    	$this->redirectIfNotAllowed($property_key_id? 'edit-property-key': 'add-property-key', "property/keys/$property_id/lists");
 		$this->set_data('property_id', $property_id);
 		$this->load->library('form_validation');
 		$this->set_data('expected_id', 'Key-'.$this->Property_keys_model->max());
@@ -255,7 +262,10 @@ class Property extends MY_Controller
 
 	function save_bins($property_id, $property_bin_id)
 	{
+		$this->redirectIfNotAllowed($property_bin_id? 'edit-property-bin': 'add-property-bin',"property/$property_id/lists");
+
 		$this->set_data('property_id', $property_id);
+		
 		$this->load->library('form_validation');
 		
 		$record = new Property_bins_model();
@@ -301,6 +311,7 @@ class Property extends MY_Controller
 
     function bins_list($property_id, $disable, $modified_item_id)
     {
+    	$this->redirectIfNotAllowed('view-property-bin', "property");
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');

@@ -26,6 +26,8 @@ class Jobs extends MY_Controller
 
 	function index($disable = false, $modified_item_id = 0)
 	{
+		$this->redirectIfNotAllowed('view-job');
+
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -36,7 +38,10 @@ class Jobs extends MY_Controller
 		$this->load->view('jobs/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed( $id ? 'edit-job' : 'add-job', 'jobs' );
+
 		$this->set_data('sub_menu', 'add_job');
 		$record = new Job_model();
 		if ($id) { $record->load($id); }
@@ -120,6 +125,8 @@ class Jobs extends MY_Controller
 
 	function view($id, $show_note='')
 	{
+		$this->redirectIfNotAllowed( 'view-job' );
+
 		$record = new Job_model();
 		$record->load($id);
 		$this->set_data('record', $record);

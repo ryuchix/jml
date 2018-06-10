@@ -35,8 +35,19 @@
                         <div class="nav-tabs-custom">
                             <?php $class_title = ucwords(str_replace('_', ' ', $class_name)); ?>
                             <ul class="nav nav-tabs pull-right">
-                              <li class="active" style="visibility: hidden;"><a href="#tab_1-1" data-toggle="tab" aria-expanded="true"><?php echo $class_title ?></a></li>
-                              <li class="pull-left header"><a href="<?php echo site_url( $class_name."/save" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> <?php echo $class_title ?> List</li>
+                              
+                                <li class="active" style="visibility: hidden;">
+                                    <a href="#tab_1-1" data-toggle="tab" aria-expanded="true"><?php echo $class_title ?></a>
+                                </li>
+                              
+                                <?php if ($controller->hasAccess('add-bin-liner')): ?>
+                                <li class="pull-left header">
+                                    <a href="<?php echo site_url( $class_name."/save" ); ?>" style="display: inline;">
+                                        <i class="fa fa-plus"></i>
+                                    </a> <?php echo $class_title ?> List
+                                </li>
+                              <?php endif ?>
+                                  
                             </ul>
 
                             <div class="tab-content">

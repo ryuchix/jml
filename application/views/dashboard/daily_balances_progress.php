@@ -1,3 +1,5 @@
+<?php if ( $controller->hasAccess('view-daily-balance-graph') ) : ?>
+
 <div class="row">
             
     <div class="col-sm-12">
@@ -37,3 +39,5 @@
 
 </div>
 <!-- .row -->
+
+<?php endif; ?>

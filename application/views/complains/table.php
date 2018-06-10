@@ -23,8 +23,18 @@
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
                 <ul class="dropdown-menu">
+                    
+                    <?php if ($controller->hasAccess('edit-complaint')): ?>
                     <li><?php echo anchor(site_url('complaints/save/'.$row->id),'<i class="fa fa-pencil"></i> Edit')?></li>
+                    <?php endif ?>
+
+                    <?php if ($controller->hasAccess('view-complaint-history')): ?>
                     <li><?php echo anchor(site_url('complaints/history/'.$row->id),'<i class="fa fa-file-text"></i> History')?></li>
+                    <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('')): ?>
+                        
+                    <?php endif ?>
                     <li><?php echo anchor(site_url('complaints/get_print/'.$row->id),'<i class="fa fa-file-pdf-o"></i> Print','target="_blank"')?></li>
                     <li><?php echo anchor(site_url('complaints/files/'.$row->id),'<i class="fa fa-paperclip"></i> Files')?></li>
                     <li><?php echo anchor(site_url("gallery/index/complaints/$row->id/"),'<i class="fa fa-camera"></i> Gallery')?></li>

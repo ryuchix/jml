@@ -24,6 +24,8 @@ class Client extends MY_Controller
 
 	function index($disable = false, $modified_item_id=0, $prospect=0)
 	{
+		$this->redirectIfNotAllowed('view-client');
+
 		$this->set_data( 'active_list', '');
 		$this->set_data( 'active_prospect_list', '');
 		$this->set_data( 'inactive_list', '');
@@ -47,7 +49,9 @@ class Client extends MY_Controller
 		$this->load->view('clients/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-client':'add-client');
 		$record = new Client_model();
 		if ($id) {
 			$this->set_data('sub_menu', 'add_client');
@@ -73,7 +77,8 @@ class Client extends MY_Controller
 			) // array_map
 		); // set data
 
-		if( isset($_POST['submit']) ){
+		if( isset($_POST['submit']) )
+		{
 			$this->set_conditional_validation_roles();
 
 			if ( $this->form_validation->run() == TRUE ) {
@@ -104,6 +109,7 @@ class Client extends MY_Controller
 
 			}
 		}
+
 		$this->load->view('clients/form',$this->get_data());
 	}
 
@@ -141,7 +147,10 @@ class Client extends MY_Controller
 		}
 	}
 
-	function delete($id){
+	function delete($id)
+	{
+		$this->redirectIfNotAllowed('delete-client');
+
 		$record = new Client_type_model();
 		$record->load($id);
 		if ($record->delete()) {
@@ -162,6 +171,7 @@ class Client extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-client-status');
 		$record = new Client_model();
 		$record->load($id);
 		$record->active = $boolean;
@@ -321,6 +331,8 @@ class Client extends MY_Controller
 
     function contact_toggle_active($contact_id, $toggle)
     {
+    	$this->redirectIfNotAllowed('change-client-contact-status', 'client');
+
     	$contact = new Contacts_model();
     	$contact->load($contact_id);
     	$contact->active = $toggle;
@@ -334,6 +346,7 @@ class Client extends MY_Controller
 
     function add_contact($client_id)
     {
+    	$this->redirectIfNotAllowed('add-client-contact', 'client');
     	$this->set_data('sub_menu', 'x');
     	
     	$this->set_data('client_id', $client_id);
@@ -435,6 +448,7 @@ class Client extends MY_Controller
 
     function contact_lists($client_id)
     {
+    	$this->redirectIfNotAllowed('view-client-contact', 'client');
     	$this->set_data('client_id', $client_id);
     	$this->set_data( 'records', $this->Contacts_model->getWhere( array('active'=>1, 'client_id'=>$client_id) ) );
     	$this->set_data( 'inactive_records', $this->Contacts_model->getWhere( array('active'=>0, 'client_id'=>$client_id) ) );

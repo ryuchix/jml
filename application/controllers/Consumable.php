@@ -13,6 +13,7 @@ class Consumable extends MY_Controller
 
 	function index($disable = false, $modified_item_id=0)
 	{
+		$this->redirectIfNotAllowed('view-consumable');
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -27,8 +28,9 @@ class Consumable extends MY_Controller
 		$this->load->view('consumables/lists', $this->get_data());
 	}
 
-	function save($id=false){
-
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-consumable':'add-consumable');
 		$record = new Consumable_model();
 		if ($id) {
 			$this->set_data('sub_menu', 'add_consumable');
@@ -87,6 +89,7 @@ class Consumable extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-consumable-status');
 		$record = new Consumable_model();
 		$record->load($id);
 		$record->active = $boolean;
@@ -114,6 +117,7 @@ class Consumable extends MY_Controller
 
     function reqest($id)
     {
+		// $this->redirectIfNotAllowed($id? 'edit-consumable-request':'add-consumable-request');
 		$record = new Consumable_model();
 		if ($id) {
 			$this->set_data('sub_menu', 'add_consumable');

@@ -12,9 +12,10 @@ class Dashboard_vehicle_information_model extends Dashboard_table_base_model
             FROM
                 vehicle AS v
             LEFT JOIN(
-                SELECT MAX(r.id), r.vehicle_id, r.due_date, r.expiry_date, r.status
+                SELECT r.id, r.vehicle_id, r.due_date, r.expiry_date, r.status
                 FROM
                 vehicle_rego AS r
+                WHERE r.expiry_date = ( SELECT MAX(b.expiry_date) AS expiry_date FROM vehicle_rego AS b WHERE b.vehicle_id = r.vehicle_id )
                 GROUP BY
                 r.vehicle_id
             ) AS vr
@@ -46,9 +47,11 @@ class Dashboard_vehicle_information_model extends Dashboard_table_base_model
 
     public function get_due_date_highlighted_class()
     {   
-        if ($this->status == STATUS_PAID) {
+        if ($this->status == STATUS_PAID) 
+        {
             return 'bg-success';
         }
+
         return $this->get_class_based_on_date($this->due_date);
     }
 

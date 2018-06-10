@@ -65,7 +65,7 @@
     </div>
 	<?php endif ?>
 
-	<?php if (false): ?>
+	<?php if ( $controller->hasAccess('view-complaint-widget') ): ?>
 	<div class="col-lg-3 col-xs-6">
       	<!-- small box -->
       	<div class="small-box bg-red">
@@ -93,7 +93,7 @@
             </div>
             <a href="<?php echo site_url( 'equipments/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
       	</div>
-    </div>
+  </div>
 
 	<?php if (false): ?>
 	<div class="col-lg-3 col-xs-6">
@@ -108,7 +108,7 @@
             </div>
             <a href="<?php echo site_url( 'quote/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
       	</div>
-    </div>
+  </div>
 	<?php endif ?>
 
 	<div class="col-lg-3 col-xs-6">
@@ -123,7 +123,7 @@
             </div>
             <a href="<?php echo site_url( 'vehicle/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
       	</div>
-    </div>
+  </div>
 	<?php endif; ?>
 	<div class="col-lg-3 col-xs-6">
       	<!-- small box -->
@@ -137,9 +137,9 @@
             </div>
             <a href="#" class="small-box-footer" id="showForecast">More info <i class="fa fa-arrow-circle-down"></i></a>
       	</div>
-    </div>
+  </div>
 
-    <?php if ($this->session->userdata('user_role')!=ADMIN_ROLE && has_access('consumables_request')): ?>
+  <?php if ( $controller->hasAccess('view-consumable-widget') ): ?>
 	<div class="col-lg-3 col-xs-6">
       	<!-- small box -->
       	<div class="small-box bg-green">
@@ -152,40 +152,60 @@
             </div>
             <a href="<?php echo site_url( 'consumable_request/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
       	</div>
-    </div>
-    <?php endif ?>
+  </div>
+  <?php endif ?>
 </div>
 
 <div class="row" id="weather">
+
 	<div class="col-sm-12">
+
 		<div id="display" class="box box-danger">
+
 			<div class="row">
 				
 			    <div id="top" class="col-sm-4">
+
 			      	<div class="location"></div>
+
 			      	<div class="time"></div>
+
 			      	<div class="status"></div>
+
 			    </div>
 
 			    <div id="left-information" class="col-sm-4">
+
 			      	<img src="" alt="status" class="thumbnail" id="thumbnail" />
+
 			      	<div class="temperature"></div>
+
 			      	<div class="unit">°C</div>
+
 			    </div>
 
 			    <div id="right-information" class="col-sm-4">
-			      	<span></span><br/>     
+
 			      	<span></span><br/>
+
+			      	<span></span><br/>
+
 			      	<span>km/h</span>
+
 			    </div>
 
 			</div>
 
 	    	<div id="forecast">
+
 	      		<ul class="upcoming-forecast">
 	        		
 	      		</ul>
+
 	    	</div>
+
 		</div>
+
 	</div>
+
 </div>

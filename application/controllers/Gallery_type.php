@@ -16,7 +16,7 @@ class Gallery_type extends MY_Controller
 
 	function index($disable = false, $modified_item_id = 0)
 	{
-
+		$this->redirectIfNotAllowed('view-gallery-type');
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -28,7 +28,10 @@ class Gallery_type extends MY_Controller
 		$this->load->view('gallery_types/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-gallery-type': 'add-gallery-type', 'gallery_type');
+
 		$this->set_data('sub_menu', 'add_gallery_type');
 		$record = new Gallery_type_model();
 		if ($id) {
@@ -64,6 +67,7 @@ class Gallery_type extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-gallery-type-status','gallery_type');
 		$record = new Gallery_type_model();
 		$record->load($id);
 		$record->active = $boolean;

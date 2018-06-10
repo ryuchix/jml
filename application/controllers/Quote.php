@@ -24,6 +24,8 @@ class Quote extends MY_Controller
 
 	function index()
 	{
+		$this->redirectIfNotAllowed('view-quote');
+
 		$this->set_data('sub_menu', 'view_quote');
 		$this->set_data( 'pending_records', $this->Quote_model->get_lists(STATUS_PENDING) );
 		$this->set_data( 'won_records', $this->Quote_model->get_lists(STATUS_WON) );
@@ -32,7 +34,10 @@ class Quote extends MY_Controller
 		$this->context = 'quote';
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed( $id ? 'edit-quote' : 'add-quote', 'quote');
+
 		$this->set_data('sub_menu', 'add_quote');
 		$record = new Quote_model();
 		if ($id) { $record->load($id); }
@@ -122,10 +127,16 @@ class Quote extends MY_Controller
 
 	function forcast()
 	{
+		$this->redirectIfNotAllowed( 'view-forcast', 'quote');
+		
 		$this->set_data('sub_menu', 'sales_forcast');
+		
 		$months = $this->get_next_12_months();
+		
 		$this->set_data('months', $months);
+		
 		$this->set_data('records', $this->Quote_model->get_forcast());
+		
 		$this->load->view('quotes/forcast_lists',$this->get_data());
 	}
 

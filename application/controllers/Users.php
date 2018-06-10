@@ -73,23 +73,31 @@ class Users extends MY_Controller
     /* Insert New User or Modifying users */
     function save($id=0, $profile = false)
     {
-        $this->redirectIfNotAllowed($id?'edit-user':'add-user');
+        if (!$profile) 
+        {
+            $this->redirectIfNotAllowed($id?'edit-user':'add-user');
+        }
 
         $record = new User_model();
 
-        if ($id) {
+        if ($id) 
+        {
             $record->load($id);
-        }else{
+        }
+        else
+        {
             $this->set_data('sub_menu', 'add_user');
         }
         
         $this->set_data('profile', $profile);
         
         $this->set_data('record', $record);
+
+        $this->set_data('profile', $profile);
         
         $this->set_data('given_roles', $this->getGivenRoles($id));
 
-        $this->set_data('roles', $this->Role_model->get_dropdown_lists(false));
+        $this->set_data('rolesPerms', $this->Role_model->get_dropdown_lists(false));
 
     	$this->load->library('form_validation');
 
@@ -100,7 +108,7 @@ class Users extends MY_Controller
             return;
         }
             
-        $this->validate_fields($id);
+        $this->validate_fields($id, $profile);
 
         if( $this->form_validation->run() === false )
         {
@@ -135,7 +143,10 @@ class Users extends MY_Controller
 
         $inserted_id_or_effected_row = $record->save();
 
-        $record->assignRoles($this->input->post('role_ids'));
+        if (!$profile) 
+        {
+            $record->assignRoles($this->input->post('role_ids'));
+        }
 
         $this->db->trans_complete();
 
@@ -253,11 +264,15 @@ class Users extends MY_Controller
 
 
     /* Profile Updated by users itself */
-    function validate_fields($id)
+    function validate_fields($id, $profile = false)
     {
         $this->form_validation->set_rules('data[first_name]','First Name','required');
         $this->form_validation->set_rules('data[last_name]','Last Name','required');
-        $this->form_validation->set_rules('role_ids[]','User Role','required');
+
+        if (!$profile) 
+        {
+            $this->form_validation->set_rules('role_ids[]','User Role','required');
+        }
         
         $this->form_validation->set_rules('data[address]','Address','required');
         $this->form_validation->set_rules('data[address_state]','State','required');

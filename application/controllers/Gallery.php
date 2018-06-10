@@ -29,6 +29,8 @@ class Gallery extends MY_Controller
 
 	function index($context, $context_id)
 	{
+		$this->redirectIfNotAllowed("view-{$context}-gallery");
+
     	$this->set_data('context_id', $context_id);
     	$this->set_data('context', $context);
     	$sql = "SELECT g.id AS id, 
@@ -47,6 +49,8 @@ class Gallery extends MY_Controller
 
 	function save($context_id, $context, $gallery_id=0)
 	{
+		$this->redirectIfNotAllowed($gallery_id? "edit-{$context}-gallery": "add-{$context}-gallery");
+
 		$this->context = $context;
 
 		$this->set_data('context_id', $context_id);
@@ -98,6 +102,9 @@ class Gallery extends MY_Controller
 		$record = new Gallery_model();
 		$record->load($gallery_id);
 		$this->context = $record->context;
+		
+		$this->redirectIfNotAllowed("edit-{$record->context}-gallery", "property");
+
 		$this->set_data('context', $record->context);
 		$this->set_data('context_id', $record->context_id);
 		$this->set_data('record', $record);

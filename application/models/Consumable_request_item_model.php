@@ -23,10 +23,10 @@ class Consumable_request_item_model extends MY_Model
     					s.name AS supplier,
     					CONCAT(p.address, ', ', p.address_suburb, ', ', p.address_post_code) AS address
     			FROM property_consumables AS pc 
-					JOIN consumable AS c ON c.id = pc.consumable_id
-					JOIN property AS p ON p.id = pc.property_id 
-					JOIN client ON client.id = p.client_id
-					JOIN supplier AS s ON s.id = c.supplier_id
+					LEFT JOIN consumable AS c ON c.id = pc.consumable_id
+					LEFT JOIN property AS p ON p.id = pc.property_id 
+					LEFT JOIN client ON client.id = p.client_id
+					LEFT JOIN supplier AS s ON s.id = c.supplier_id
 				WHERE p.id = $property_id";
 
 		return $this->db->query($sql)->result();

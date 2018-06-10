@@ -13,6 +13,8 @@ class Client_type extends MY_Controller
 
 	function index($disable = false, $modified_item_id=0)
 	{
+		$this->redirectIfNotAllowed('view-client-type');
+
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -23,7 +25,9 @@ class Client_type extends MY_Controller
 		$this->load->view('client_types/lists', $this->get_data());
 	}
 
-	function add(){
+	function add()
+	{
+		$this->redirectIfNotAllowed('add-client-type', 'client_type');
 
 		$this->set_data('sub_menu', 'add_client_types');
 		$this->load->library('form_validation');
@@ -48,7 +52,10 @@ class Client_type extends MY_Controller
 		$this->load->view('client_types/add', $this->get_data());
 	}
 
-	function edit($id){
+	function edit($id)
+	{
+		$this->redirectIfNotAllowed('edit-client-type', 'client_type');
+
 		$this->load->library('form_validation');
 		$record = new Client_type_model();
 		$record->load($id);
@@ -73,20 +80,10 @@ class Client_type extends MY_Controller
 		$this->load->view('client_types/edit', $this->get_data());
 	}
 
-	// function delete($id){
-	// 	$record = new Client_model();
-	// 	$record->load($id);
-	// 	if ($record->delete()) {
-	// 		set_flash_message(0, 'Record Successfully Deleted');
-	// 		redirect( site_url( 'client_type' ) );
-	// 	}else{
-	// 		set_flash_message(1, 'There may some problem while deleting record');
-	// 		redirect( site_url( 'client_type' ) );
-	// 	}
-	// }
-
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-client-type-status', 'client_type');
+
 		$record = new Client_type_model();
 		$record->load($id);
 		$record->active = $boolean;

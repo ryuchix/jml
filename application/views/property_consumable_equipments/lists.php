@@ -23,9 +23,15 @@
             <div class="col-xs-12">
                 <div class="box">
                     <div class="box-header with-border">
-                      <h3 class="box-title"><a href="<?php echo site_url( "$class_name/save/$property_id" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> &nbsp; 
-                        <?php echo $property->address . ', ' . $property->address_suburb . ', ' . $property->address_post_code ?>
-                      </h3>
+                        <h3 class="box-title">
+                            
+                            <?php if ($controller->hasAccess('add-property')): ?>
+                            <a href="<?php echo site_url( "$class_name/save/$property_id" ); ?>" style="display: inline;">
+                                <i class="fa fa-plus"></i>
+                            </a> &nbsp; 
+                            <?php endif ?>
+                            <?php echo $property->address . ', ' . $property->address_suburb . ', ' . $property->address_post_code ?>
+                        </h3>
                     </div>
                     <div class="box-body">
                         <?php $this->load->view($class_name.'s/table', array('records'=>$records)); ?>

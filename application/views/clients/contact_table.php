@@ -45,18 +45,24 @@
                 </button>
 
                 <ul class="dropdown-menu">
-
+                    
+                    <?php if ($controller->hasAccess('edit-client-contact')): ?>
                     <li><?php echo anchor(site_url("client/contact/".$row->id."/edit/"),'<i class="fa fa-pencil"></i> Edit')?></li>
+                    <?php endif ?>
+                        
+                    <?php if ($controller->hasAccess('change-client-contact-status')): ?>
+                        
+                        <?php if ($row->active): ?>
 
-                    <?php if ($row->active): ?>
+                        <li><?php echo anchor(site_url("client/contact/".$row->id."/inactive/"),'<i class="fa fa-lock"></i> Disabled', 'class="disable"')?></li>
 
-                    <li><?php echo anchor(site_url("client/contact/".$row->id."/inactive/"),'<i class="fa fa-lock"></i> Disabled', 'class="disable"')?></li>
+                        <?php else: ?>
 
-                    <?php else: ?>
+                        <li><?php echo anchor(site_url("client/contact/".$row->id."/active/"),'<i class="fa fa-unlock"></i> Enable', 'class="reactivate"')?></li>
 
-                    <li><?php echo anchor(site_url("client/contact/".$row->id."/active/"),'<i class="fa fa-unlock"></i> Enable', 'class="reactivate"')?></li>
-
-                    <?php endif; ?>
+                        <?php endif; ?>
+                        
+                    <?php endif ?>
                 
                 </ul>
 

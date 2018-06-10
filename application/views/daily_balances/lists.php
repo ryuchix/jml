@@ -20,9 +20,11 @@
     
     </section>
 
+
     <!-- Main content -->
     <section class="content">
 
+        <?php if ( $controller->hasAccess('view-daily-balance-graph') ) : ?>
         
         <div class="row">
             
@@ -63,6 +65,8 @@
 
         </div>
         <!-- .row -->
+
+        <?php endif; ?>
 
         <div class="row">
 

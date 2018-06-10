@@ -34,9 +34,16 @@
 
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs pull-right">
-                              <li class=""><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Inactive Contacts</a></li>
-                              <li class="active"><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Active Contacts</a></li>
-                              <li class="pull-left header"><a href="<?php echo site_url( "client/contact/$client_id/add" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> Client's Contacts</li>
+                                <li class=""><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Inactive Contacts</a></li>
+                                <li class="active"><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Active Contacts</a></li>
+                                <?php if ($controller->hasAccess('add-client-contact')): ?>
+                                <li class="pull-left header">
+                                    <a href="<?php echo site_url( "client/contact/$client_id/add" ); ?>" style="display: inline;">
+                                        <i class="fa fa-plus"></i>
+                                    </a> Client's Contacts
+                                </li>
+                                    
+                                <?php endif ?>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane" id="tab_1-1">

@@ -32,9 +32,15 @@
                         <div class="nav-tabs-custom">
                         
                             <ul class="nav nav-tabs pull-right">
-                              <li class="<?php echo $inactive_list; ?>"><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Inactive Memo</a></li>
-                              <li class="<?php echo $active_list; ?>"><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Active Memo</a></li>
-                              <li class="pull-left header"><a href="<?php echo site_url( "memo/save" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> Memo</li>
+                                <li class="<?php echo $inactive_list; ?>"><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Inactive Memo</a></li>
+                                <li class="<?php echo $active_list; ?>"><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Active Memo</a></li>
+                                
+                                <?php if ($controller->hasAccess('add-memo')): ?>
+                                <li class="pull-left header"><a href="<?php echo site_url( "memo/save" ); ?>" style="display: inline;">
+                                    <i class="fa fa-plus"></i></a> Memo
+                                </li>
+                                <?php endif ?>
+                                  
                             </ul>
 
                             <div class="tab-content">

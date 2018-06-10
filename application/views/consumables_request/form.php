@@ -2,6 +2,7 @@
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
 
 <style>
     .select2-container--default .select2-selection--single {
@@ -193,6 +194,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
+
 <script>
     
     $(function () {
@@ -201,24 +204,48 @@
              format: 'DD/MM/YYYY'
         });
 
+        var addConsumableUrl = '<?php echo site_url( "property/consumables/{property}/save" ); ?>';
         /* Add Contact Form */
         $('#property_id').on('change', function(event) {
             event.preventDefault();
+            var propertyId = $(this).val();
             
             $.ajax({
                  url: '<?php echo site_url( "consumable_request/get_consumable_items_service" ); ?>',
                  type: 'POST',
                  dataType: 'json',
-                 data: { 'property_id' : $(this).val() },
+                 data: { 'property_id' :  propertyId},
             })
             .done(function(data) {
                 var info = data[0];
+                if (!info) {
+                    $.alert({
+                        title: 'No comsubable',
+                        content: 'Ther is no Consumable listed in selected property. please make sure to add one before try to add consumable request.!',
+                        buttons: {
+                            cancel: {
+                                text: 'Close',
+                                action: function () {
+                                    //close
+                                }
+                            },
+                            somethingElse: {
+                                text: 'Add Consumable',
+                                btnClass: 'btn-blue',
+                                keys: ['enter', 'shift'],
+                                action: function(){
+                                    window.location = addConsumableUrl.replace('{property}', propertyId);
+                                }
+                            }
+                        }
+                    });
+                    return ;
+                }
                 $('#client_name').val(info.client);
                 $('#property_address').val(info.address);
                 var items = '';
                 jQuery.each(data, function(index, item) {
-                    // console.log(item);
-                items += '<tr>' +
+                    items += '<tr>' +
                             '<td>' +
                                 '<div class="checkbox">' +
                                     '<label>' +

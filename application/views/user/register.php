@@ -17,7 +17,7 @@
     <section class="content">
 
         <!-- form start -->
-        <form role="form" method="post" action="<?php echo site_url( "users/save/$record->id" ); ?>">
+        <form role="form" method="post" action="<?php echo site_url( $profile? "users/save/$record->id/$record->id": "users/save/$record->id" ); ?>">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="box box-primary">
@@ -42,7 +42,7 @@
 
                             <div class="form-group <?php echo form_error('data[user_name]')? 'has-error':''; ?>">
                                 <label for="user_name">Username</label>
-                                <input type="text" class="form-control" name="data[user_name]" id="user_name" value="<?php echo set_value('data[user_name]', $record->user_name); ?>" placeholder="Username" <?php echo $record->id? 'readonly':'' ?>>
+                                <input type="text" class="form-control" name="data[user_name]" id="user_name" value="<?php echo set_value('data[user_name]', $record->user_name); ?>" placeholder="Username">
                                 <?php echo form_error('data[user_name]','<p class="error-msg">','</p>'); ?>
                             </div>
 
@@ -65,14 +65,19 @@
                             </div>
                             <?php endif ?>
 
+                            <?php if (!$profile) : ?>
+
                             <div class="form-group <?php echo form_error('role_ids[]')? 'has-error':''; ?>">
                                 <label for="user_role">User Roles</label>
                                 <?php 
 
-                                echo form_dropdown('role_ids[]', $roles, $given_roles, ' id="user_role" class="form-control" multiple');
+                                echo form_dropdown('role_ids[]', $rolesPerms, $given_roles, ' id="user_role" class="form-control" multiple');
                                 ?>
                                 <?php echo form_error('role_ids[]','<p class="error-msg">','</p>'); ?>
                             </div>
+                            
+                            <?php endif; ?>
+
 
                             <div class="form-group">
                                 <div class='input-group date' id='datetimepicker2'>
@@ -374,12 +379,16 @@
                                 </div><!-- /.input group -->
                                 <?php echo form_error('data[system_color]','<p class="error-msg">','</p>'); ?>
                             </div>
-
+                            
+                            <?php if ($controller->hasAccess('view-base-rate')): ?>
+                                
                             <div class="form-group <?php echo form_error('data[base_rate]')? 'has-error':''; ?>">
                                 <label for="base_rate">Base Rate:</label>
                                 <input type="text" class="form-control" name="data[base_rate]" id="base_rate" value="<?php echo set_value('data[base_rate]', $record->base_rate); ?>" placeholder="Base Rate">
                                 <?php echo form_error('data[base_rate]','<p class="error-msg">','</p>'); ?>
                             </div>
+
+                            <?php endif; ?>
 
                         </div>
 

@@ -34,10 +34,14 @@
 
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs pull-right">
-                              <li><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Void Request</a></li>
-                              <li><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Closed Request</a></li>
-                              <li class="active"><a href="#tab_3-3" data-toggle="tab" aria-expanded="false">Open Request</a></li>
-                              <li class="pull-left header"><a href="<?php echo site_url( "consumable_request/save/" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> Request List</li>
+                                <li><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Void Request</a></li>
+                                <li><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Closed Request</a></li>
+                                <li class="active"><a href="#tab_3-3" data-toggle="tab" aria-expanded="false">Open Request</a></li>
+                                
+                                <?php if ($controller->hasAccess('add-consumable-request')): ?>
+                                <li class="pull-left header"><a href="<?php echo site_url( "consumable_request/save/" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> Request List</li>
+                                <?php endif ?>
+                                    
                             </ul>
 
                             <div class="tab-content">

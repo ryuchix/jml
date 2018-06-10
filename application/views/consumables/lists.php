@@ -32,9 +32,16 @@
 
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs pull-right">
-                              <li class="<?php echo $inactive_list; ?>"><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Inactive <?php echo ucwords($class_name); ?></a></li>
-                              <li class="<?php echo $active_list; ?>"><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Active <?php echo ucwords($class_name); ?></a></li>
-                              <li class="pull-left header"><a href="<?php echo site_url( "$class_name/save" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> <?php echo ucwords($class_name); ?> List</li>
+                                <li class="<?php echo $inactive_list; ?>"><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Inactive <?php echo ucwords($class_name); ?></a></li>
+                                <li class="<?php echo $active_list; ?>"><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Active <?php echo ucwords($class_name); ?></a></li>
+                                <?php if ($controller->hasAccess('add-consumable')): ?>
+                                <li class="pull-left header">
+                                    <a href="<?php echo site_url( "$class_name/save" ); ?>" style="display: inline;">
+                                        <i class="fa fa-plus"></i>
+                                    </a> <?php echo ucwords($class_name); ?> List
+                                </li>
+                                <?php endif ?>
+                                    
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane <?php echo $inactive_list; ?>" id="tab_1-1">

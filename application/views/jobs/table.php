@@ -22,19 +22,31 @@
         <!-- <td><?php echo ''; ?></td> -->
         <td>$<?php echo $row->value; ?></td>
         <td>
+
           <div class="btn-group">
+
                 <button data-toggle="dropdown" class="dropdown-toggle btn btn-icon-toggle btn-default ink-reaction">
                   <i class="fa fa-ellipsis-v"></i>
                 </button>
+                
                 <ul class="dropdown-menu">
+
+                    <?php if ($controller->hasAccess('edit-job')): ?>
                     <li><?php echo anchor(site_url($class_name.'/save/'.$row->id),'<i class="fa fa-pencil"></i> Edit'); ?></li>
+                    <?php endif ?>
+
                     <li><?php echo anchor(site_url($class_name.'/view/'.$row->id),'<i class="fa fa-eye"></i> View Job'); ?></li>
-                    <?php if (!$row->closed): ?>
+                    
+                    <?php if (!$row->closed && $controller->hasAccess('close-job')): ?>
                     <li><?php echo anchor(site_url($class_name.'/close/'.$row->id),'<i class="fa fa-times"></i> Close Job', 'class="close-job"'); ?></li>
                     <?php endif ?>
+
                 </ul>
+
             </div>
+
         </td>
+
     </tr>
 
     <?php } ?>

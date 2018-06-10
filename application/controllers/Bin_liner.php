@@ -21,7 +21,7 @@ class Bin_liner extends MY_Controller
 
 	function index($disable = false, $modified_item_id = 0)
 	{
-
+		$this->redirectIfNotAllowed('view-bin-liner-setting');
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
@@ -36,13 +36,17 @@ class Bin_liner extends MY_Controller
 
 	function record_list($disable = false, $modified_item_id = 0)
 	{
+		$this->redirectIfNotAllowed('view-bin-liner');
+
 		$this->set_data('sub_menu', 'view_bin_liner');
 		
 		$this->set_data( 'records', $this->Bin_liner_model->get_list() );
 		$this->load->view('bin_liners/record_lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-bin-liner': 'add-bin-liner', 'bin_liner');
 		$this->set_data('sub_menu', 'add_bin_liner_settings');
 		$record = new Bin_liner_model();
 		if ($id) {
@@ -100,7 +104,8 @@ class Bin_liner extends MY_Controller
 		$this->load->view('bin_liners/record_form',$this->get_data());
 	}
 
-	function settings($id=false){
+	function settings($id=false)
+	{
 		$this->set_data('sub_menu', 'add_bin_liner_settings');
 		$this->load->library('form_validation');
 
@@ -146,14 +151,20 @@ class Bin_liner extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-bin-liner-status');
+
 		$record = new Bin_liner_setting_model();
 		$record->load($id);
 		$record->active = $boolean;
 		$record->save();
-		if ($boolean) {
+
+		if ($boolean) 
+		{
 			set_flash_message(0, 'Bin Liner status changed to active');
 			redirect( site_url( 'bin_liner/index/0/'.$id ) );
-		}else{
+		}
+		else
+		{
 			set_flash_message(0, 'Document Type status changed to inactive');
 			redirect( site_url( 'bin_liner/index/1/'.$id ) );
 		}

@@ -1,9 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 
-/**
- *
- */
 class MY_Controller extends CI_Controller
 {
     public $data = array(
@@ -36,19 +33,40 @@ class MY_Controller extends CI_Controller
         $this->set_data('roles', $authenticatedUser->getAllowedPermissions());
         $this->set_data('controller', $this);
 
+
+        // $authenticatedUser = new User_model();
+        // $authenticatedUser->load(16);
+        // echo "<pre>";
+        // $this->set_data('roles', $authenticatedUser->getAllowedPermissions());
+        // print_r($this->data['roles']);
+        // echo "</pre>";
+
     } // __construct
 
-    public function hasAccess($name)
+    public function hasAccess($names)
     {
-        return in_array($name, $this->data['roles']);
+        if(is_array($names))
+        {
+
+            foreach ($names as $name) 
+            {
+                if( in_array($name, $this->data['roles']) )
+                {
+                    return true;
+                }
+            }
+
+        }
+
+        return in_array($names, $this->data['roles']);
     }
 
-    public function redirectIfNotAllowed($permissionName)
+    public function redirectIfNotAllowed($permissionName, $url = '')
     {
         if ( ! $this->hasAccess($permissionName) )
         {
             set_flash_message(2, "Sorry you are not permitted for this Action");
-            redirect(site_url());
+            redirect( site_url($url) );
         }
     }
 

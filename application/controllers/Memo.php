@@ -77,7 +77,7 @@ class Memo extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
-		$this->redirectIfNotAllowed('change-status-memo');
+		$this->redirectIfNotAllowed('change-memo-status');
 		
 		$record = new Memo_model();
 		

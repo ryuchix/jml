@@ -16,29 +16,32 @@ class Consumable_request extends MY_Controller
 				'Client_model', 
 				'User_model', 
 			));
-		$this->set_data('active_menu', 'consumables');
+		$this->set_data('active_menu', 'consumable');
 		$this->set_data('class_name', strtolower(get_class($this)));
 		$this->context = 'consumable_request';
 	}
 
 	function index()
 	{
-		$this->set_data( 'sub_menu', 'consumable_request');
-		if ($this->session->userdata('user_role')==ADMIN_ROLE) {
+		$this->redirectIfNotAllowed('view-consumable-request');
+		$this->set_data( 'sub_menu', 'add_consumable_request');
+		// if ($this->session->userdata('user_role')==ADMIN_ROLE) {
 			$this->set_data( 'open_records', $this->Consumable_request_model->get_list(STATUS_OPEN) );
 			$this->set_data( 'closed_records', $this->Consumable_request_model->get_list(STATUS_CLOSED) );
 			$this->set_data( 'void_records', $this->Consumable_request_model->get_list(STATUS_VOID) );
-		}else{
-			$current_user_id = $this->session->userdata('user_id');
-			$this->set_data( 'open_records', $this->Consumable_request_model->get_list(STATUS_OPEN, $current_user_id) );
-			$this->set_data( 'closed_records', $this->Consumable_request_model->get_list(STATUS_CLOSED, $current_user_id) );
-			$this->set_data( 'void_records', $this->Consumable_request_model->get_list(STATUS_VOID, $current_user_id) );
-		}
+		// }else{
+		// 	$current_user_id = $this->session->userdata('user_id');
+		// 	$this->set_data( 'open_records', $this->Consumable_request_model->get_list(STATUS_OPEN, $current_user_id) );
+		// 	$this->set_data( 'closed_records', $this->Consumable_request_model->get_list(STATUS_CLOSED, $current_user_id) );
+		// 	$this->set_data( 'void_records', $this->Consumable_request_model->get_list(STATUS_VOID, $current_user_id) );
+		// }
 
 		$this->load->view('consumables_request/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-consumable-request': 'add-consumable-request');
 		$record = new Consumable_request_model();
 		$this->set_data( 'selected_items', array() );
 		$client = new Client_model();
@@ -111,6 +114,8 @@ class Consumable_request extends MY_Controller
 
     function history($id)
     {
+		$this->redirectIfNotAllowed('view-consumable-request-history');
+        
         $this->load->library('form_validation');
 
         $this->set_data('property_id', $id);

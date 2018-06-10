@@ -39,16 +39,32 @@
         <td><?php echo local_date($row->next_contact); ?></td>
         <td><?php echo local_date($row->expected_signoff); ?></td>
         <td>
-          <div class="btn-group">
+
+            <?php if( $controller->hasAccess(['edit-quote', 'view-quote-history']) ): ?>
+
+            <div class="btn-group">
+
                 <button data-toggle="dropdown" class="dropdown-toggle btn btn-icon-toggle btn-default ink-reaction">
-                  <i class="fa fa-ellipsis-v"></i>
+                    <i class="fa fa-ellipsis-v"></i>
                 </button>
+
                 <ul class="dropdown-menu">
+                    
+                    <?php if( $controller->hasAccess('edit-quote') ): ?>
                     <li><?php echo anchor(site_url("$class_name/save/$row->id"),'<i class="fa fa-pencil"></i> Edit')?></li>
-                    <li><?php echo anchor(site_url("$class_name/history/$row->id"),'<i class="fa fa-file-test-o"></i> History')?></li>
+                    <?php endif;?>
+
+                    <?php if( $controller->hasAccess('view-quote-history') ): ?>
+                    <li><?php echo anchor(site_url("$class_name/history/$row->id"),'<i class="fa fa-file-text-o"></i> History')?></li>
+                    <?php endif; ?>
+
                 </ul>
             </div>
+
+            <?php endif; ?>
+
         </td>
+
     </tr>
 
     <?php } ?>

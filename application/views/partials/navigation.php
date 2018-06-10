@@ -1,13 +1,13 @@
 <!-- Left side column. contains the logo and sidebar -->
+
 <aside class="main-sidebar">
 
     <section class="sidebar">
-
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             
             <li class="header">MAIN NAVIGATION</li>
-            <?php if (has_access('quotes')) { /* ?>
+            <?php if ( $controller->hasAccess( [ 'add-quote', 'edit-quote', 'view-quote', 'view-forecast' ] ) ) : ?>
                 
             <li class="treeview <?php set_active_menu('quote', $active_menu); ?>">
 
@@ -15,25 +15,31 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ( $controller->hasAccess( 'add-quote' ) ) : ?>
                     <li class="<?php echo set_sub_menu('add_quote', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'quote/save' ); ?>"><i class="fa fa-circle-o"></i> Add Quote</a>
                     </li>
+                    <?php endif; ?>
 
+                    <?php if ( $controller->hasAccess( 'view-quote' ) ) : ?>
                     <li class="<?php echo set_sub_menu('view_quote', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'quote/' ); ?>"><i class="fa fa-circle-o"></i> View Quotes</a>
                     </li>
+                    <?php endif; ?>
 
+                    <?php if ( $controller->hasAccess( 'view-forecast' ) ) : ?>
                     <li class="<?php echo set_sub_menu('sales_forcast', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'quote/forcast' ); ?>"><i class="fa fa-circle-o"></i> Sales Forecast</a>
                     </li>
+                    <?php endif; ?>
 
                 </ul>
 
             </li>
            
-            <?php */ } // end if quotes access
+            <?php endif; // end if quotes access
 
-            if ($controller->hasAccess('add-memo') || $controller->hasAccess('view-memo')) { ?>
+            if ( $controller->hasAccess( ['add-memo', 'view-memo'] ) ): ?>
 
             <li class="treeview <?php set_active_menu('memo', $active_menu); ?>">
 
@@ -41,24 +47,24 @@
 
                 <ul class="treeview-menu">
                     
-                    <?php if ($controller->hasAccess('add-memo')) { ?>
+                    <?php if ($controller->hasAccess('add-memo')) : ?>
                     <li class="<?php echo set_sub_menu('add_memo', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'memo/save' ); ?>"><i class="fa fa-circle-o"></i> Add Memo</a>
                     </li>
-                    <?php } ?>
+                    <?php endif; ?>
 
-                    <?php if ($controller->hasAccess('add-memo')) { ?>
+                    <?php if ($controller->hasAccess('view-memo')) : ?>
                     <li class="<?php echo set_sub_menu('view_memo', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'memo/' ); ?>"><i class="fa fa-circle-o"></i> View Memos</a>
                     </li>
-                    <?php } ?>
+                    <?php endif; ?>
 
                 </ul>
 
             </li>
-            <?php } ?>
+            <?php endif; ?>
 
-            <?php if (has_access('jobs')) { /* ?>
+            <?php if ($controller->hasAccess(['add-job', 'view-job'])) : ?>
             
             <li class="treeview <?php set_active_menu('jobs', $active_menu); ?>">
 
@@ -66,29 +72,33 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-job')): ?>
                     <li class="<?php echo set_sub_menu('add_job', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'jobs/save' ); ?>"><i class="fa fa-circle-o"></i> Add Job</a>
                     </li>
-
+                    <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('view-job')): ?>
                     <li class="<?php echo set_sub_menu('view_jobs', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'jobs/' ); ?>"><i class="fa fa-circle-o"></i> View Jobs</a>
                     </li>
+                    <?php endif ?>
 
                 </ul>
 
             </li>
            
-            <?php */ } // end if jobs access
+            <?php endif; // end if jobs access
 
-             if (has_access('daily_runs')) { /* ?>
+             if (true) : ?>
             
-            <li>
+            <!-- <li>
                 <a href="<?php echo site_url('dailyrun'); ?>"> <i class="fa fa-trash"></i> <span>Daily Run</span></i></a>
-            </li>
+            </li> -->
            
-            <?php */ } // end if daily_runs access
+            <?php endif; // end if daily_runs access
 
-            if ($controller->hasAccess('add-vehicle') || $controller->hasAccess('view-vehicle')) { ?>
+            if ($controller->hasAccess('add-vehicle') || $controller->hasAccess('view-vehicle')) : ?>
              
             <li class="treeview <?php set_active_menu('vehicle', $active_menu); ?>">
                 
@@ -96,18 +106,19 @@
                 
                 <ul class="treeview-menu">
                 
-                    <?php if ($controller->hasAccess('add-vehicle')) { ?>
+                    <?php if ($controller->hasAccess('add-vehicle')) : ?>
                     <li><a href="<?php echo site_url('vehicle/save'); ?>"><i class="fa fa-circle-o"></i> Add Vehicle</a></li>
-                    <?php } ?>
-                    <?php if ($controller->hasAccess('add-vehicle') || $controller->hasAccess('view-vehicle')) { ?>
+                    <?php endif; ?>
+                    <?php if ($controller->hasAccess('add-vehicle') || $controller->hasAccess('view-vehicle')) : ?>
                     <li><a href="<?php echo site_url('vehicle/'); ?>"><i class="fa fa-circle-o"></i> View Vehicles</a></li>
-                    <?php } ?>
+                    <?php endif; ?>
                 </ul>
             
             </li>
            
-            <?php } // end if vehicles access
-             if ($controller->hasAccess('add-equipment') || $controller->hasAccess('view-equipment') || $controller->hasAccess('view-equipment-type')) { ?>
+            <?php endif; // end if vehicles access
+
+             if ($controller->hasAccess('add-equipment') || $controller->hasAccess('view-equipment') || $controller->hasAccess('view-equipment-type')) : ?>
              
             <li class="treeview <?php set_active_menu('equipments', $active_menu); ?>">
 
@@ -115,56 +126,83 @@
 
                 <ul class="treeview-menu">
 
-                    <?php if ($controller->hasAccess('add-equipment')) { ?>
+                    <?php if ($controller->hasAccess('add-equipment')) : ?>
                     <li class="<?php set_sub_menu('add_equipment', $sub_menu); ?>"><a href="<?php echo site_url('equipments/save'); ?>"><i class="fa fa-circle-o"></i> Add Equipment</a></li>
-                    <?php } ?>
+                    <?php endif; ?>
 
-                    <?php if ($controller->hasAccess('view-equipment')) { ?>
+                    <?php if ($controller->hasAccess('view-equipment')) : ?>
                     <li class="<?php set_sub_menu('view_equipment', $sub_menu); ?>"><a href="<?php echo site_url('equipments'); ?>"><i class="fa fa-circle-o"></i> View Equipments</a></li>
-                    <?php } ?>
+                    <?php endif; ?>
 
-                    <?php if ($controller->hasAccess('view-equipment-type')) { ?>
+                    <?php if ($controller->hasAccess('view-equipment-type')) : ?>
                     <li class="<?php set_sub_menu('view_equipment_type', $sub_menu); ?>"><a href="<?php echo site_url('equipment_types'); ?>"><i class="fa fa-circle-o"></i> View Equipment Types</a></li>
-                    <?php } ?>
+                    <?php endif; ?>
 
                 </ul>
             </li>
            
-            <?php } // end if equipments access
-             if (has_access('issues')) { /* ?>
+            <?php endif; // end if equipments access
+             if ( $controller->hasAccess(['add-complaint', 'view-complaint']) ) : ?>
 
             <li class="treeview <?php set_active_menu('complaints', $active_menu); ?>">
 
                 <a href="#"><i class="fa fa-bug"></i> <span>Issues/Complaints</span></i> <i class="fa fa-angle-left pull-right"></i></a>
 
                 <ul class="treeview-menu">
-
-                    <li class="<?php set_sub_menu('add_complain', $sub_menu); ?>"><a href="<?php echo site_url('complaints/save'); ?>"><i class="fa fa-circle-o"></i> New Issue/Complaints</a></li>
-
-                    <li class="<?php set_sub_menu('view_complain', $sub_menu); ?>"><a href="<?php echo site_url('complaints'); ?>"><i class="fa fa-circle-o"></i> View Issue/Complaints</a></li>
+                    
+                    <?php if ($controller->hasAccess('add-complaint')): ?>
+                    <li class="<?php set_sub_menu('add_complain', $sub_menu); ?>">
+                        <a href="<?php echo site_url('complaints/save'); ?>">
+                            <i class="fa fa-circle-o"></i> New Issue/Complaints
+                        </a>
+                    </li>
+                    <?php endif; ?>
+                        
+                    <?php if ($controller->hasAccess('view-complaint')): ?>
+                    <li class="<?php set_sub_menu('view_complain', $sub_menu); ?>">
+                        <a href="<?php echo site_url('complaints'); ?>">
+                            <i class="fa fa-circle-o"></i> View Issue/Complaints
+                        </a>
+                    </li>
+                    <?php endif; ?>
 
                 </ul>
+                        
             </li>
            
-            <?php */ } // end if issues access
-             if (has_access('services')) { /* ?>
+            <?php endif; // end if issues access
+
+            if ( $controller->hasAccess(['add-service', 'view-service']) ) : ?>
 
             <li class="treeview <?php set_active_menu('services', $active_menu); ?>">
 
-                <a href="<?php echo site_url('services'); ?>"><i class="fa fa-file-pdf-o"></i> <span>Services</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="<?php echo site_url('services'); ?>">
+                    <i class="fa fa-file-pdf-o"></i> 
+                    <span>Services</span> 
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
 
                 <ul class="treeview-menu">
+                    <?php if ($controller->hasAccess('add-service')): ?>
+                    <li class="<?php set_sub_menu('add_service', $sub_menu); ?>">
+                        <a href="<?php echo site_url('services/save'); ?>">
+                            <i class="fa fa-circle-o"></i> Add Service
+                        </a>
+                    </li>
+                    <?php endif ?>
 
-                    <li class="<?php set_sub_menu('add_service', $sub_menu); ?>"><a href="<?php echo site_url('services/save'); ?>"><i class="fa fa-circle-o"></i> Add Service</a></li>
-
+                    <?php if ($controller->hasAccess('view-service')): ?>
                     <li class="<?php set_sub_menu('active_service_list', $sub_menu); ?>">
                         <a href="<?php echo site_url('services'); ?>"><i class="fa fa-circle-o"></i> View Services</a>
                     </li>
+                    <?php endif ?>
+
                 </ul>
             </li>
            
-            <?php */ } // end if services access
-             if (has_access('users')) { ?>
+            <?php endif; // end if services access
+
+            if ($controller->hasAccess(['add-user', 'view-user', 'add-role', 'view-role'])) : ?>
 
             <li class="treeview <?php set_active_menu('users', $active_menu); ?>">
                 <a href="#"><i class="fa fa-users"></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i></a>
@@ -197,65 +235,80 @@
                 </ul>
             </li>
 
-            <?php } // end if users access
-            if (has_access('client_types')) { /* ?>
+            <?php endif; // end if users access
+
+            if ($controller->hasAccess(['add-client-type', 'view-client-type'])) : ?>
 
             <li class="treeview <?php set_active_menu('client_type', $active_menu); ?>">
 
                 <a href="#"><i class="fa fa-language"></i> <span>Client Types</span> <i class="fa fa-angle-left pull-right"></i></a>
 
                 <ul class="treeview-menu">
-
+                    
+                    <?php if( $controller->hasAccess('add-client-type') ): ?>
                     <li class="<?php echo set_sub_menu('add_client_types', $sub_menu) ?>">
                         <a href="<?php echo site_url( 'client_type/add' ); ?>"><i class="fa fa-circle-o"></i> Add Client Type</a>
                     </li>
+                    <?php endif;?>
 
+                    <?php if( $controller->hasAccess('view-client-type') ): ?>
                     <li class="<?php echo set_sub_menu('view_client_type', $sub_menu) ?>">
                         <a href="<?php echo site_url( 'client_type/' ); ?>"><i class="fa fa-circle-o"></i> View Client Types</a>
                     </li>
+                    <?php endif;?>
 
                 </ul>
             </li>
 
-            <?php */ } // end if client_types access
-            if(has_access('clients')) { /* ?>
+            <?php endif; // end if client_types access
+
+            if($controller->hasAccess(['add-client', 'view-client'])) : ?>
 
             <li class="treeview <?php set_active_menu('client', $active_menu); ?>">
 
                 <a href="#"><i class="fa fa-user"></i> <span>Clients</span> <i class="fa fa-angle-left pull-right"></i></a>
 
                 <ul class="treeview-menu">
+                    <?php if ($controller->hasAccess('add-client')): ?>
                     <li class="<?php echo set_sub_menu('add_client', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'client/save' );?>"><i class="fa fa-circle-o"></i> Add Client/Prospect</a>
                     </li>
+                    <?php endif ?>
+                    <?php if ($controller->hasAccess('view-client')): ?>
                     <li class="<?php echo set_sub_menu('active_client_lists', $sub_menu); ?>">
                         <a href="<?php echo site_url('client/'); ?>"><i class="fa fa-circle-o"></i> View Clients/Prospects</a>
                     </li>
+                    <?php endif ?>
                 </ul>
             </li>
 
-            <?php */ } // end if clients access
-            if (has_access('properties')) { /* ?>
+            <?php endif; // end if clients access
+
+            if ( $controller->hasAccess(['add-property', 'view-property']) ) : ?>
 
             <li class="treeview <?php set_active_menu('property', $active_menu); ?>">
 
                 <a href="#"><i class="fa fa-home"></i> <span>Properties</span> <i class="fa fa-angle-left pull-right"></i></a>
 
                 <ul class="treeview-menu">
-                    
+                    <?php if ($controller->hasAccess('add-property')): ?>
                     <li class="<?php echo set_sub_menu('add_property', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'property/save' ); ?>"><i class="fa fa-circle-o"></i> Add Property</a>
                     </li>
-
+                    <?php endif ?>
+                        
+                    <?php if ($controller->hasAccess('view-property')): ?>
                     <li class="<?php echo set_sub_menu('view_property', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'property/' ); ?>"><i class="fa fa-circle-o"></i> View Properties</a>
                     </li>
+                    <?php endif ?>
 
                 </ul>
             </li>
 
-            <?php */ } // end if properties access
-            if(has_access('bin_types')) { /* ?>
+            <?php endif; // end if properties access
+
+            if( $controller->hasAccess( ['add-bin-type', 'edit-bin-type'] ) ): ?>
 
             <li class="treeview <?php set_active_menu('bin_type', $active_menu); ?>">
 
@@ -263,19 +316,24 @@
                 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-bin-type')): ?>
                     <li class="<?php echo set_sub_menu('add_bin_type', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'bin_type/save' );?>"><i class="fa fa-circle-o"></i> Add Bin</a>
                     </li>
-
+                    <?php endif; ?>
+                        
+                    <?php if ($controller->hasAccess('view-bin-type')): ?>
                     <li class="<?php echo set_sub_menu('view_types', $sub_menu); ?>">
                         <a href="<?php echo site_url('bin_type/'); ?>"><i class="fa fa-circle-o"></i> View Bin Types</a>
                     </li>
+                    <?php endif; ?>
 
                 </ul>
             </li>
 
-            <?php */ } // end if bin_types access
-            if(has_access('document_types')) { /* ?>
+            <?php endif; // end if bin_types access
+
+            if($controller->hasAccess(['add-document-type', 'view-document-type'])) : ?>
 
             <li class="treeview <?php set_active_menu('document_type', $active_menu); ?>">
 
@@ -283,19 +341,24 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-document-type')): ?>
                     <li class="<?php echo set_sub_menu('add_document_type', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'document_type/save' ); ?>"><i class="fa fa-circle-o"></i> Add Document Type</a>
                     </li>
-
+                    <?php endif ?>
+                        
+                    <?php if ($controller->hasAccess('view-document-type')): ?>
                     <li class="<?php echo set_sub_menu('view_document_type', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'document_type/' ); ?>"><i class="fa fa-circle-o"></i> View Document Types</a>
                     </li>
+                    <?php endif ?>
 
                 </ul>
             </li>
 
-            <?php */ } // end if document_types access
-            if(has_access('gallery_types')) { /* ?>
+            <?php endif; // end if document_types access
+
+            if($controller->hasAccess(['add-gallery-type', 'edit-gallery-type'])) : ?>
 
             <li class="treeview <?php set_active_menu('gallery_type', $active_menu); ?>">
 
@@ -303,19 +366,25 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-gallery-type')): ?>
                     <li class="<?php echo set_sub_menu('add_gallery_type', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'gallery_type/save' ); ?>"><i class="fa fa-circle-o"></i> Add Gallery Type</a>
                     </li>
-
+                    <?php endif ?>
+                        
+                    <?php if ($controller->hasAccess('view-gallery-type')): ?>
                     <li class="<?php echo set_sub_menu('view_document_type', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'gallery_type/' ); ?>"><i class="fa fa-circle-o"></i> View Gallery Types</a>
                     </li>
+                    <?php endif ?>
 
                 </ul>
+
             </li>
 
-            <?php */ } // end if gallery_types access
-            if(has_access('key_types')) { /* ?>
+            <?php endif; // end if gallery_types access
+
+            if($controller->hasAccess(['add-key-type', 'view-key-type'])) : ?>
 
             <li class="treeview <?php set_active_menu('key_type', $active_menu); ?>">
 
@@ -323,19 +392,25 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-key-type')): ?>
                     <li class="<?php echo set_sub_menu('add_key_type', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'key_type/save' ); ?>"><i class="fa fa-circle-o"></i> Add Key Type</a>
                     </li>
-
+                    <?php endif ?>
+                        
+                    <?php if ($controller->hasAccess('view-key-type')): ?>
                     <li class="<?php echo set_sub_menu('view_key_type', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'key_type/' ); ?>"><i class="fa fa-circle-o"></i> View Key Types</a>
                     </li>
-
+                    <?php endif ?>
+                        
                 </ul>
+
             </li>
 
-            <?php */ } // end if key_types access
-            if(has_access('lead_types')) { /* ?>
+            <?php endif; // end if key_types access
+
+            if($controller->hasAccess(['add-lead-type', 'view-lead-type'])) : ?>
 
             <li class="treeview <?php set_active_menu('lead_type', $active_menu); ?>">
 
@@ -343,19 +418,25 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-lead-type')): ?>
                     <li class="<?php echo set_sub_menu('add_lead_type', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'lead_type/save' ); ?>"><i class="fa fa-circle-o"></i> Add Lead Type</a>
                     </li>
-
+                    <?php endif ?>
+                        
+                    <?php if ($controller->hasAccess('view-lead-type')): ?>
                     <li class="<?php echo set_sub_menu('view_lead_type', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'lead_type/' ); ?>"><i class="fa fa-circle-o"></i> View Lead Types</a>
                     </li>
-
+                    <?php endif ?>
+                        
                 </ul>
+
             </li>
 
-            <?php */ } // end if lead_types access 
-            if(has_access('suppliers')) { /* ?>
+            <?php endif; // end if lead_types access
+
+            if($controller->hasAccess(['add-supplier', 'view-supplier'])) : ?>
 
             <li class="treeview <?php set_active_menu('supplier', $active_menu); ?>">
 
@@ -363,45 +444,59 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-supplier')): ?>
                     <li class="<?php echo set_sub_menu('add_supplier', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'supplier/save' ); ?>"><i class="fa fa-circle-o"></i> Add Supplier</a>
                     </li>
-
+                    <?php endif ?>
+                        
+                    <?php if ($controller->hasAccess('view-supplier')): ?>
                     <li class="<?php echo set_sub_menu('view_supplier', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'supplier/' ); ?>"><i class="fa fa-circle-o"></i> View Suppliers</a>
                     </li>
-
+                    <?php endif ?>
+                        
                 </ul>
+
             </li>
 
-            <?php */ } // end if suppliers access
-            if(has_access('consumables')||has_access('consumables_request')) { /* ?>
+            <?php endif; // end if suppliers access
+
+            if($controller->hasAccess(['add-consumable', 'view-consumable', 'add-consumable-request', 'view-consumable-request'])) : ?>
 
             <li class="treeview <?php set_active_menu('consumable', $active_menu); ?>">
 
                 <a href="#"><i class="fa fa-hourglass-half"></i> <span>Consumables</span> <i class="fa fa-angle-left pull-right"></i></a>
 
                 <ul class="treeview-menu">
-                    <?php if(has_access('consumables')): ?>
+                
+                    <?php if($controller->hasAccess('add-consumable')): ?>
                     <li class="<?php echo set_sub_menu('add_consumable', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'consumable/save' ); ?>"><i class="fa fa-circle-o"></i> Add Consumable</a>
                     </li>
+                    <?php endif ?>
 
+                    <?php if ($controller->hasAccess('view-consumable')): ?>
                     <li class="<?php echo set_sub_menu('view_consumable', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'consumable/' ); ?>"><i class="fa fa-circle-o"></i> View Consumables</a>
                     </li>
                     <?php endif; ?>
-                    <?php if(has_access('consumables_request')): ?>
+                
+                    <?php if($controller->hasAccess(['add-consumable-request', 'view-consumable-request'])): ?>
                     <li class="<?php echo set_sub_menu('add_consumable_request', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'consumable_request/' ); ?>"><i class="fa fa-circle-o"></i> Consumable Request</a>
                     </li>
                     <?php endif; ?>
+                        
+
                     
                 </ul>
+
             </li>
 
-            <?php */ } // end if consumables access 
-            if(has_access('councils')) { /* ?>
+            <?php endif; // end if consumables access 
+
+            if($controller->hasAccess(['add-council', 'view-council'])) : ?>
 
             <li class="treeview <?php set_active_menu('council', $active_menu); ?>">
 
@@ -409,20 +504,25 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('add-council')): ?>
                     <li class="<?php echo set_sub_menu('add_council', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'council/save' ); ?>"><i class="fa fa-circle-o"></i> Add Council</a>
                     </li>
-
+                    <?php endif ?>
+                        
+                    <?php if ($controller->hasAccess('view-council')): ?>
                     <li class="<?php echo set_sub_menu('view_council', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'council/' ); ?>"><i class="fa fa-circle-o"></i> View Councils</a>
                     </li>
+                    <?php endif ?>
 
                 </ul>
 
             </li>
 
-            <?php */ } // end if councils access
-            if(has_access('bin_liners_management')) { /* ?>
+            <?php endif; // end if councils access
+
+            if( $controller->hasAccess(['view-bin-liner-setting', 'view-bin-liner']) ) : ?>
 
             <li class="treeview <?php set_active_menu('bin_liner', $active_menu); ?>">
 
@@ -442,11 +542,10 @@
 
             </li>
 
-            <?php */ } // end if bin_liners_managements access
+            <?php endif; // end if bin_liners_managements access
             
-            if(has_access('bin_liners_management')) { ?>
-
-            <?php if ($controller->hasAccess('add-daily-balance') || $controller->hasAccess('view-daily-balance')) { ?>
+            if ($controller->hasAccess(['add-daily-balance', 'view-daily-balance'])) { ?>
+            
             <li class="treeview <?php set_active_menu('daily_balance', $active_menu); ?>">
 
                 <a href="#"><i class="fa fa-balance-scale"></i> <span>Daily Balance</span> <i class="fa fa-angle-left pull-right"></i></a>
@@ -470,10 +569,11 @@
             </li>
             <?php } ?>
 
-            <?php } // end if bin_liners_managements access
-            if(has_access('reports')) { ?>
+            <?php 
 
-            <li class="treeview <?php set_active_menu('daily_balance', $active_menu); ?>">
+            if($controller->hasAccess('export-user')) : ?>
+
+            <li class="treeview <?php set_active_menu('reports', $active_menu); ?>">
                 
                 <a href="#"><i class="fa fa-file-pdf-o"></i>
                 
@@ -485,6 +585,8 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('export-user')): ?>
+                        
                     <li>
 
                         <a href="<?php echo site_url( 'users/export' ); ?>">
@@ -496,12 +598,14 @@
                         </a>
 
                     </li>
+                        
+                    <?php endif ?>
 
                 </ul>
 
             </li>
 
-            <?php } // end if reports access ?>
+            <?php endif; // end if reports access ?>
 
         </ul>
 

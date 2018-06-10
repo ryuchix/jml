@@ -8,26 +8,28 @@ class Lead_type extends MY_Controller
 	{
 		parent::__construct();
 		$this->load->model('Lead_type_model');
-		$this->set_data('active_menu', 'document_type');
+		$this->set_data('active_menu', 'lead_type');
 		$this->set_data('class_name', strtolower(get_class($this)));
 	}
 
 
 	function index($disable = false, $modified_item_id = 0)
 	{
-
+		$this->redirectIfNotAllowed('view-lead-type');
 		$this->set_data( 'active_list', ($disable)?'':'active');
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
 
-		$this->set_data('sub_menu', 'view_document_type');
+		$this->set_data('sub_menu', 'view_lead_type');
 		
 		$this->set_data( 'inactive_records', $this->Lead_type_model->getWhere(array('active'=>0)) );
 		$this->set_data( 'records', $this->Lead_type_model->getWhere(array('active'=>1)) );
 		$this->load->view('lead_types/lists', $this->get_data());
 	}
 
-	function save($id=false){
+	function save($id=false)
+	{
+		$this->redirectIfNotAllowed($id? 'edit-lead-type': 'add-lead-type', 'lead_type');
 		$this->set_data('sub_menu', 'add_lead_type');
 		$record = new Lead_type_model();
 		if ($id) {
@@ -67,6 +69,7 @@ class Lead_type extends MY_Controller
 
 	function activation($id, $boolean=false)
 	{
+		$this->redirectIfNotAllowed('change-lead-type-status');
 		$record = new Lead_type_model();
 		$record->load($id);
 		$record->active = $boolean;

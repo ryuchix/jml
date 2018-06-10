@@ -23,9 +23,15 @@
                   <i class="fa fa-ellipsis-v "></i>
                 </button>
                 <ul class="dropdown-menu">
+                    <?php if ($controller->hasAccess('edit-consumable-request')): ?>
                     <li><?php echo anchor(site_url("consumable_request/save/$row->id"),'<i class="fa fa-pencil"></i> Edit')?></li>
+                    <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('view-consumable-request-history')): ?>
                     <li><?php echo anchor(site_url("consumable_request/history/$row->id"),'<i class="fa fa-lock"></i> History')?></li>
+                    <?php endif ?>
             </div>
+                        
         </td>
     </tr>
 

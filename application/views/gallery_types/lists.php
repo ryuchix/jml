@@ -35,7 +35,15 @@
                             <ul class="nav nav-tabs pull-right">
                               <li class="<?php echo $inactive_list; ?>"><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Inactive Gallery types</a></li>
                               <li class="<?php echo $active_list; ?>"><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Active Gallery types</a></li>
-                              <li class="pull-left header"><a href="<?php echo site_url( "bin_type/save" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> Gallery types List</li>
+                              
+                              <?php if ($controller->hasAccess('add-gallery-type')): ?>
+                                <li class="pull-left header">
+                                    <a href="<?php echo site_url( "bin_type/save" ); ?>" style="display: inline;">
+                                        <i class="fa fa-plus"></i>
+                                    </a> Gallery types List
+                                </li>
+                              <?php endif ?>
+                                  
                             </ul>
 
                             <div class="tab-content">
