@@ -4,3 +4,5 @@ application/config/config.php
 
 # Ignore All Folders contents which is uploaded
 uploads/*/*
+
+vendor/*
