@@ -26,7 +26,8 @@ class History_model extends MY_Model
         $sql = "SELECT h.description, u.user_name AS user, DATE_FORMAT(h.timestamp, '%W %D of %M %Y %r') AS time 
                     FROM history h 
                         JOIN users AS u 
-                            ON u.id = h.action_by WHERE h.context_id = $context_id AND h.context = '$context'";
+                            ON u.id = h.action_by WHERE h.context_id = $context_id AND h.context = '$context'
+                            ORDER BY h.timestamp DESC";
 
         $query = $this->db->query($sql);
         if( $query_object )

@@ -40,6 +40,22 @@ class Client_model extends MY_Model
     public $billing_address_location = null;
     public $active = 1;
 
+    public function authenticate($username,$password)
+    {
+        $this->db->where("active = 1 AND (username = '$username' OR email = '$username')");
+
+        $this->db->limit(1);
+
+        $query = $this->db->get(SELF::DB_TABLE);
+
+        $user = $query->row();
+
+        if ( $user && password_verify($password,$user->password) )
+            return $user;
+        
+        return FALSE;
+    }
+
     function get_count($prospect=0)
     {
         $this->db->where('active', 1);
@@ -50,6 +66,8 @@ class Client_model extends MY_Model
 
     function get_dropdown_lists($first_empty=1, $active=1)
     {
+        $this->db->order_by('name');
+
         $ret = array_map(
 
                 function($o){ 
@@ -62,13 +80,83 @@ class Client_model extends MY_Model
         return $first_empty? array(''=>'') + $ret : $ret;
     }
 
-    function get_list_where($active=1, $prospect=0)
+    function get_list_where($active = 1, $prospect = 0)
     {
-        $sql = "SELECT c.id, c.name, c.phone, c.active, c.email, c.address_1, c.address_suburb, c.address_post_code, c.is_parent, cp.name AS parent_name
+        $sql = "SELECT c.id, c.name, c.phone, c.active, ct.type AS client_type, c.email, c.address_1, c.address_suburb, c.address_post_code, c.is_parent, cp.name AS parent_name
                 FROM client AS c
                     LEFT JOIN client AS cp ON c.child_of = cp.id
+                    LEFT JOIN client_type AS ct ON c.client_type = ct.id
                 WHERE c.active = $active AND c.is_prospect = $prospect";
         return $this->db->query($sql)->result();
+    }
+
+    public function get_filtered_list()
+    {
+        $client_or_prospect = (int)$this->input->get('client_or_prospect');
+
+        $client_type = $this->input->get('client_type');
+        
+        $lead_type = $this->input->get('lead_type');
+        
+        $child_or_parent = (int)$this->input->get('child_or_parent');
+
+        $is_active = (int)$this->input->get('is_active');
+
+        $clients = $this->db
+            ->select("c.id, 
+                c.name, 
+                c.client_type as client_type_id, 
+                ct.type as client_type, 
+                c.lead_type as lead_type_id, 
+                lt.type as lead_type, 
+                c.is_parent,
+                CONCAT(c.address_1, ' ', c.address_suburb) as address"
+                , FALSE)
+            ->from('client as c')
+            ->join('client_type as ct', 'ct.id = c.client_type')
+            ->join('lead_type as lt', 'lt.id = c.lead_type');
+        
+        if ($client_or_prospect) 
+        {
+            if ($client_or_prospect === 1) {
+                $clients->where('c.is_prospect', 0);
+            }else{
+                $clients->where('c.is_prospect', 1);
+            }
+        }
+        
+        if (is_numeric($client_type)) 
+        {
+            $clients->where('c.client_type', $client_type);
+        }
+        
+        if (is_numeric($lead_type)) 
+        {
+            $clients->where('c.lead_type', $lead_type);
+        }
+
+        if ($child_or_parent) 
+        {
+            if ($child_or_parent === 1) // Only Parent
+            { 
+                $clients->where('c.is_parent', 1);
+            }else{
+                $clients->where('c.is_parent', 0);
+            }
+        }
+
+        $clients->where('c.active', $is_active);
+
+        return $clients->get()->result();
+    }
+
+    function contacts()
+    {
+        if (!$this->id) {
+            return null;
+        }
+        $this->load->model('Contacts_model');
+        return $this->Contacts_model->getWhere(['client_id' => $this->id]);
     }
 
 }

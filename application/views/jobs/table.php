@@ -1,4 +1,4 @@
-<table id="example1" class="table table-bordered table-striped">
+<table id="example1" data-ordering="false" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Job no.</th>
@@ -17,7 +17,7 @@
         <td>Job-<?php echo $row->id; ?></td>
         <td><?php echo $row->address . ' <br> ' . $row->client; ?></td>
         <td><?php echo get_job_types($row->job_type); ?></td>
-        <td><?php echo get_job_categories($row->job_category) . ' - ' . $row->job_description; ?></td>
+        <td><?php echo $row->job_category . ' - ' . $row->job_title; ?></td>
         <td><?php echo ($row->next_visit && !$row->closed)? local_date($row->next_visit):''; ?></td>
         <!-- <td><?php echo ''; ?></td> -->
         <td>$<?php echo $row->value; ?></td>

@@ -181,7 +181,7 @@ class Property extends MY_Controller
 		$this->set_data( 'inactive_list', !($disable)?'':'active');
 		
     	$this->set_data('property_id', $property_id);
-    	$sql = "SELECT k.id AS id, kt.type AS type, k.description, k.property_id, k.active, k.image FROM property_keys AS k 
+    	$sql = "SELECT k.id AS id, kt.type AS type, k.description, k.internal_reference, k.property_id, k.active, k.image FROM property_keys AS k 
     			JOIN key_type AS kt ON k.key_type_id = kt.id WHERE k.property_id = $property_id AND k.active = ";
     	$this->set_data( 'records', $this->db->query( $sql."1" )->result() );
     	$this->set_data( 'inactive_records', $this->db->query( $sql."0" )->result() );
@@ -191,16 +191,25 @@ class Property extends MY_Controller
 	function save_keys($property_id, $property_key_id)
 	{
     	$this->redirectIfNotAllowed($property_key_id? 'edit-property-key': 'add-property-key', "property/keys/$property_id/lists");
+
 		$this->set_data('property_id', $property_id);
+
 		$this->load->library('form_validation');
+
 		$this->set_data('expected_id', 'Key-'.$this->Property_keys_model->max());
+
 		$record = new Property_keys_model();
+
 		if ($property_key_id) { $record->load($property_key_id); }
+
 		$this->set_data('record', $record);
+
     	$this->set_data('key_types', $this->get_key_types());
 
-		if (isset($_POST['submit'])) {
-			foreach ($this->input->post('data') as $key => $value) {
+		if (isset($_POST['submit'])) 
+		{
+			foreach ($this->input->post('data') as $key => $value) 
+			{
 				$record->{$key} = $value;
 			}
 			$record->property_id = $property_id;
@@ -374,7 +383,7 @@ class Property extends MY_Controller
 		$this->set_data('record', $record);
 		
 
-    	$this->set_data('consumables', $this->Consumable_model->get_dropdown_lists());
+    	$this->set_data('consumables', $this->Consumable_model->get_dropdown_lists(true, 1, $property_id));
 
 		if (isset($_POST['submit'])) {
 

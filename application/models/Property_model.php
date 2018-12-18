@@ -36,6 +36,21 @@ class Property_model extends MY_Model
         return $first_empty? array(''=>'') + $ret : $ret;
     }
 
+    function get_dropdown_lists_of_service($service, $first_empty=1, $active=1)
+    {
+        $properties = $this->db->query("SELECT id, address, address_suburb, address_post_code FROM `property` WHERE id IN ( SELECT property_id FROM property_services WHERE service_id = (SELECT id FROM service s WHERE s.name LIKE '%$service%') )")->result();
+
+        $output = [];
+
+        foreach ($properties as $prop) 
+        {
+            $output[$prop->id] = $prop->address . ', ' . $prop->address_suburb . ', ' . $prop->address_post_code; 
+        }
+
+        return $first_empty? array(''=>'') + $output : $output;
+    }
+
+
     function get_dropdown_lists_by_client_id($client_id=false, $first_empty=1, $active=1)
     {
         if (!$client_id) { return false; }

@@ -21,6 +21,8 @@ class Council_model extends MY_Model
     public $address_location;
     public $contact_name;
     public $active = 1;
+    public $tender = '';
+    public $waste_department = '';
     public $added_by;
     public $updated_by;
 

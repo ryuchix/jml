@@ -1,7 +1,7 @@
 <table id="example1" class="table table-bordered table-striped">
     <thead>
         <tr>
-            <th>Client Name</th>
+            <th>Client Type Name</th>
             <th>Description</th>
             <th>Action</th>
         </tr>

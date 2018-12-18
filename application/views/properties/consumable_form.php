@@ -76,7 +76,7 @@
 
                             <div class="form-group <?php echo form_error('data[markup]')? 'has-error':''; ?>">
                                 <label for="markup">Markup:</label>
-                                <input type="text" class="form-control" name="data[markup]" value="<?php echo set_value('data[markup]', $record->markup); ?>" name="data[markup]" id="markup" placeholder="Markup">
+                                <input type="text" class="form-control" name="data[markup]" value="<?php echo set_value('data[markup]', $record->markup?$record->markup:0); ?>" name="data[markup]" id="markup" placeholder="Markup">
                                 <?php echo form_error('data[markup]','<p class="error-msg">','</p>') ?>
                             </div>
 

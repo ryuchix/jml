@@ -1,5 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
+require_once 'vendor/autoload.php';
 
 class Gallery extends MY_Controller
 {
@@ -37,13 +38,17 @@ class Gallery extends MY_Controller
 					g.name, 
 					gt.type AS type, 
 					g.description, 
-					g.context_id AS context_id, 
+					g.context_id AS context_id,
+					counts.count_images, 
 					g.active 
     			FROM gallery AS g
     			JOIN gallery_type AS gt ON g.gallery_type = gt.id 
+    			INNER JOIN (SELECT gallery_id, COUNT(*) AS count_images FROM gallery_images GROUP BY gallery_id) counts
+			      ON g.id = counts.gallery_id
     			WHERE g.context_id = $context_id AND g.context = '$context' AND g.active = ";
     	$this->set_data( 'records', $this->db->query( $sql."1" )->result() );
     	$this->set_data( 'inactive_records', $this->db->query( $sql."0" )->result() );
+    	// dump($this->get_data());
 		$this->load->view('gallery/lists_gallery', $this->get_data());
 	}
 
@@ -66,6 +71,7 @@ class Gallery extends MY_Controller
     	$this->load->model('Gallery_type_model');
     	$this->set_data('gallery_types', $this->Gallery_type_model->get_dropdown_lists(1));
 		if (isset($_POST['submit'])) {
+
        		$this->form_validation->set_rules('data[name]','Gallery name','required');
        		$this->form_validation->set_rules('data[gallery_type]','Category','required');
 			if ( $this->form_validation->run() == TRUE ) {
@@ -303,20 +309,79 @@ class Gallery extends MY_Controller
 	      		$this->gellary_upload_error[] = $error['error'];
 	    	  else :
 	        	$data = $this->upload->data();
+	        	$this->resizeFile($data);
 	      		$files[] = $data['file_name'];
 	      	endif;
 	    endfor;
 	    return $files;
 	}
 
+	protected function resizeFile($data)
+	{
+		$imagine = new Imagine\Gd\Imagine();
+		$image = $imagine->open($data['full_path']);
+		$width = $image->getSize()->getWidth();
+		$height = $image->getSize()->getHeight();
+		$maxSize = 800;
+
+		if ($width >= $height) 
+		{
+			$height = $height / 100 * ($maxSize/$width*100);
+			$width = $maxSize;
+		}
+
+		if ($width < $height) 
+		{
+			$width = $width / 100 * ($maxSize/$height*100);
+			$height = $maxSize;
+		}
+
+		$image->resize(new \Imagine\Image\Box($width, $height))
+		   ->save($data['full_path'], array('jpeg_quality' => 60));
+	}
+
+	public function download($gallery_id)
+	{
+		$record = new Gallery_model();
+
+		$record->load($gallery_id);
+
+		$images = $this->Gallery_images_model->getWhere(array('gallery_id'=>$gallery_id));
+
+		$dateTime = date('d.m.Y H.i.s a');
+
+		$archive_file_name = $this->context . '_gallery.zip';
+
+		$zip = new ZipArchive();
+
+	    if ($zip->open($archive_file_name, ZIPARCHIVE::CREATE ) !== TRUE) 
+	    {
+	        exit("cannot open <$archive_file_name>\n");
+	    }
+
+    	foreach ($images as $image) 
+    	{
+    		$path = $this->gallery_path.$image->image;
+    		// x(get_object_vars($zip));
+    		// x($path);
+    		// die();
+    		$zip->addFile($path, $image->image);
+    	}
+    	
+    	$zip->close();
+
+		header("Content-type: application/zip"); 
+		header("Content-Disposition: attachment; filename=$archive_file_name");
+		header("Content-length: " . filesize($archive_file_name));
+		header("Pragma: no-cache"); 
+		header("Expires: 0"); 
+		readfile($archive_file_name);
+		unlink($archive_file_name);
+		// return $zip;
+
+	}
+
 }
-
-
-
-
-
-
-
 
 
 // Google Places APIs KEY

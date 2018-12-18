@@ -112,6 +112,7 @@
 	text-align: center;
 	line-height: 1;
 }
+
 .small-box .ion img {
     width: 100px;
     opacity: 0.3;

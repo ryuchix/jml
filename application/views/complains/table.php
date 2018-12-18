@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Issue No.</th>
+            <th>Title</th>
             <th>Client</th>
             <th>Property</th>
             <th>Status</th>
@@ -13,6 +14,7 @@
     <?php foreach($records as $row){ ?>
     <tr">
         <td><?php echo $row->id; ?></td>
+        <td><?php echo $row->title; ?></td>
         <td><?php echo $row->client; ?></td>
         <td><?php echo $row->property; ?></td>
         <td><?php echo get_status((int)$row->status); ?></td>

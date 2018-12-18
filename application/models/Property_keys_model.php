@@ -14,6 +14,7 @@ class Property_keys_model extends MY_Model
     public $description;
     public $image = '';
     public $active = 1;
+    public $internal_reference = null;
     public $added_by;
     public $updated_by;
     

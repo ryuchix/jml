@@ -1,59 +1,40 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-/*
-| -------------------------------------------------------------------------
-| URI ROUTING
-| -------------------------------------------------------------------------
-| This file lets you re-map URI requests to specific controller functions.
-|
-| Typically there is a one-to-one relationship between a URL string
-| and its corresponding controller class/method. The segments in a
-| URL normally follow this pattern:
-|
-|	example.com/class/method/id/
-|
-| In some instances, however, you may want to remap this relationship
-| so that a different class/function is called than the one
-| corresponding to the URL.
-|
-| Please see the user guide for complete details:
-|
-|	https://codeigniter.com/user_guide/general/routing.html
-|
-| -------------------------------------------------------------------------
-| RESERVED ROUTES
-| -------------------------------------------------------------------------
-|
-| There are three reserved routes:
-|
-|	$route['default_controller'] = 'welcome';
-|
-| This route indicates which controller class should be loaded if the
-| URI contains no data. In the above example, the "welcome" class
-| would be loaded.
-|
-|	$route['404_override'] = 'errors/page_missing';
-|
-| This route will tell the Router which controller/method to use if those
-| provided in the URL cannot be matched to a valid route.
-|
-|	$route['translate_uri_dashes'] = FALSE;
-|
-| This is not exactly a route, but allows you to automatically route
-| controller and method names that contain dashes. '-' isn't a valid
-| class or method name character, so it requires translation.
-| When you set this option to TRUE, it will replace ALL dashes in the
-| controller and method URI segments.
-|
-| Examples:	my-controller/index	-> my_controller/index
-|		my-controller/my-method	-> my_controller/my_method
-*/
 $route['default_controller'] = 'dashboard';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
+$route['reports'] = 'reports/reportscontroller/index';
+$route['reports/clients'] = 'reports/ClientReportController/index';
+$route['reports/client/filter'] = 'reports/ClientReportController/filters';
+$route['reports/bin-liner-management'] = 'reports/Bin_liner_management_controller/pdf';
+$route['reports/bin-liner-management/filter'] = 'reports/Bin_liner_management_controller';
+$route['reports/suppliers/pdf'] = 'reports/suppliers_controller';
+$route['reports/councils/pdf'] = 'reports/council_controller';
+$route['reports/properties/keys'] = 'reports/property_key_controller/pdf';
+$route['reports/properties/bins'] = 'reports/property_bin_controller/pdf';
+
+$route['clients/(:num)/marketing/save_note'] = 'Client_marketing_controller/save_note/$1';
+$route['clients/(:num)/marketing/save_note/(:num)'] = 'Client_marketing_controller/save_note/$1/$2';
+$route['clients-credentails'] = 'client/send_credentails';
+$route['client/change-password'] = 'client/change_password';
+$route['client/login'] = 'Client_login_controller/login';
+
+$route['client/dashboard'] = 'clients/dashboard/index';
+
+
+
+$route['clients-marketing/(:num)/logs'] = 'Client_marketing_controller/index/$1';
 
 $route['api/example/users/(:num)'] = 'api/example/users/id/$1'; // Example 4
 $route['api/user/login'] = 'api/user/login'; // Example 4
 $route['api/example/users/(:num)(\.)([a-zA-Z0-9_-]+)(.*)'] = 'api/example/users/id/$1/format/$3$4'; // Example 8
+ 
+
+
+$route['tasks'] = 'Tasks_controller/index';
+$route['tasks/create'] = 'Tasks_controller/create';
+$route['tasks/store'] = 'Tasks_controller/store';
+$route['tasks/(:num)/edit'] = 'Tasks_controller/$1/edit';
+$route['tasks/(:num)/update'] = 'Tasks_controller/$1/update';

@@ -59,6 +59,96 @@
                             <input type="hidden" name="data[address_long_state]" id="address_long_state" value="<?php echo set_value('data[address_long_state]', $record->address_long_state); ?>">
 
                         </div>
+                    </div>
+
+                    <!-- Tenders -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                          <h3 class="box-title">Tenders</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            
+                            <?php 
+                                $tender = ['url_address' => '', 'username' => '', 'password' => ''];
+                                if ($record->tender) {
+                                    $tender = (array)json_decode($record->tender);
+
+                                }
+                             ?>
+
+                            <div class="form-group <?php echo form_error('data[tender][url_address]')? 'has-error':''; ?>">
+                                <label for="name">Url Address</label>
+                                <input type="text" class="form-control" name="data[tender][url_address]" id="url_address" placeholder="Url Address" value="<?php echo set_value('data[tender][url_address]', $tender['url_address']); ?>">
+                                <?php echo form_error('data[tender][url_address]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                            <div class="form-group <?php echo form_error('data[tender][username]')? 'has-error':''; ?>">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" name="data[tender][username]" id="username" placeholder="Username" value="<?php echo set_value('data[tender][username]', $tender['username']); ?>">
+                                <?php echo form_error('data[tender][username]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                            <div class="form-group <?php echo form_error('data[tender][password]')? 'has-error':''; ?>">
+                                <label for="password">Password</label>
+                                <input type="text" class="form-control" name="data[tender][password]" id="password" placeholder="Password" value="<?php echo set_value('data[tender][password]', $tender['password']); ?>">
+                                <?php echo form_error('data[tender][password]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary hidden-xs hidden-sm" name="submit">Submit</button>
+                        </div>
+                    </div>
+
+                    <!-- Waste Departments -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                          <h3 class="box-title">Waste Department</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            
+                            <?php 
+                                $waste_department = ['surname' => '', 'name' => '', 'email' => '', 'phone' => '', 'role' => ''];
+                                if ($record->waste_department) {
+                                    $waste_department = (array)json_decode($record->waste_department);
+
+                                }
+                             ?>
+
+                            <div class="form-group <?php echo form_error('data[waste_department][name]')? 'has-error':''; ?>">
+                                <label for="name">Name</label>
+                                <input type="text" class="form-control" name="data[waste_department][name]" id="name" placeholder="Name" value="<?php echo set_value('data[waste_department][name]', $waste_department['name']); ?>">
+                                <?php echo form_error('data[waste_department][name]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                            <div class="form-group <?php echo form_error('data[waste_department][surname]')? 'has-error':''; ?>">
+                                <label for="surname">Surname</label>
+                                <input type="text" class="form-control" name="data[waste_department][surname]" id="surname" placeholder="Surname" value="<?php echo set_value('data[waste_department][surname]', $waste_department['surname']); ?>">
+                                <?php echo form_error('data[waste_department][surname]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                            <div class="form-group <?php echo form_error('data[waste_department][email]')? 'has-error':''; ?>">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="data[waste_department][email]" id="name" placeholder="Email" value="<?php echo set_value('data[waste_department][email]', $waste_department['email']); ?>">
+                                <?php echo form_error('data[waste_department][email]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                            <div class="form-group <?php echo form_error('data[waste_department][phone]')? 'has-error':''; ?>">
+                                <label for="phone">Phone</label>
+                                <input type="text" class="form-control" name="data[waste_department][phone]" id="phone" placeholder="Phone" value="<?php echo set_value('data[waste_department][phone]', $waste_department['phone']); ?>">
+                                <?php echo form_error('data[waste_department][phone]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                            <div class="form-group <?php echo form_error('data[waste_department][role]')? 'has-error':''; ?>">
+                                <label for="role">Role</label>
+                                <input type="text" class="form-control" name="data[waste_department][role]" id="role" placeholder="Role" value="<?php echo set_value('data[waste_department][role]', $waste_department['role']); ?>">
+                                <?php echo form_error('data[waste_department][role]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                        </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
                             <button type="submit" class="btn btn-primary hidden-xs hidden-sm" name="submit">Submit</button>

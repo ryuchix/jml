@@ -9,6 +9,7 @@ class Jobs extends MY_Controller
 	{
 		parent::__construct();
 		$this->load->model(['Job_model',
+							'Job_category_model',
 							'Job_crew_model',
 							'Job_visits_model',
 							'Job_services_model',
@@ -34,7 +35,8 @@ class Jobs extends MY_Controller
 
 		$this->set_data('sub_menu', 'view_jobs');
 
-		$this->set_data( 'records', $this->Job_model->get_lists() );
+		$this->set_data( 'opened_records', $this->Job_model->get_lists() );
+		$this->set_data( 'closed_records', $this->Job_model->get_lists(false) );
 		$this->load->view('jobs/lists', $this->get_data());
 	}
 
@@ -48,6 +50,7 @@ class Jobs extends MY_Controller
 		$this->set_data('users', $this->User_model->get_dropdown_lists(0));
 		$this->set_data('services', $this->Service_model->get_dropdown_lists());
 		$this->set_data('clients', $this->Client_model->get_dropdown_lists());
+		// $this->set_data('categoies', $this->Job_category_model->get_dropdown_lists());
 		$this->set_data('properties', $this->Property_model->get_dropdown_lists_by_client_id($record->client_id));
 		$this->set_data('record', $record);
 		$this->set_data('line_items', $this->db->get_where('job_services', ['job_id'=>$id])->result());
@@ -61,7 +64,7 @@ class Jobs extends MY_Controller
 			if ( $this->form_validation->run() === TRUE ) {
 
 				if ( !empty($_FILES) && $_FILES['upl_files']['error'][0] != 4) 
-					{ $uploaded_files = $this->multiple_upload(); }else{ $uploaded_files = []; }
+				{ $uploaded_files = $this->multiple_upload(); }else{ $uploaded_files = []; }
 
 				if ($this->is_uploaded($uploaded_files)) {
 					
@@ -185,7 +188,22 @@ class Jobs extends MY_Controller
 		}
 	}
 
-	function close($job_id)
+	public function close_visit()
+	{
+		if (isset($_POST['visit_id'])) 
+		{
+			$visit = new Job_visits_model();
+			$visit->load($this->input->post('visit_id'));
+			$visit->user_id = $this->session->userdata('user_id');
+			$visit->logged_at = db_timestamp();
+			$visit->completed = 1;
+			$visit->save();
+			set_flash_message(0, 'Visit completed!');
+			redirect( site_url("jobs/view/$visit->job_id") );
+		}
+	}
+
+	function close($job_id) // close job
 	{
 		if ($job_id) 
 		{
@@ -451,13 +469,17 @@ class Jobs extends MY_Controller
 	{
        	$this->form_validation->set_rules('data[client_id]','Client','required|numeric');
        	$this->form_validation->set_rules('data[property_id]','Property','required|numeric');
-       	$this->form_validation->set_rules('data[job_description]','Job Description','required');
+       	$this->form_validation->set_rules('data[job_title]','Job Description','required');
        	$this->form_validation->set_rules('users[]','User','required');
        	$this->form_validation->set_rules('line_items[]','Line Items','required');
        	
-       	$this->form_validation->set_rules('data[start_time]', 'Start Time', 'trim|min_length[3]|max_length[5]|callback_validate_time');
-       	$st = $this->input->post('data[start_time]');
-       	$this->form_validation->set_rules('data[end_time]', 'End Time', 'trim|min_length[3]|max_length[5]|callback_validate_time|callback_end_time_validation['.$st.']');
+       	if($this->input->post('data[job_type]') != 1)
+       	{
+	       	$this->form_validation->set_rules('data[start_time]', 'Start Time', 'trim|min_length[3]|max_length[5]|callback_validate_time');
+	       	$st = $this->input->post('data[start_time]');
+	       	$this->form_validation->set_rules('data[end_time]', 'End Time', 'trim|min_length[3]|max_length[5]|callback_validate_time|callback_end_time_validation['.$st.']');
+       	}
+
 
        	foreach ($this->input->post('line_items[]') as $key => $item) {
        		$this->form_validation->set_rules("line_items[$key][service_id]",'Line Items','required|numeric');
@@ -473,7 +495,7 @@ class Jobs extends MY_Controller
 	    $this->form_validation->set_rules('end_date','End Date','callback_end_date_validation['.$this->input->post('start_date').']');
 		
 		if (!$id) {
-	       	$this->form_validation->set_rules('data[job_category]','Job Category','required|numeric');
+	       	// $this->form_validation->set_rules('data[job_category]','Job Category','required|numeric');
 	       	$this->form_validation->set_rules('data[job_type]','Job Type','required|numeric');
 	       	$this->form_validation->set_rules('start_date','Start Date','required');
 	       	if ( $this->input->post('data[job_type]') == 2 ) {

@@ -34,9 +34,11 @@
 
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs pull-right">
-                                <li><a href="#tab_1-1" data-toggle="tab" aria-expanded="true">Void Request</a></li>
+                                <li><a href="#tab_1-1" data-toggle="tab" aria-expanded="false">Void Request</a></li>
                                 <li><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Closed Request</a></li>
-                                <li class="active"><a href="#tab_3-3" data-toggle="tab" aria-expanded="false">Open Request</a></li>
+                                <li><a href="#tab_3-3" data-toggle="tab" aria-expanded="false">Open Request</a></li>
+                                <li><a href="#tab_3-4" data-toggle="tab" aria-expanded="true">Approved Request</a></li>
+                                <li class="active"><a href="#tab_3-5" data-toggle="tab" aria-expanded="true">Awaiting for Approval</a></li>
                                 
                                 <?php if ($controller->hasAccess('add-consumable-request')): ?>
                                 <li class="pull-left header"><a href="<?php echo site_url( "consumable_request/save/" ); ?>" style="display: inline;"><i class="fa fa-plus"></i></a> Request List</li>
@@ -58,9 +60,21 @@
                                    
                                 </div><!-- /.tab-pane -->
 
-                                <div class="tab-pane active" id="tab_3-3">
+                                <div class="tab-pane" id="tab_3-3">
 
                                 <?php $this->load->view('consumables_request/table', array('records'=>$open_records)); ?>
+                                   
+                                </div><!-- /.tab-pane -->
+
+                                <div class="tab-pane" id="tab_3-4">
+
+                                <?php $this->load->view('consumables_request/table', array('records'=>$approved_records, 'approval_datetime' => true)); ?>
+                                   
+                                </div><!-- /.tab-pane -->
+
+                                <div class="tab-pane active" id="tab_3-5">
+
+                                <?php $this->load->view('consumables_request/table', array('records'=>$awaiting_for_approval)); ?>
                                    
                                 </div><!-- /.tab-pane -->
 

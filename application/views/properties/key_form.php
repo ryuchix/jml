@@ -86,6 +86,12 @@
                                 <textarea class="form-control" rows="3" name="data[description]" placeholder="description..."><?php echo set_value('data[description]', $record->description); ?></textarea>
                                 <?php echo form_error('data[description]','<p class="error-msg">','</p>') ?>
                             </div>
+                            
+                            <div class="form-group <?php echo form_error('data[internal_reference]')? 'has-error':''; ?>"">
+                                <label for="id">Internal Reference:</label>
+                                <input type="text" class="form-control" name="data[internal_reference]" id="id" placeholder="Interna Reference" value="<?php echo set_value('data[internal_reference]', $record->internal_reference); ?>">
+                                <?php echo form_error('data[internal_reference]','<p class="error-msg">','</p>') ?>
+                            </div>
 
                             <div class="form-group">
                                 <label for="image">Choose Files</label>

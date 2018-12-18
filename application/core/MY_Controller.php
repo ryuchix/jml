@@ -21,18 +21,22 @@ class MY_Controller extends CI_Controller
         parent::__construct();
 
         $this->load->model(['History_model', 'User_model']);
+
         $allowed_urls = array('login','reset_email_password','reset_password');
 
-        if ( !$this->session->userdata('logged_in') && !in_array($this->router->method, $allowed_urls)){
+        if ( !$this->session->userdata('logged_in') && !in_array($this->router->method, $allowed_urls))
+        {
             $url = $this->router->uri->uri_string;
             redirect(site_url('users/login?redirect='.$url));
         }
 
         $authenticatedUser = new User_model();
-        $authenticatedUser->load($this->session->userdata('user_id'));
-        $this->set_data('roles', $authenticatedUser->getAllowedPermissions());
-        $this->set_data('controller', $this);
 
+        $authenticatedUser->load($this->session->userdata('user_id'));
+
+        $this->set_data('roles', $authenticatedUser->getAllowedPermissions());
+
+        $this->set_data('controller', $this);
 
         // $authenticatedUser = new User_model();
         // $authenticatedUser->load(16);
@@ -86,6 +90,14 @@ class MY_Controller extends CI_Controller
         $history->context = $this->context;
         $history->action_by = $this->session->userdata('user_id');
         $history->save();
+    }
+
+    protected function sendResponse($data, $status=200)
+    {
+        return $this->output
+            ->set_status_header($status)
+            ->set_content_type('application/json')
+            ->set_output(json_encode($data));
     }
 
 } // MY_Controller

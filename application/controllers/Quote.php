@@ -124,10 +124,9 @@ class Quote extends MY_Controller
        	// $this->form_validation->set_rules('data[notes]','Expected Signoff.','required');
 	}
 
-
 	function forcast()
 	{
-		$this->redirectIfNotAllowed( 'view-forcast', 'quote');
+		$this->redirectIfNotAllowed( 'view-forecast', 'quote');
 		
 		$this->set_data('sub_menu', 'sales_forcast');
 		

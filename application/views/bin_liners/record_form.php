@@ -100,21 +100,32 @@
                                             <td>
                                                 <?php echo $item->price ?>
                                             </td>
-                                            <td>
+                                            <td class=" <?php echo form_error("items[$item->id]")? 'has-error':''; ?>">
                                                 <input type="text" name="items[<?php echo $item->id; ?>]" class="form-control qty"
-                                                value="<?php echo 
-                                                    isset($_POST['submit'])?
-                                                        $this->input->post("items[$item->id]"): 
-                                                        isset($liner_qty[$item->id])? $liner_qty[$item->id]:'';
 
-                                                        ?>">
+                                                <?php if (isset($_POST['submit'])): ?>
+
+                                                    value="<?php echo $this->input->post("items[$item->id]"); ?>"
+                                                      
+                                                <?php elseif(isset($liner_qty[$item->id])): ?>
+
+                                                    value="<?php echo $liner_qty[$item->id]; ?>"
+                                                    
+                                                <?php else: ?>
+                                                    
+                                                    value="0"
+
+                                                <?php endif ?>
+                                                />
                                             </td>
                                             <td><?php echo isset($liner_total[$item->id])?$liner_total[$item->id]:'' ?></td>
                                         </tr>
                                     <?php endforeach ?>
                                     </tbody>
                                 </table>
-                                    <?php echo form_error('item[<?php echo $item->id; ?>]','<p class="error-msg">','</p>'); ?>
+                                    <div class="form-group <?php echo form_error("items[$item->id]")? 'has-error':''; ?>">
+                                        <?php echo form_error("items[$item->id]",'<p class="error-msg">','</p>'); ?>
+                                    </div>
                                 </div>
                             </div>
 

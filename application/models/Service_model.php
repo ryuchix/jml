@@ -23,6 +23,9 @@ class Service_model extends MY_Model
 
     function get_dropdown_lists($first_empty=1, $active=1)
     {
+
+        $this->db->order_by('name');
+
         $ret = array_map(
 
                 function($o){ 

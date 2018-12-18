@@ -88,16 +88,29 @@
                                 </div>
                                 <?php echo form_error('request_date','<p class="error-msg">','</p>'); ?>
                             </div>
+                            
+                            <?php if ($controller->hasAccess('can-approve-consumable-request')): ?>
 
                             <div class="form-group <?php echo form_error('data[status]')? 'has-error':''; ?>">
                                 <label for="status">Status:</label>
                                 <?php 
-                                $status = [ STATUS_OPEN => 'Open', STATUS_CLOSED => 'Closed', STATUS_VOID => 'Void' ];
+                                $status = [ 
+                                    STATUS_AWAITING_FOR_APPROVAL => 'Awaiting for Approval', 
+                                    STATUS_APPROVED => 'Approved', 
+                                    STATUS_COLLECTED => 'Collected', 
+                                    STATUS_DELIVERED => 'Delivered',
+                                    STATUS_CLOSED => 'Closed', 
+                                    STATUS_VOID => 'Void' 
+                                ];
                                 echo form_dropdown('data[status]', $status, 
                                                         isset($_POST['data']['status'])? $_POST['data']['status']:$record->status
                                                         , 'class="dropdown_lists form-control" id="status" data-placeholder="Choose Status"'); ?>
                                 <?php echo form_error('data[status]','<p class="error-msg">','</p>') ?>
                             </div>
+
+                            <?php else: ?>
+                                <input type="hidden" name="data[status]" value="<?php echo STATUS_AWAITING_FOR_APPROVAL; ?>">
+                            <?php endif; ?>
 
                             <div class="form-group <?php echo form_error('data[po_no]')? 'has-error':''; ?>">
                                 <label for="po_no">Purchase Order No.</label>
@@ -249,7 +262,7 @@
                             '<td>' +
                                 '<div class="checkbox">' +
                                     '<label>' +
-                                        '<input type="checkbox" value="2" name="items['+item.id+'][id]">' +
+                                        '<input type="checkbox" value="'+item.id+'" name="items['+item.id+'][id]">' +
                                          '<span>'+item.name+'</span>'+
                                     '</label>' +
                                 '</div>' +

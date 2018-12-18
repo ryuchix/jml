@@ -39,23 +39,35 @@
            
             <?php endif; // end if quotes access
 
-            if ( $controller->hasAccess( ['add-memo', 'view-memo'] ) ): ?>
+            if ( $controller->hasAccess( ['add-file', 'view-file'] ) ): ?>
 
-            <li class="treeview <?php set_active_menu('memo', $active_menu); ?>">
+            <li class="treeview <?php set_active_menu('file', $active_menu); ?>">
 
-                <a href="#"><i class="fa fa-file-text-o"></i> <span>Memos</span> <i class="fa fa-angle-left pull-right"></i></a>
+                <a href="#"><i class="fa fa-file-text-o"></i> <span>Files</span> <i class="fa fa-angle-left pull-right"></i></a>
 
                 <ul class="treeview-menu">
                     
-                    <?php if ($controller->hasAccess('add-memo')) : ?>
-                    <li class="<?php echo set_sub_menu('add_memo', $sub_menu); ?>">
-                        <a href="<?php echo site_url( 'memo/save' ); ?>"><i class="fa fa-circle-o"></i> Add Memo</a>
+                    <?php if ($controller->hasAccess('add-file')) : ?>
+                    <li class="<?php echo set_sub_menu('add_file', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'files/save' ); ?>"><i class="fa fa-circle-o"></i> Add File</a>
                     </li>
                     <?php endif; ?>
 
                     <?php if ($controller->hasAccess('view-memo')) : ?>
-                    <li class="<?php echo set_sub_menu('view_memo', $sub_menu); ?>">
-                        <a href="<?php echo site_url( 'memo/' ); ?>"><i class="fa fa-circle-o"></i> View Memos</a>
+                    <li class="<?php echo set_sub_menu('view-memo', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'files/' ); ?>"><i class="fa fa-circle-o"></i> View Memo</a>
+                    </li>
+                    <?php endif; ?>
+
+                    <?php if ($controller->hasAccess('view-staff-file')) : ?>
+                    <li class="<?php echo set_sub_menu('view-staff-file', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'files/?type=staff file' ); ?>"><i class="fa fa-circle-o"></i> View Files</a>
+                    </li>
+                    <?php endif; ?>
+
+                    <?php if ($controller->hasAccess('view-tutorial')) : ?>
+                    <li class="<?php echo set_sub_menu('view-tutorial', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'files/?type=tutorial' ); ?>"><i class="fa fa-circle-o"></i> View Tutorials</a>
                     </li>
                     <?php endif; ?>
 
@@ -83,14 +95,52 @@
                         <a href="<?php echo site_url( 'jobs/' ); ?>"><i class="fa fa-circle-o"></i> View Jobs</a>
                     </li>
                     <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('add-job-category')): ?>
+                    <li class="<?php echo set_sub_menu('add_job_category', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'job_categories/save' ); ?>"><i class="fa fa-circle-o"></i> Add Job Category</a>
+                    </li>
+                    <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('view-job-categories')): ?>
+                    <li class="<?php echo set_sub_menu('view_job_categories', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'job_categories/' ); ?>"><i class="fa fa-circle-o"></i> View Job Categories</a>
+                    </li>
+                    <?php endif ?>
+
+                </ul>
+
+            </li>
+           
+            <?php endif; // end if jobs access ?>
+
+            <?php if ($controller->hasAccess(['add-task', 'view-task'])) : ?>
+            
+            <li class="treeview <?php set_active_menu('tasks', $active_menu); ?>">
+
+                <a href="#"><i class="fa fa-tasks"></i> <span>Tasks</span> <i class="fa fa-angle-left pull-right"></i></a>
+
+                <ul class="treeview-menu">
+                    
+                    <?php if ($controller->hasAccess('add-task')): ?>
+                    <li class="<?php echo set_sub_menu('add_task', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'tasks/create' ); ?>"><i class="fa fa-circle-o"></i> Add Task</a>
+                    </li>
+                    <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('view-task')): ?>
+                    <li class="<?php echo set_sub_menu('view_tasks', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'tasks/' ); ?>"><i class="fa fa-circle-o"></i> View Tasks</a>
+                    </li>
+                    <?php endif ?>
 
                 </ul>
 
             </li>
            
             <?php endif; // end if jobs access
-
-             if (true) : ?>
+            
+            if (true) : ?>
             
             <!-- <li>
                 <a href="<?php echo site_url('dailyrun'); ?>"> <i class="fa fa-trash"></i> <span>Daily Run</span></i></a>
@@ -530,13 +580,21 @@
 
                 <ul class="treeview-menu">
                     
+                    <?php if ($controller->hasAccess('view-bin-liner-setting')): ?>
+
                     <li class="<?php echo set_sub_menu('add_bin_liner_settings', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'bin_liner/' ); ?>"><i class="fa fa-circle-o"></i> Settings</a>
                     </li>
+                        
+                    <?php endif ?>
+    
+                    <?php if ($controller->hasAccess('view-bin-liner')): ?>
 
                     <li class="<?php echo set_sub_menu('view_bin_liner', $sub_menu); ?>">
                         <a href="<?php echo site_url( 'bin_liner/record_list' ); ?>"><i class="fa fa-circle-o"></i> View Bin Liners</a>
                     </li>
+                        
+                    <?php endif ?>
 
                 </ul>
 
@@ -569,21 +627,17 @@
             </li>
             <?php } ?>
 
-            <?php 
-
-            if($controller->hasAccess('export-user')) : ?>
-
-            <li class="treeview <?php set_active_menu('reports', $active_menu); ?>">
+            <li class="<?php set_active_menu('reports', $active_menu); ?>">
                 
-                <a href="#"><i class="fa fa-file-pdf-o"></i>
+                <a href="<?php echo base_url('reports'); ?>"><i class="fa fa-file-pdf-o"></i>
                 
                     <span>Reports</span> 
                 
-                    <i class="fa fa-angle-left pull-right"></i>
+                    <!-- <i class="fa fa-angle-left pull-right"></i> -->
                 
                 </a>
 
-                <ul class="treeview-menu">
+                <!-- <ul class="treeview-menu">
                     
                     <?php if ($controller->hasAccess('export-user')): ?>
                         
@@ -600,8 +654,37 @@
                     </li>
                         
                     <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('export-client')): ?>
+                        
+                    <li>
 
-                </ul>
+                        <a href="<?php echo site_url( 'client/export' ); ?>">
+
+                            <i class="fa fa-circle-o"></i> 
+                            
+                            Export Clients
+
+                        </a>
+
+                    </li>
+                        
+                    <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('export-prospect')): ?>
+                        
+                    <li>
+                        <a href="<?php echo site_url( 'client/export/prospects' ); ?>">
+
+                            <i class="fa fa-circle-o"></i> 
+                            
+                            Export Prospects
+
+                        </a>
+
+                    </li>
+                        
+                </ul> -->
 
             </li>
 
@@ -611,4 +694,5 @@
 
   </section>
   <!-- /.sidebar -->
+  
 </aside>

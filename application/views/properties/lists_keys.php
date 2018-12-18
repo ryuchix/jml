@@ -58,7 +58,9 @@
                                     <?php $this->load->view('properties/keys_table', array('records'=>$records)); ?>
                                     
                                 </div><!-- /.tab-pane -->
+
                             </div><!-- /.tab-content -->
+                            
                         </div>
                         
                     </div>

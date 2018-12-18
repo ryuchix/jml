@@ -32,8 +32,8 @@ class Bin_liner_model extends MY_Model
     				JOIN property AS p ON p.id = bl.property_id
     				JOIN users AS u ON u.id = bl.staff
     				JOIN client AS c ON c.id = p.client_id
-                    JOIN bin_liner_detail AS bld ON bld.liner_id = bl.id
-                    JOIN bin_liner_setting AS s ON s.id = bld.setting_id
+                    LEFT JOIN bin_liner_detail AS bld ON bld.liner_id = bl.id
+                    LEFT JOIN bin_liner_setting AS s ON s.id = bld.setting_id
                 GROUP BY bl.id";
     	return $this->db->query($sql)->result();
     }

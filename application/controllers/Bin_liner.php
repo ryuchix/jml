@@ -47,14 +47,19 @@ class Bin_liner extends MY_Controller
 	function save($id=false)
 	{
 		$this->redirectIfNotAllowed($id? 'edit-bin-liner': 'add-bin-liner', 'bin_liner');
+
 		$this->set_data('sub_menu', 'add_bin_liner_settings');
+
 		$record = new Bin_liner_model();
-		if ($id) {
+
+		if ($id) 
+		{
 			$record->load($id);
 		}
+
 		$this->set_data('record', $record);
 		$this->load->library('form_validation');
-		$this->set_data( 'properties', $this->Property_model->get_dropdown_lists() );
+		$this->set_data( 'properties', $this->Property_model->get_dropdown_lists_of_service('Bin Liner') );
 		$this->set_data( 'liner_qty', [] );
 		$this->set_data( 'liner_total', [] );
 
@@ -69,23 +74,43 @@ class Bin_liner extends MY_Controller
 
 		$this->set_data( 'users', $this->User_model->get_dropdown_lists() );
 
-		if( isset($_POST['submit']) ){
+		if( isset($_POST['submit']) )
+		{
        		$this->form_validation->set_rules('date','Date','required');
        		$this->form_validation->set_rules('data[property_id]','Property','required');
        		$this->form_validation->set_rules('data[staff]','Staff','required');
 
-			if ( $this->form_validation->run() == TRUE ) {
+       		$has_items = !empty(array_filter($this->input->post('items'), function($item){ return $item>0; }));
 
+       		if (!$has_items) 
+       		{
+				foreach ($this->input->post('items') as $id => $qty) 
+				{
+       				$this->form_validation->set_rules("items[$id]", 'Items', 'required|greater_than[0]');
+       			}
+       		}
+
+
+			if ( $this->form_validation->run() == TRUE ) 
+			{
+				
 				$record->date = db_date($this->input->post('date'));
-				foreach ($this->input->post('data') as $field => $value) {
-					$record->{$field} 	= $value;
+				
+				foreach ($this->input->post('data') as $field => $value) 
+				{
+					$record->{$field} = $value;
 				}
 
 				$inserted_result = $record->save();
-				if ( $inserted_id = $id? $id: $inserted_result ) {
+
+				if ( $inserted_id = $id? $id: $inserted_result ) 
+				{
 					$this->Bin_liner_detail_model->deleteWhere(array('liner_id'=>$inserted_id));
-					foreach ($this->input->post('items') as $id => $qty) {
-						if ($qty) {
+					
+					foreach ($this->input->post('items') as $id => $qty) 
+					{
+						if ($qty) 
+						{
 							$detail_item = new Bin_liner_detail_model();
 							$detail_item->liner_id 	= $inserted_id;
 							$detail_item->setting_id= $id;
@@ -95,12 +120,16 @@ class Bin_liner extends MY_Controller
 							$detail_item->save();
 						}
 					}
+					
 					set_flash_message(0, "Record Submitted Successfully!");
+
 					redirect( site_url( 'bin_liner/record_list' ) );
 				}
 
 			}
+       		// x($this->form_validation->error_array());
 		}
+
 		$this->load->view('bin_liners/record_form',$this->get_data());
 	}
 

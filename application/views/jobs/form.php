@@ -78,6 +78,12 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
+
+                            <div class="form-group <?php echo form_error('data[job_title]')? 'has-error':''; ?>">
+                                <label for="job_title">Job Title</label>
+                                    <input type="text" class="form-control" name="data[job_title]" id="job_title" placeholder="Job Title" value="<?php echo set_value('data[job_title]', $record->job_title); ?>">
+                                <?php echo form_error('data[job_title]','<p class="error-msg">','</p>'); ?>
+                            </div>
                             
                             <div class="form-group <?php echo form_error('data[client_id]')? 'has-error':''; ?>">
                                 <label for="client_id">Choose Client:</label>
@@ -101,13 +107,13 @@
                                 <?php echo form_error('data[property_id]','<p class="error-msg">','</p>') ?>
                             </div>
                             
-                            <div class="form-group <?php echo form_error('data[job_category]')? 'has-error':''; ?>">
+                            <!-- <div class="form-group <?php echo form_error('data[job_category]')? 'has-error':''; ?>">
                                 <label for="job_category">Job Category:</label>
-                                <?php echo form_dropdown('data[job_category]', get_job_categories(), 
-                                            isset($_POST['data']['job_category'])? $_POST['data']['job_category']:$record->job_category
-                                            , 'class="dropdown_lists form-control" id="job_category" data-placeholder="Job Category"'); ?>
-                                <?php echo form_error('data[job_category]','<p class="error-msg">','</p>') ?>
-                            </div>
+                                <?php // echo form_dropdown('data[job_category]', $categoies, 
+                                      //      isset($_POST['data']['job_category'])? $_POST['data']['job_category']:$record->job_category
+                                      //      , 'class="dropdown_lists form-control" id="job_category" data-placeholder="Job Category"'); ?>
+                                <?php // echo form_error('data[job_category]','<p class="error-msg">','</p>') ?>
+                            </div> -->
                             
                             <div class="form-group <?php echo form_error('data[job_type]')? 'has-error':''; ?>">
                                 <label for="job_type">Job Type:</label>
@@ -117,11 +123,6 @@
                                 <?php echo form_error('data[job_type]','<p class="error-msg">','</p>') ?>
                             </div>
 
-                            <div class="form-group <?php echo form_error('data[job_description]')? 'has-error':''; ?>">
-                                <label for="job_description">Job Description</label>
-                                    <input type="text" class="form-control" name="data[job_description]" id="job_description" placeholder="Job Description" value="<?php echo set_value('data[job_description]', $record->job_description); ?>">
-                                <?php echo form_error('data[job_description]','<p class="error-msg">','</p>'); ?>
-                            </div>
                             <div class="form-group <?php echo form_error('start_date')? 'has-error':''; ?>">
                                 <label for="start_date">Start Date</label>
                                 <div class='input-group date' id='datetimepicker'>
@@ -191,6 +192,11 @@
                                 <?php echo form_error('data[end_time]','<p class="error-msg">','</p>'); ?>
                             </div>
 
+                            <div class="form-group <?php echo form_error('data[internal_notes]')? 'has-error':''; ?>">
+                                <label for="internal_notes">Internal Notes</label>
+                                <textarea class="form-control" name="data[internal_notes]" id="internal_notes" placeholder="Internal Notes..." rows="3"><?php echo set_value('data[internal_notes]', $record->internal_notes); ?></textarea>
+                                <?php echo form_error('data[internal_notes]','<p class="error-msg">','</p>'); ?>
+                            </div>
                         </div>
                         <!-- /.box-body -->
                     </div>

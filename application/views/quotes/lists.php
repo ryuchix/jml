@@ -122,10 +122,11 @@
     $('.pdf_view').on('click', function(event) {
         // alert();
         // window.location = 'pdf_view/'+$('.nav-tabs').find('li.active').data('type');
+        var baseUrl = '<?php echo site_url( "quote/" ); ?>';
         window.open(
-            'pdf_view/'+$('.nav-tabs').find('li.active').data('type'),
+            baseUrl + 'pdf_view/' + $('.nav-tabs').find('li.active').data('type'),
             "_blank"
-            );
+        );
         event.preventDefault();
 
     });

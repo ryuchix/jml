@@ -76,7 +76,7 @@
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" name="data[email]" id="email" placeholder="Email" value="<?php echo set_value('data[email]', $record->email); ?>">
                                 <?php echo form_error('data[email]','<p class="error-msg">','</p>') ?>
-                            </div>
+                            </div> 
                             
                             <div class="form-group">
                                 <label for="website">Website</label>
@@ -120,22 +120,22 @@
 
                             <div class="form-group">
                                 <label for="address_1">Address:</label>
-                                <input type="text" readonly class="form-control" name="data[address_1]" id="address_1" placeholder="Address" value="<?php echo set_value('data[address_1]', $record->address_1); ?>">
+                                <input type="text" class="form-control" name="data[address_1]" id="address_1" placeholder="Address" value="<?php echo set_value('data[address_1]', $record->address_1); ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="address_state">State:</label>
-                                <input type="text" class="form-control" name="data[address_state]" readonly id="address_state" placeholder="State" value="<?php echo set_value('data[address_state]', $record->address_state); ?>">
+                                <input type="text" class="form-control" name="data[address_state]" id="address_state" placeholder="State" value="<?php echo set_value('data[address_state]', $record->address_state); ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="address_suburb">Suburb:</label>
-                                <input type="text" class="form-control" name="data[address_suburb]" readonly id="address_suburb" placeholder="State" value="<?php echo set_value('data[address_suburb]', $record->address_suburb); ?>">
+                                <input type="text" class="form-control" name="data[address_suburb]" id="address_suburb" placeholder="State" value="<?php echo set_value('data[address_suburb]', $record->address_suburb); ?>">
                             </div>
 
                             <div class="form-group">
                                 <label for="address_post_code">Postcode:</label>
-                                <input type="text" class="form-control" name="data[address_post_code]" readonly id="address_post_code" placeholder="State" value="<?php echo set_value('data[address_post_code]', $record->address_post_code); ?>">
+                                <input type="text" class="form-control" name="data[address_post_code]" id="address_post_code" placeholder="State" value="<?php echo set_value('data[address_post_code]', $record->address_post_code); ?>">
                             </div>
 
                             <input type="hidden" name="data[address_location]" id="address_location" value="<?php echo set_value('data[address_location]', $record->address_location); ?>">

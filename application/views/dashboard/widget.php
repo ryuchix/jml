@@ -49,21 +49,21 @@
     </div>
 	<?php endif ?>
 
-	<?php if (false): ?>
-	<div class="col-lg-3 col-xs-6">
-      	<!-- small box -->
-      	<div class="small-box bg-green">
-        	<div class="inner">
-              	<h3><?php echo $count_all_property; ?></h3>
-              	<p>Properties</p>
-        	</div>
+  <?php if (false): ?>
+  <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+          <div class="inner">
+                <h3><?php echo $count_all_property; ?></h3>
+                <p>Properties</p>
+          </div>
             <div class="icon">
-              	<i class="ion ion-home"></i>
+                <i class="ion ion-home"></i>
             </div>
             <a href="<?php echo site_url( 'property/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-      	</div>
+        </div>
     </div>
-	<?php endif ?>
+  <?php endif ?>
 
 	<?php if ( $controller->hasAccess('view-complaint-widget') ): ?>
 	<div class="col-lg-3 col-xs-6">
@@ -139,6 +139,22 @@
       	</div>
   </div>
 
+  <?php if ($controller->hasAccess('view-tutorial-widget')): ?>
+  <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-green">
+          <div class="inner">
+                <h3><?php echo $count_tutorial; ?></h3>
+                <p>Tutorials</p>
+          </div>
+            <div class="icon">
+                <i class="ion ion-file"></i>
+            </div>
+            <a href="<?php echo site_url( 'files/?type=tutorial' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+  <?php endif ?>
+
   <?php if ( $controller->hasAccess('view-consumable-widget') ): ?>
 	<div class="col-lg-3 col-xs-6">
       	<!-- small box -->
@@ -154,6 +170,39 @@
       	</div>
   </div>
   <?php endif ?>
+
+  <?php if ($controller->hasAccess('view-memo')): ?>
+  <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+        <div class="small-box bg-blue-grey">
+          <div class="inner">
+              <h3><?php echo $count_memos; ?></h3>
+              <p>Memos</p>
+          </div>
+          <div class="icon">
+              <i class="ion ion-android-contacts"></i>
+          </div>
+          <a href="<?php echo site_url( 'files/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+  <?php endif ?>
+
+  <?php if ($controller->hasAccess('view-staff-file')): ?>
+  <div class="col-lg-3 col-xs-6">
+      <!-- small box -->
+        <div class="small-box bg-blue-grey">
+          <div class="inner">
+              <h3><?php echo $count_files; ?></h3>
+              <p>Files</p>
+          </div>
+          <div class="icon">
+              <i class="ion ion-android-contacts"></i>
+          </div>
+          <a href="<?php echo site_url( 'files/?type=staff file' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+  <?php endif ?>
+
 </div>
 
 <div class="row" id="weather">

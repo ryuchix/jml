@@ -40,9 +40,11 @@ class Council extends MY_Controller
        		
 			if ( $this->form_validation->run() == TRUE ) {
 				
-				foreach ($this->input->post('data') as $field => $value) {
-					$record->{$field} = $value;
+				foreach ($this->input->post('data') as $field => $value) 
+				{
+					$record->{$field} = is_array($value)? json_encode($value): $value;
 				}
+
 				$record->active = $id? $record->active: 1;
 				$record->{$id? 'updated_by':'added_by'} = $this->session->userdata('user_id');
 

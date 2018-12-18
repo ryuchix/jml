@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Client Name</th>
+            <th>Client Type</th>
             <th>Address </th>
             <th>Phone </th>
             <th>Email</th>
@@ -14,6 +15,7 @@
     <?php foreach($records as $row){ ?>
     <tr class="<?php echo ($row->id == $modified_item_id)?"animated tada\" style=\"animation-fill-mode: backwards;\"":""; ?>">
         <td><?php echo $row->name; ?></td>
+        <td><?php echo $row->client_type; ?></td>
         <td><?php echo $row->address_1 . ', ' . $row->address_suburb . ', ' . $row->address_post_code; ?></td>
         <td><?php echo $row->phone; ?></td>
         <td><?php echo $row->email; ?></td>
@@ -50,6 +52,13 @@
                     <li><?php echo anchor(site_url('client/map/'.$row->id),'<i class="fa fa-map-marker"></i> Map', ' data-remote="false" data-toggle="modal" data-target="#myModal"')?></li>
                     <li><?php echo anchor(site_url('client/notes/'.$row->id),'<i class="fa fa-sticky-note-o"></i> Notes')?></li>
                     <li><?php echo anchor(site_url('client/files/'.$row->id),'<i class="fa fa-paperclip"></i> Files')?></li>
+                    <?php if ($controller->hasAccess('view-client-marketing')): ?>
+                    <li><?php echo anchor(site_url("clients-marketing/$row->id/logs"),'<i class="fa fa-volume-control-phone"></i> Marketing') ?></li>
+                    <?php endif ?>
+                    <?php if ($controller->hasAccess('can-change-client-username-password')): ?>
+                        <li><a data-toggle="modal" href='#changeUsername' data-client="<?php echo $row->id; ?>"><i class="fa fa-lock"></i> Change Username/Password</a></li>
+                    <?php endif ?>
+
                 </ul>
             </div>
         </td>
@@ -60,4 +69,3 @@
     </tbody>
 
 </table>
-

@@ -46,6 +46,12 @@
                         <div class="box-body">
                             <h4>Customer Information</h4>
                             <hr>
+
+                            <div class="form-group <?php echo form_error('data[title]')? 'has-error':''; ?>">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" name="data[title]" id="title" placeholder="Title" value="<?php echo set_value('data[title]', $record->title); ?>">
+                            </div>
+
                             <div class="form-group <?php echo form_error('data[client_id]')? 'has-error':''; ?>">
                                 <label for="client_id">Choose Client</label>
                                 <?php echo form_dropdown('data[client_id]', $clients, 
@@ -64,11 +70,9 @@
                             </div>
 
                             <div class="form-group <?php echo form_error('data[reported_by]')? 'has-error':''; ?>">
-                                <div class="form-group <?php echo form_error('data[reported_by]')? 'has-error':''; ?>">
-                                    <label for="reported_by">Reported By</label>
-                                    <input type="text" class="form-control" name="data[reported_by]" id="reported_by" placeholder="Reported By" value="<?php echo set_value('data[reported_by]', $record->reported_by); ?>">
-                                    <?php echo form_error('data[reported_by]','<p class="error-msg">','</p>') ?>
-                                </div>
+                                <label for="reported_by">Reported By</label>
+                                <input type="text" class="form-control" name="data[reported_by]" id="reported_by" placeholder="Reported By" value="<?php echo set_value('data[reported_by]', $record->reported_by); ?>">
+                                <?php echo form_error('data[reported_by]','<p class="error-msg">','</p>') ?>
                             </div>
 
                             <hr>
@@ -202,9 +206,6 @@ $(function () {
         })
         .fail(function() {
             console.log("error");
-        })
-        .always(function() {
-            console.log("complete");
         });
         
     });

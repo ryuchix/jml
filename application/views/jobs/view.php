@@ -66,7 +66,7 @@
                         </h5>
                         
                         <h5 class="widget-user-desc">
-                            <?php echo $record->job_description . ' - ' . get_job_categories($record->job_category); ?>
+                            <?php echo $record->job_title . ' - ' . get_job_categories($record->job_category); ?>
                         </h5>
                         
                         <h5 class="widget-user-desc">
@@ -228,6 +228,10 @@
         var $link = $(e.relatedTarget);
         // $('#myModalLabel').text( $link.parents('tr').find('td:eq(0)').text() + ' Location Map' );
         $(this).find(".modal-body").load($link.attr("href"));
+    });
+
+    $('[name="visit_id"]').on('change', function() {
+        $(this).parent('form').submit();
     });
 
 </script>

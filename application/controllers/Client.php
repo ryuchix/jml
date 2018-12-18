@@ -59,8 +59,9 @@ class Client extends MY_Controller
 		}
 		$this->set_data('record', $record);
 		$this->load->library('form_validation');
-		$this->set_data('client_types',  $this->get_client_type_dropdown_list_data() ); // set data
+		$this->set_data('client_types',  $this->Client_type_model->dropdown_list() ); // set data
 
+		$this->db->order_by('name');
 		$this->set_data(
 			'parent_clients', 
 			array_map(function($o){ 
@@ -113,19 +114,8 @@ class Client extends MY_Controller
 		$this->load->view('clients/form',$this->get_data());
 	}
 
-	function get_client_type_dropdown_list_data()
-	{
-		return array_map(
-					function($o){ 
-						return $o->type; 
-					}, 
-					$this->Client_type_model->getWhere(array('active'=>1))
-				); // array_map
-	}
-
 	function set_conditional_validation_roles()
 	{
-		
     	$this->form_validation->set_rules('data[name]','Client name','required|max_length[255]');
     	$this->form_validation->set_rules('data[client_type]','Client type','required|numeric');
     	$this->form_validation->set_rules('data[phone]','Phone number','required|max_length[255]');
@@ -210,6 +200,28 @@ class Client extends MY_Controller
             return true;
         }
     }
+
+   	public function export($type='clients')
+   	{
+   		if ($type == 'clients') 
+   		{
+
+	   		$this->load->library('ClientCsvExport');
+
+	   		$csv = new ClientCsvExport('Client_model');	
+
+   		}else{
+   			
+	   		$this->load->library('ProspectCsvExport');
+
+	   		$csv = new ProspectCsvExport('Client_model');
+   		}
+
+   		$csv->excludeColumns(['child_of', 'is_prospect']);
+
+   		$csv->export();
+   	}
+
 
     function contact( $client_id, $action )
     {
@@ -353,7 +365,7 @@ class Client extends MY_Controller
 
 		$this->load->library('form_validation');
 
-		$this->set_data('client_types',  $this->get_client_type_dropdown_list_data() );
+		$this->set_data('client_types',  $this->Client_type_model->dropdown_list() );
 		
 		if( isset($_POST['submit']) ){
 			
@@ -861,15 +873,79 @@ class Client extends MY_Controller
 		}
 	}
 
+
+
+	function send_credentails()
+	{
+		if ( !in_array('can-change-client-username-password', $this->data['roles']) ) 
+		{
+			return $this->sendResponse(['message' => 'Unauthenticated', 'code' => 401], 401);
+		}
+
+		if (!isset($_POST['client_id'])) 
+		{
+			return $this->sendResponse(['error' => 'not found'], 404);
+		}
+
+		$client = new Client_model();
+
+		$client->load($this->input->post('client_id'));
+
+		return $this->sendResponse(['username' => $client->username]);
+	}
+
+	public function change_password()
+	{
+		if ( !in_array('can-change-client-username-password', $this->data['roles']) ) 
+		{
+			return $this->sendResponse(['message' => 'Unauthenticated', 'code' => 401]);
+		}
+
+		if ( !isset($_POST['client_id']) )
+		{
+			return $this->sendResponse(['error', 404]);
+		}
+
+    	$this->load->library('form_validation');
+		$this->form_validation->set_rules('username', 'Username','required|callback_custom_username_check['.$this->input->post('client_id').']');
+        $this->form_validation->set_rules('password','Password','required|min_length[3]|max_length[15]');
+        $this->form_validation->set_rules('password_confirmation','Confirm Password','required|matches[password]');
+
+        if( $this->form_validation->run() === false )
+        {
+            return $this->sendResponse($this->form_validation->error_array(), 422);
+        }
+
+		$client = new Client_model();
+
+		$client->load($this->input->post('client_id'));
+
+		$client->username = $this->input->post('username');
+
+		$client->password = password_hash($this->input->post('password'), PASSWORD_BCRYPT, array('cost'=>12));
+
+		$client->save();
+
+		return $this->sendResponse(['message' => 'username / password has changed successfully.']);
+		// return $this->sendResponse($this->input->post());
+	}
+
+	public function custom_username_check($user_name,$id)
+    {
+        $this->db->where('username',$user_name);
+        
+        $this->db->where('id !=',$id);
+        
+        $users = $this->db->get('client');
+        
+        if($users->row())
+        {
+            $this->form_validation->set_message('custom_username_check', 'The {field} must be unique. This is already in use.');
+
+            return false;
+        }
+
+        return true;
+    }
+
 }
-
-
-
-
-
-
-
-
-
-// Google Places APIs KEY
-// AIzaSyBa0XPDzdP8ATw5PZPiv7Fm7DKm5gW_ko8

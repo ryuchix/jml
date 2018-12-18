@@ -11,7 +11,7 @@ class Job_visits_model extends MY_Model
     public $completed = 0;
     public $date;
     public $notes;
-    public $time_id;
+    public $time_in;
     public $time_out;
     public $user_id;
     public $logged_at;

@@ -54,6 +54,10 @@
                     <?php if ($controller->hasAccess('view-vehicle-fuel')): ?>
                     <li><?php echo anchor(site_url("vehicle_fuel/lists/$row->id"),'<i class="fa fa-assistive-listening-systems"></i> Fuel')?></li>
                     <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('view-vehicle-gallery')): ?>
+                    <li><?php echo anchor(site_url("gallery/index/vehicle/$row->id"),'<i class="fa fa-camera"></i> Gallery')?></li>
+                    <?php endif ?>
 
                 </ul>
             </div>

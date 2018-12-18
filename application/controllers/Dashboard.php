@@ -6,6 +6,12 @@ class Dashboard extends MY_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		
+		if(!$this->session->userdata('is_client'))
+		{
+			redirect('clients/dashboard');
+		}
+
 		$this->load->model(array( 
 			'Client_model', 
 			'Supplier_model', 
@@ -15,6 +21,7 @@ class Dashboard extends MY_Controller {
 			'Equipment_model',
 			'User_model',
 			'Vehicle_model',
+			'File_model',
 			'Consumable_request_model',
 			'Dashboard_vehicle_information_model',
 			'Dashboard_equipment_information_model',
@@ -33,7 +40,16 @@ class Dashboard extends MY_Controller {
 		// $this->set_data('count_pending_quotes', $this->Quote_model->count_where(['status'=>STATUS_PENDING]));
 		$this->set_data('bday_users', $this->User_model->get_birthday_users());
 		$this->set_data('count_all_vehicle', $this->Vehicle_model->count());
-		$this->set_data('count_consumable_open_request', $this->Consumable_request_model->count_where(['status'=>STATUS_OPEN]));
+
+		$this->set_data('count_consumable_open_request', $this->db->select('id')
+					->from('consumable_request')
+                    ->where('status', STATUS_OPEN)
+                    ->or_where('status', STATUS_AWAITING_FOR_APPROVAL)
+				->count_all_results());
+
+		$this->set_data('count_memos', $this->File_model->count_where([ 'type' => 'memo', 'active' => '1' ]));
+		$this->set_data('count_files', $this->File_model->count_where([ 'type' => 'staff file', 'active' => '1' ]));
+		$this->set_data('count_tutorial', $this->File_model->count_where([ 'type' => 'tutorial', 'active' => '1' ]));
 
 		$this->set_data('regoes', $this->Dashboard_vehicle_information_model->get());
 		$this->set_data('equipments', $this->Dashboard_equipment_information_model->get());

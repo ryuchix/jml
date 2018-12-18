@@ -379,16 +379,6 @@
                                 </div><!-- /.input group -->
                                 <?php echo form_error('data[system_color]','<p class="error-msg">','</p>'); ?>
                             </div>
-                            
-                            <?php if ($controller->hasAccess('view-base-rate')): ?>
-                                
-                            <div class="form-group <?php echo form_error('data[base_rate]')? 'has-error':''; ?>">
-                                <label for="base_rate">Base Rate:</label>
-                                <input type="text" class="form-control" name="data[base_rate]" id="base_rate" value="<?php echo set_value('data[base_rate]', $record->base_rate); ?>" placeholder="Base Rate">
-                                <?php echo form_error('data[base_rate]','<p class="error-msg">','</p>'); ?>
-                            </div>
-
-                            <?php endif; ?>
 
                         </div>
 
@@ -398,6 +388,87 @@
                         </div>
 
                     </div>
+                
+                    <?php if ($controller->hasAccess('view-base-rate')): ?>
+                            
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                          <h3 class="box-title">Salary</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        
+                        <div class="box-body">
+                                
+                            <div class="form-group <?php echo form_error('data[gross]')? 'has-error':''; ?>">
+                                <label for="gross">Gross:</label>
+                                <input type="text" class="form-control" name="data[gross]" id="gross" value="<?php echo set_value('data[gross]', $record->gross); ?>" placeholder="Gross">
+                                <?php echo form_error('data[gross]','<p class="error-msg">','</p>'); ?>
+                            </div>
+
+                        </div>
+                        
+                        <div class="box-body">
+                                
+                            <div class="form-group <?php echo form_error('data[net]')? 'has-error':''; ?>">
+                                <label for="net">Net:</label>
+                                <input type="text" class="form-control" name="data[net]" id="net" value="<?php echo set_value('data[net]', $record->net); ?>" placeholder="Net">
+                                <?php echo form_error('data[net]','<p class="error-msg">','</p>'); ?>
+                            </div>
+
+                        </div>
+                        
+                        <div class="box-body">
+                                
+                            <div class="form-group <?php echo form_error('data[base_rate]')? 'has-error':''; ?>">
+                                <label for="base_rate">Base Rate:</label>
+                                <input type="text" class="form-control" name="data[base_rate]" id="base_rate" value="<?php echo set_value('data[base_rate]', $record->base_rate); ?>" placeholder="Base Rate">
+                                <?php echo form_error('data[base_rate]','<p class="error-msg">','</p>'); ?>
+                            </div>
+
+                        </div>
+                        
+                        <div class="box-body">
+                                
+                            <div class="form-group <?php echo form_error('data[hours_per_month]')? 'has-error':''; ?>">
+                                <label for="hours_per_month">Hours per month:</label>
+                                <input type="text" class="form-control" name="data[hours_per_month]" id="hours_per_month" value="<?php echo set_value('data[hours_per_month]', $record->hours_per_month); ?>" placeholder="Hours per month">
+                                <?php echo form_error('data[hours_per_month]','<p class="error-msg">','</p>'); ?>
+                            </div>
+
+                                
+                            <div class="form-group <?php echo form_error('data[payg]')? 'has-error':''; ?>">
+                                <label for="payg">PAYG:</label>
+                                <input type="text" class="form-control" name="data[payg]" id="payg" value="<?php echo set_value('data[payg]', $record->payg); ?>" placeholder="PAYG">
+                                <?php echo form_error('data[payg]','<p class="error-msg">','</p>'); ?>
+                            </div>
+
+                                
+                            <div class="form-group <?php echo form_error('data[superannuation]')? 'has-error':''; ?>">
+                                <label for="superannuation">Superannuation:</label>
+                                <input type="text" class="form-control" name="data[superannuation]" id="superannuation" value="<?php echo set_value('data[superannuation]', $record->superannuation); ?>" placeholder="Superannuation">
+                                <?php echo form_error('data[superannuation]','<p class="error-msg">','</p>'); ?>
+                            </div>
+
+
+                            <div class="form-group <?php echo form_error('data[frequency]')? 'has-error':''; ?>">
+                                <label for="user_role">Frequency</label>
+                                <?php 
+                                echo form_dropdown('data[frequency]', ['Monthly' => 'Monthly', 'Fortnightly' => 'Fortnightly'], $record->frequency, ' class="form-control"');
+                                ?>
+                                <?php echo form_error('data[frequency]','<p class="error-msg">','</p>'); ?>
+                            </div>
+
+                            <a href="https://www.paycalculator.com.au/" target="_blank" class="btn btn-info">www.paycalculator.com.au</a>
+
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer hidden-md hidden-lg">
+                            <button type="submit" class="btn btn-primary" name="submit">Save</button>
+                        </div>
+
+                    </div>
+
+                    <?php endif; ?>
 
                 </div> <!-- .com-sm-6 -->
 

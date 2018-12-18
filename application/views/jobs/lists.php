@@ -33,7 +33,8 @@
                         <div class="nav-tabs-custom">
                             <?php $class_title = ucwords(str_replace('_', ' ', $class_name)); ?>
                             <ul class="nav nav-tabs pull-right">
-                                <li class="active" style="visibility: hidden;"><a href="#tab_2-2" data-toggle="tab" aria-expanded="false"></a></li>
+                                <li><a href="#tab_2-2" data-toggle="tab" aria-expanded="false">Closed Jobs</a></li>
+                                <li class="active"><a href="#tab_2-1" data-toggle="tab" aria-expanded="true">Opened Jobs</a></li>
                               
                                 <?php if ( $controller->hasAccess('add-job') ): ?>
                                 <li class="pull-left header">
@@ -47,9 +48,15 @@
 
                             <div class="tab-content">
 
-                                <div class="tab-pane <?php echo $active_list; ?>" id="tab_2-2">
+                                <div class="tab-pane <?php echo $active_list; ?>" id="tab_2-1">
 
-                                    <?php $this->load->view("$class_name/table", array('records'=>$records)); ?>
+                                    <?php $this->load->view("$class_name/table", array('records'=>$opened_records)); ?>
+                                    
+                                </div><!-- /.tab-pane -->
+
+                                <div class="tab-pane <?php echo $inactive_list; ?>" id="tab_2-2">
+
+                                    <?php $this->load->view("$class_name/table", array('records'=>$closed_records)); ?>
                                     
                                 </div><!-- /.tab-pane -->
 

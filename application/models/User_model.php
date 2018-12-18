@@ -39,7 +39,15 @@ class User_model extends MY_Model
     public $expiry_date;
     public $hour_per_week;
     public $system_color;
-    public $base_rate;
+
+    // Salary
+    public $base_rate = 0;
+    public $gross = 0;
+    public $net = 0;
+    public $hours_per_month = 0;
+    public $payg = 0;
+    public $superannuation = 0;
+    public $frequency;
 
     public $account_number;
     public $bsb_no;
@@ -81,6 +89,8 @@ class User_model extends MY_Model
 
     function get_dropdown_lists($first_empty=1, $active=1)
     {
+        $this->db->order_by('first_name');
+        $this->db->order_by('last_name');
         $ret = array_map(
 
                 function($o){ 

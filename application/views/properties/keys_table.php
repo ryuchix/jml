@@ -4,6 +4,7 @@
             <th>Key No</th>
             <th>Key Type</th>
             <th>Description</th>
+            <th>Internal Reference</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -13,6 +14,7 @@
         <td>Key-<?php echo $row->id; ?></td>
         <td><?php echo $row->type; ?></td>
         <td><?php echo $row->description; ?></td>
+        <td><?php echo $row->internal_reference; ?></td>
         <td>
           <div class="btn-group">
                 <button data-toggle="dropdown" class="dropdown-toggle btn btn-icon-toggle btn-default ink-reaction">

@@ -29,7 +29,7 @@ class Key_type extends MY_Controller
 
 	function save($id=false)
 	{
-		$this->redirectIfNotAllowed($id? 'edit-key-type', 'add-key-type');
+		$this->redirectIfNotAllowed($id? 'edit-key-type': 'add-key-type');
 		$this->set_data('sub_menu', 'add_key_type');
 		$record = new Key_type_model();
 		if ($id) { $record->load($id); }

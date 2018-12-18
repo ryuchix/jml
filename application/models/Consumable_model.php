@@ -20,8 +20,24 @@ class Consumable_model extends MY_Model
     public $added_by;
     public $updated_by;
 
-    function get_dropdown_lists($first_empty=1, $active=1)
+    function get_dropdown_lists($first_empty=1, $active=1, $uniqueForProperty = false)
     {
+        if ($uniqueForProperty) 
+        {
+            $this->load->model('Property_consumables_model');
+            $consumables = (new Property_consumables_model())->getWhere(['property_id' => $uniqueForProperty]);
+
+            if (is_array($consumables)) 
+            {
+                foreach ($consumables as $consumable) 
+                {
+                    $this->db->where('id !=', $consumable->consumable_id);
+                }
+            }
+        }
+
+        $this->db->order_by('name');
+
         $ret = array_map(
 
                 function($o){ 

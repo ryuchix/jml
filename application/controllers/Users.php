@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends MY_Controller
 {
@@ -430,7 +429,7 @@ class Users extends MY_Controller
 
         if (!$columns) {
 
-            set_flash_message(2, "There is not result!");
+            set_flash_message(2, "There is no result!");
 
             redirect( site_url() );
 

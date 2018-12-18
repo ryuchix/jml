@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>No Images</th>
             <th>Category</th>
             <th>Description</th>
             <th>Action</th>
@@ -12,6 +13,7 @@
 
     <tr>
         <td><?php echo $row->name; ?></td>
+        <td><?php echo $row->count_images; ?></td>
         <td><?php echo $row->type; ?></td>
         <td><?php echo $row->description; ?></td>
         <td>
@@ -20,6 +22,8 @@
                   <i class="fa fa-ellipsis-v "></i>
                 </button>
                 <ul class="dropdown-menu">
+
+                    <li><?php echo anchor(site_url("gallery/download/$row->id"), '<i class="fa fa-download"></i> Download') ?></li>
 
                     <?php if ($controller->hasAccess("edit-{$context}-gallery")): ?>
                     <li><?php echo anchor(site_url("gallery/edit/$row->id"),'<i class="fa fa-pencil"></i> Edit Gallery')?></li>

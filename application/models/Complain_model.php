@@ -9,6 +9,7 @@ class Complain_model extends MY_Model
     const DB_TABLE_PK = 'id';
 
     public $id;
+    public $title;
     public $client_id;
     public $property_id;
     public $reported_by;
@@ -39,7 +40,7 @@ class Complain_model extends MY_Model
 
     function get_complaints_list($status)
     {
-        $sql = "SELECT i.id, c.name AS client, 
+        $sql = "SELECT i.id, i.title, c.name AS client, 
                     CONCAT(u.first_name, ' ', u.last_name) AS assigned, 
                     p.address, CONCAT(p.address, ', ', p.address_suburb, ', ', p.address_post_code) AS property, 
                     i.status
@@ -53,7 +54,7 @@ class Complain_model extends MY_Model
 
     function get_open_or_assinged_complaints_list()
     {
-        $sql = "SELECT i.id, c.name AS client, 
+        $sql = "SELECT i.id, i.title, c.name AS client, 
                     CONCAT(u.first_name, ' ', u.last_name) AS assigned, 
                     p.address, CONCAT(p.address, ', ', p.address_suburb, ', ', p.address_post_code) AS property, 
                     i.status
@@ -65,7 +66,13 @@ class Complain_model extends MY_Model
         return $this->db->query($sql)->result();
     }
 
-    public function count_open_or_assigned() {
+    public function count_open_or_assigned($client_id = false) {
+        
+        if ($client_id) 
+        {
+            $this->db->where(['client_id' => $client_id]);
+        }
+
         $this->db->where(['status'=>STATUS_OPEN]);
         $this->db->or_where(['status'=>STATUS_ASSIGNED]);
         $this->db->from($this::DB_TABLE);
