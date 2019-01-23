@@ -74,7 +74,7 @@
                   <?php if ($this->session->userdata('dp')): ?>
                     <img src="<?php echo base_url('uploads/profile_images/'.$this->session->userdata('dp'));?>" class="user-image" alt="User Image">
                   <?php endif ?>
-                  <span class="hidden-xs"><?php echo $this->session->userdata('fullname').' - '. get_user_role($this->session->userdata('user_role')) ;?></span>
+                  <span class="hidden-xs"><?php echo $this->session->userdata('fullname'); ?></span>
                 </a>
               </li>
               <!-- Control Sidebar Toggle Button -->

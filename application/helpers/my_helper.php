@@ -61,6 +61,7 @@ defined("FREQUENCY_YEARLY")? null: define("FREQUENCY_YEARLY", 4);
 defined("FREQUENCY_EIGHT_WEEKLY")? null: define("FREQUENCY_EIGHT_WEEKLY", 5);
 defined("FREQUENCY_TWELVE_WEEKLY")? null: define("FREQUENCY_TWELVE_WEEKLY", 6);
 defined("FREQUENCY_ONE_OFF")? null: define("FREQUENCY_ONE_OFF", 7);
+defined("FREQUENCY_TWENTY_SIX_WEEKLY")? null: define("FREQUENCY_TWENTY_SIX_WEEKLY", 8);
 
 function get_frequency($frequency_index=0)
 {
@@ -71,7 +72,8 @@ function get_frequency($frequency_index=0)
       FREQUENCY_MONTHLY=> 'Monthly',
       FREQUENCY_YEARLY=> 'Yearly',
       FREQUENCY_EIGHT_WEEKLY=> '8 Weekly',
-      FREQUENCY_TWELVE_WEEKLY=> '12 Weekly'
+      FREQUENCY_TWELVE_WEEKLY=> '12 Weekly',
+      FREQUENCY_TWENTY_SIX_WEEKLY=> '26 Weekly'
   );
   return isset($frequency[$frequency_index])?$frequency[$frequency_index]:$frequency;
 }

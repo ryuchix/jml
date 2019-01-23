@@ -350,7 +350,7 @@ class Gallery extends MY_Controller
 
 		$dateTime = date('d.m.Y H.i.s a');
 
-		$archive_file_name = $this->context . '_gallery.zip';
+		$archive_file_name = $record->name . '_gallery.zip';
 
 		$zip = new ZipArchive();
 

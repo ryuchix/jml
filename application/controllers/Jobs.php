@@ -96,9 +96,12 @@ class Jobs extends MY_Controller
 					// $record->month_type = $this->input->post('every_no_day');
 					// x( unserialize($record->selected_day_of_month));
 					// die();
-					if (!$id) { 
+					if (!$id) {
+
+						// dd($this->input->post());
+						// if($this->input->post('end_date'))
 						$record->start_date = db_date($this->input->post('start_date'));
-						$record->end_date = ($this->input->post('end_date') == 1)? db_date($this->input->post('end_date')): db_date($this->input->post('start_date'));
+						$record->end_date = $this->input->post('end_date')? db_date($this->input->post('end_date')): db_date($this->input->post('start_date'));
 						$record->added_by = $this->session->userdata('user_id'); 
 					}
 
@@ -108,8 +111,9 @@ class Jobs extends MY_Controller
 					$this->add_crew_members( $job_id, $this->input->post('users') );
 					$this->add_line_items( $job_id, $this->input->post('line_items') );
 					if ( !$id || $this->input->post('regenerate_visits') == 'yes' ) {
+						$end_date = $this->input->post('end_date')? $this->input->post('end_date'): $this->input->post('start_date');
 						$this->Job_visits_model->deleteWhere( ['job_id' => $job_id, 'completed'=>0] );
-						$this->add_visits( $job_id, $this->input->post('start_date'), $this->input->post('end_date') );
+						$this->add_visits( $job_id, $this->input->post('start_date'), $end_date );
 					}
 					$this->db->trans_complete();
 					if ( $this->db->trans_status() === TRUE ) {
@@ -340,21 +344,20 @@ class Jobs extends MY_Controller
 
 	function get_custom_weekly_visit_dates()
 	{
-		$duration = $this->input->post('data[duration]');
-		$duration_string = str_replace('s', '', $this->input->post('data[duration_schedule]'));
+		$duration = $this->input->post('data[duration]'); // 10 in years or month or week or day
+		$duration_string = str_replace('s', '', $this->input->post('data[duration_schedule]')); // year month week or day
 		
-		$end_date = new DateTime( db_date($this->input->post('start_date')) );
-		$end_date->modify("+$duration $duration_string");
+		// Selected first day to begin with
 		$start_date = new DateTime( db_date($this->input->post('start_date')) );
+		// ->modify('+10 year') modify the day so that we could get the last day or the contract
+		$end_date = (new DateTime( db_date($this->input->post('start_date')) ))->modify("+$duration $duration_string");
 
-		$interval = $this->input->post('every_no_week')?$this->input->post('every_no_week'):0;
-		$days = $this->input->post('week_days');
-		// $start_date->modify("next ".$days[0]);
+		$interval = $this->input->post('every_no_week')? $this->input->post('every_no_week'): 0;
+		$days = $this->input->post('week_days'); // Saturday, Sunday, Monday, Tuesday, Wednesday, Thursday, Friday
+		
+		// add first starting date statically.
+		$dates[] = $start_date->format('Y-m-d');
 		do {
-			foreach ( $days as $day ) {
-				$dates[] = $start_date->format('Y-m-d');
-				$start_date->modify("next $day");
-			}
 			for ($i=1; $i <= $interval; $i++) {
 				if (in_array('sunday', $days) && $interval == 1) {
 					continue;
@@ -362,7 +365,17 @@ class Jobs extends MY_Controller
 					$start_date->modify("next sunday");
 				}
 			}
+
+			foreach ( $days as $day ) { // loop in every week day and modify to next {week_day}
+				if($day != 'sunday'){
+					$start_date->modify("next $day");
+				}	
+				$dates[] = $start_date->format('Y-m-d');
+			}
+			
 		} while ($start_date <= $end_date);
+		
+		// dd($dates, $start_date);
 
 		return $dates;
 	}
@@ -633,5 +646,17 @@ class Jobs extends MY_Controller
 	    return $d && $d->format('Y-m-d') === $date;
 	}
 
+	public function clean()
+	{
+		// $this->db->simple_query("DELETE FROM job_note_attachments");
+		// $this->db->simple_query("DELETE FROM job_files");
+		// $this->db->simple_query("DELETE FROM job_notes");
+		// $this->db->simple_query("DELETE FROM job_services");
+		// $this->db->simple_query("DELETE FROM job_visits");
+		// $this->db->simple_query("DELETE FROM job_crew");
+		// $this->db->simple_query("DELETE FROM job");
+		// set_flash_message(0, 'All jobs and related data are deleted!' );
+		// redirect('jobs');
+	}
 
 }

@@ -37,8 +37,13 @@
                                 <li class="active"><a href="#tab_2-1" data-toggle="tab" aria-expanded="true">Opened Jobs</a></li>
                               
                                 <?php if ( $controller->hasAccess('add-job') ): ?>
+                                <!-- <li class="pull-left header" style="padding: 0;">
+                                    <a onclick="return confirm('Make Sure if you want to delete all jobs record. it will delete all record from database and would not be able to recover the deleted data.');" href="<?php echo site_url( $class_name."/clean" ); ?>" style="display: inline; padding: 10px 0;">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </li> -->
                                 <li class="pull-left header">
-                                    <a href="<?php echo site_url( $class_name."/save" ); ?>" style="display: inline;">
+                                    <a href="<?php echo site_url( $class_name."/save" ); ?>" style="display: inline; padding: 10px 0;">
                                         <i class="fa fa-plus"></i>
                                     </a> <?php echo $class_title ?> List
                                 </li>

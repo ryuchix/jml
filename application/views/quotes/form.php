@@ -148,6 +148,12 @@
                                 <?php echo form_error('data[amount]','<p class="error-msg">','</p>') ?>
                             </div>
 
+                            <div class="form-group <?php echo form_error('data[yearly]')? 'has-error':''; ?>">
+                                <label for="yearly">Yearly</label>
+                                <input type="text" class="form-control" name="data[yearly]" id="yearly" placeholder="Yearly" value="<?php echo set_value('data[yearly]', $record->yearly); ?>">
+                                <?php echo form_error('data[yearly]','<p class="error-msg">','</p>') ?>
+                            </div>
+
                             <div class="form-group <?php echo form_error('data[chance]')? 'has-error':''; ?>">
                                 <label for="chance">Chance</label>
                                 <?php $chances = array('' => 'Choose...', 10 => '10%', 20 => '20%', 30 => '30%', 40 => '40%', 50 => '50%', 60 => '60%', 70 => '70%', 80 => '80%', 90 => '90%', 100 => '100%');
@@ -164,7 +170,7 @@
                                 <?php echo form_error('data[service_id]','<p class="error-msg">','</p>') ?>
                             </div>
 
-                            <div class="form-group <?php echo form_error('data[status]')? 'has-error':''; ?>">
+                            <div class="form-group <?php echo form_error('data[status]')? 'has-error':''; ?>" id="status">
                                 <label for="status">Status</label>
                                 <?php $status = array(
                                     '' => 'Choose...',
@@ -176,6 +182,16 @@
                                 echo form_dropdown('data[status]', $status, $record->status, ' id="status" class="form-control" data-placeholder="Choose..."');
                                 ?>
                                 <?php echo form_error('data[status]','<p class="error-msg">','</p>'); ?>
+                            </div>
+
+                            <div class="form-group <?php echo form_error('quote_won')? 'has-error':''; ?>" id="quote_won" style="display: <?php echo $record->status == STATUS_WON? 'block': 'none'; ?>;">
+                                <label for="date">Quote won:</label>
+                                <div class='input-group date' id='datetimepicker'>
+                                    <input type="text" class="form-control" name="quote_won" id="date" placeholder="Quote Won" value="<?php echo set_value('date', $record->quote_won? local_date($record->quote_won): ''); ?>">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                    </span>
+                                </div>
+                                <?php echo form_error('quote_won','<p class="error-msg">','</p>'); ?>
                             </div>
                             
                             <div class="form-group <?php echo form_error('last_contact')? 'has-error':''; ?>">
@@ -276,6 +292,17 @@
 <script>
     
 $(function () {
+
+    $('#status').on('change', function(e){
+        if($(this).find('option:selected').val() == <?php echo STATUS_WON; ?>)
+        {
+            $('#quote_won').slideDown();
+        }
+        else
+        {
+            $('#quote_won').slideUp();
+        }
+    });
 
     $('.date').datetimepicker({
          format: 'DD/MM/YYYY'

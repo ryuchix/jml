@@ -18,9 +18,11 @@ class Quote_model extends MY_Model
     public $sales_rep;
     public $frequency;
     public $amount;
+    public $yearly;
     public $chance;
     public $service_id;
     public $status;
+    public $quote_won;
     public $last_contact;
     public $next_contact;
     public $expected_signoff;
@@ -42,7 +44,7 @@ class Quote_model extends MY_Model
                     q.file, q.status, q.chance, 
                     CONCAT(cc.contact_name, ' ', cc.surname) AS contact,
                     CONCAT(u.first_name, ' ', u.last_name) AS sales,
-                    q.frequency,  q.amount AS value, q.next_contact, q.last_contact, q.expected_signoff, s.name AS service
+                    q.frequency,  q.amount AS value, q.next_contact, q.last_contact, q.expected_signoff, q.yearly, q.quote_won, s.name AS service
                 FROM quote AS q
                     JOIN client AS c ON c.id = q.client_id
                     JOIN property AS p ON p.id = q.property_id
@@ -63,7 +65,7 @@ class Quote_model extends MY_Model
         $sql = "
             SELECT q.id, q.quote_no, c.name AS client, q.file,
                     $address AS address,
-                    q.amount, DATE_FORMAT(q.expected_signoff, '%b-%y') AS month, DATE_FORMAT(q.expected_signoff, '%d') AS day, 
+                    q.yearly as amount, DATE_FORMAT(q.expected_signoff, '%b-%y') AS month, DATE_FORMAT(q.expected_signoff, '%d') AS day, 
                     s.name AS service
             FROM quote AS q
                     JOIN client AS c ON c.id = q.client_id

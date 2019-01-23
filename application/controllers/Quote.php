@@ -69,6 +69,7 @@ class Quote extends MY_Controller
 				$record->last_contact = db_date($this->input->post('last_contact'));
 				$record->next_contact = db_date($this->input->post('next_contact'));
 				$record->expected_signoff = $this->input->post('expected_signoff')? db_date($this->input->post('expected_signoff')):null;
+				$record->quote_won = $this->input->post('data[status]') == STATUS_WON? db_date($this->input->post('quote_won')): null;
 
 				if ($id) {
 					if ($this->input->post('data[status]') == STATUS_WON && !$this->date_won) {
@@ -117,7 +118,12 @@ class Quote extends MY_Controller
        	$this->form_validation->set_rules('data[amount]','amount.','required|numeric');
        	$this->form_validation->set_rules('data[chance]','Chance.','required');
        	$this->form_validation->set_rules('data[service_id]','Service.','required');
-       	$this->form_validation->set_rules('data[status]','Status.','required');
+		$this->form_validation->set_rules('data[status]','Status.','required');
+
+		if ($this->input->post('data[status]') == STATUS_WON) {
+			$this->form_validation->set_rules('quote_won','Quote Won.','required');
+		}
+		   
        	$this->form_validation->set_rules('last_contact','Last Contact.','required');
        	$this->form_validation->set_rules('next_contact','Next Contact.','required');
        	// $this->form_validation->set_rules('expected_signoff','Expected Signoff.','required');
@@ -165,10 +171,10 @@ class Quote extends MY_Controller
 			$pdf->Cell(0, 40, "No record found!", 0, 1, "C");
 			$pdf->Output();
 		}else{
-			
 			$this->load->library('Quote_view');
 			$pdf = new Quote_view($status, "L");
 			$pdf->status = ucfirst($querty_status);
+			$pdf->quote_won = $querty_status == 'won'? true: false;
 			$pdf->AddPage();
 			$pdf->display_output();
 			$pdf->Output();
@@ -196,7 +202,6 @@ class Quote extends MY_Controller
 
 	function list_in_csv($querty_status)
 	{
-
 		$status = null;
 		switch ($querty_status) {
 			case 'pending':
@@ -217,7 +222,7 @@ class Quote extends MY_Controller
 		header('Content-Type: application/excel');
 		header('Content-Disposition: attachment; filename="Quote Lists '.date('d/m/Y h.i.s').'.csv"');
 		
-		$data = array('Quote no.,Client,Service,Property,Status,Chance,Contact,Sales,Frequency,Value,Last,Next,Expected');
+		$data = array('Quote no.,Client,Service,Property,Status,Chance,Contact,Sales,Frequency,Value,Yearly,Last,Next,Expected,Quote Won');
 		$total = array();
 		foreach ($status as $row) {
 			$row_data = array();
@@ -231,9 +236,11 @@ class Quote extends MY_Controller
 			$row_data[] = str_replace(',', " ", $row->sales);
 			$row_data[] = str_replace(',', " ", get_frequency($row->frequency));
 			$row_data[] = '$'.str_replace(',', " ", $row->value);
+			$row_data[] = '$'.str_replace(',', " ", $row->yearly);
 			$row_data[] = str_replace(',', " ", local_date($row->last_contact));
 			$row_data[] = str_replace(',', " ", local_date($row->next_contact));
 			$row_data[] = str_replace(',', " ", local_date($row->expected_signoff));
+			$row_data[] = str_replace(',', " ", local_date($row->quote_won));
 			$data[] = join(',', $row_data);
 		}
 

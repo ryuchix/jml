@@ -147,6 +147,61 @@
 
 		<?php $this->load->view('clients/dashboard/widget'); ?>
 
+		<div class="row">
+
+            <div class="col-xs-12">
+
+                <div class="box">
+
+                    <div class="box-body">
+
+                        <div class="nav-tabs-custom">
+                            <ul class="nav nav-tabs pull-right">
+                                <li class="pull-left header">
+                                    Clients List
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+
+                                <div class="tab-pane show">
+
+									<table class="table table-bordered table-striped">
+										<tr>
+											<th>ID</th>
+											<th>Name</th>
+											<th>Email</th>
+											<th>Phone</th>
+											<th>Website</th>
+										</tr>
+										<?php foreach($clietns as $client): ?>
+										<tr>
+											<td><?php echo $client->client_id; ?></td>
+											<td><?php echo $client->name; ?></td>
+											<td><?php echo $client->email; ?></td>
+											<td><?php echo $client->phone; ?></td>
+											<td><?php echo $client->website; ?></td>
+										</tr>
+										<?php endforeach; ?>
+									</table>
+                                    
+                                </div><!-- /.tab-pane -->
+
+                            </div><!-- /.tab-content -->
+                        </div>
+
+                    </div>
+                    <!-- /.box-body -->
+
+                </div>
+                <!-- /.box -->
+
+            </div>
+            <!-- /.col -->
+
+        </div>
+        <!-- /.row -->
+
 	</section>
 
 </div>

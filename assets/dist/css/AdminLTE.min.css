@@ -179,3 +179,239 @@ div.preloader {
             transform: rotate(225deg);
   }
 }
+
+table.table tr td button.dropdown-toggle {
+    padding: 0 8px;
+    background: transparent;
+    border: transparent;
+}
+.form-control[readonly] {
+    background: rgba(215, 215, 215, 0.15);
+}
+.select2-container--default .select2-selection--single {
+    border-radius: 0;
+    height: 34px;
+    border-color: #d2d6de;
+    padding-left: 0;
+}
+
+.select2-dropdown {
+    border-radius: 0;
+    border-color: #d2d6de;
+}
+span.select2.select2-container.select2-container--default {
+    min-width: 100%;
+}
+
+
+/* Preloader */
+.preloader-container {
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.87);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    display: none;
+}
+div.preloader {
+  position: absolute;
+  width: 84px;
+  height: 84px;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.preloader span {
+  display: block;
+  width: 35px;
+  height: 8px;
+  border-radius: 4px;
+  background: #3c8dbc;
+  position: absolute;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+  -webkit-animation-iteration-count: infinite;
+          animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease;
+          animation-timing-function: ease;
+}
+.preloader span:nth-of-type(4n - 3) {
+  left: 24.5px;
+  -webkit-animation-name: rotate1;
+          animation-name: rotate1;
+}
+.preloader span:nth-of-type(3) {
+  left: 2px;
+}
+.preloader span:nth-of-type(7) {
+  right: 2px;
+}
+.preloader span:nth-of-type(4n-1) {
+  top: 24.5px;
+  width: 8px;
+  height: 35px;
+  -webkit-animation-name: rotate1;
+          animation-name: rotate1;
+}
+.preloader span:nth-of-type(5) {
+  bottom: 0;
+}
+.preloader span:nth-of-type(4n - 2) {
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+  -webkit-animation-name: rotate2;
+          animation-name: rotate2;
+}
+.preloader span:nth-of-type(2) {
+  top: 12px;
+}
+.preloader span:nth-of-type(6) {
+  bottom: 12px;
+  right: 0;
+}
+.preloader span:nth-of-type(4n) {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+  -webkit-animation-name: rotate3;
+          animation-name: rotate3;
+}
+.preloader span:nth-of-type(4) {
+  bottom: 12px;
+}
+.preloader span:nth-of-type(8) {
+  top: 12px;
+  right: 0;
+}
+
+@-webkit-keyframes rotate1 {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+}
+
+@keyframes rotate1 {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(180deg);
+            transform: rotate(180deg);
+  }
+}
+@-webkit-keyframes rotate2 {
+  from {
+    -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+  }
+  to {
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+}
+@keyframes rotate2 {
+  from {
+    -webkit-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+  }
+  to {
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+}
+@-webkit-keyframes rotate3 {
+  from {
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+  }
+  to {
+    -webkit-transform: rotate(225deg);
+            transform: rotate(225deg);
+  }
+}
+@keyframes rotate3 {
+  from {
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+  }
+  to {
+    -webkit-transform: rotate(225deg);
+            transform: rotate(225deg);
+  }
+}
+
+
+@media only screen and (max-width: 760px), (min-device-width: 768px) and (max-device-width: 1024px)  {
+
+  .users-list>li {
+      width: 50%;
+  }
+
+	/* Force table to not be like tables anymore */
+	table, thead, tbody, th, td, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { border: 1px solid #ccc; }
+	
+	td { 
+		border: none !important;
+    border-bottom: 1px solid #eee !important;
+    position: relative;
+    padding-left: 50% !important;
+    white-space: normal !important;
+    text-align: left;
+    min-height: 37px;
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+	
+	/*
+	Label the data
+	*/
+	.equipment-table td:nth-of-type(1):before { content: "JML No."; }
+	.equipment-table td:nth-of-type(2):before { content: "Reference"; }
+	.equipment-table td:nth-of-type(3):before { content: "Type"; }
+	.equipment-table td:nth-of-type(4):before { content: "Tagged Date"; }
+	.equipment-table td:nth-of-type(5):before { content: "Next Service Date"; }
+	.equipment-table td:nth-of-type(6):before { content: "Assigned To"; }
+	/*.equipment-table td:nth-of-type(7):before { content: "Date of Birth"; }*/
+	/*.equipment-table td:nth-of-type(8):before { content: "Dream Vacation City"; }*/
+	/*.equipment-table td:nth-of-type(9):before { content: "GPA"; }*/
+	/*.equipment-table td:nth-of-type(10):before { content: "Arbitrary Data"; }*/
+	
+	
+	.fleet-table td:nth-of-type(1):before { content: "Rego."; }
+	.fleet-table td:nth-of-type(2):before { content: "Rego Due Date"; }
+	.fleet-table td:nth-of-type(3):before { content: "Rego Expires"; }
+	.fleet-table td:nth-of-type(4):before { content: "Next Service Date"; }
+	.fleet-table td:nth-of-type(5):before { content: "Next Service Odo"; }
+	.fleet-table td:nth-of-type(6):before { content: "Odometer Finish"; }
+	.fleet-table td:nth-of-type(7):before { content: "Insurance Expires"; }
+}
+

@@ -10,28 +10,50 @@ class Quote_view extends FPDF
 	protected $set_text_color = array(100, 100, 100);
 	public $status;
 	public $header;
+	public $quote_won = null;
 	protected $is_last_page = false;
 	protected $left_padding = 5;
 	protected $table_starting_Y_position = 5;
 
 	function __construct($data=null, $orientation='P')
 	{
-		parent::__construct($orientation, $unit='mm', $size='A4');
+		parent::__construct($orientation, $unit='mm', $size='A3');
 		$this->header = array(
-			"Quote no" 			=> 20,
-			"Client" 			=> 40,
-			"Service" 			=> 26,
-			"Property" 			=> 44,
-			"Status" 			=> 12,
-			"Chance" 			=> 10,
-			"Contact" 			=> 32,
-			"Sales" 			=> 23,
-			"Frequency" 		=> 14,
-			"Value"		 		=> 10,
-			"Last"				=> 16,
-			"Next"				=> 16,
-			"Expected"			=> 16,
+			"Quote no" 			=> 19,
+			"Client" 			=> 39,
+			"Service" 			=> 25,
+			"Property" 			=> 43,
+			"Status" 			=> 11,
+			"Chance" 			=> 9,
+			"Contact" 			=> 31,
+			"Sales" 			=> 22,
+			"Frequency" 		=> 13,
+			"Yearly"		 	=> 9,
+			"Last"				=> 15,
+			"Next"				=> 15,
+			"Expected"			=> 15,
+			"Quote Won"			=> 15,
 		);
+		$this->header = array(
+			"Quote no" 			=> 19,
+			"Client" 			=> 65,
+			"Service" 			=> 45,
+			"Property" 			=> 55,
+			"Status" 			=> 15,
+			"Chance" 			=> 15,
+			"Contact" 			=> 30,
+			"Sales" 			=> 25,
+			"Frequency" 		=> 18,
+			"Value"		 		=> 15,
+			"Yearly"		 	=> 15,
+			"Last"				=> 20,
+			"Next"				=> 20,
+			"Expected"			=> 20,
+			"Quote Won"			=> 20,
+		);
+		if ($this->quote_won) {
+			$this->header['Quote Won'] = 15;
+		}
 		$this->data = $data;
 	}
 
@@ -43,7 +65,7 @@ class Quote_view extends FPDF
 	function Header()
 	{		
 		// Logo
-		$this->Image( base_url('assets/images/logo.png'), 240, 5, 50 );
+		$this->Image( base_url('assets/images/logo.png'), 355, 5, 50 );
 		$this->Ln(5);
 		// $this->setIssueNumber($this->record);
 		// $this->SetFont( 'Arial', 'B', 10 );
@@ -61,6 +83,7 @@ class Quote_view extends FPDF
 	{
 		$this->SetFillColor(240, 240, 240);
 		$this->SetFont( 'Arial', '', 8.5 );
+		$this->SetFont( 'Arial', '', 9 );
 		$this->Ln(5);
 		foreach ($this->header as $title => $w) {
 			// Cell($w, $h=0, $txt='', $border=0, $ln=0, $align='', $fill=false, $link='')
@@ -73,7 +96,8 @@ class Quote_view extends FPDF
 	{
 		$currentPageY = 0;
 		$h = 6;
-		$defaultFontSize = 8.5;
+		$defaultFontSize = $this->quote_won? 8: 8.5;
+		$defaultFontSize = 9;
 		$this->SetFont( 'Arial', '', $defaultFontSize );
 		$this->left_padding = $this->GetX();
 		$this->table_starting_Y_position = $this->GetY();
@@ -94,19 +118,19 @@ class Quote_view extends FPDF
 
 			$current_y = $this->GetY();
 			$current_x = $this->GetX();
-			$this->MultiCell($this->header['Client'], 5, $row->client, "T", "L");
+			$this->MultiCell($this->header['Client'], 5.5, $row->client, "T", "L");
 			$new_y = $this->GetY();
 			$this->SetXY($current_x + $this->header['Client'], $current_y);
 
 			$current_y = $this->GetY();
 			$current_x = $this->GetX();
-			$this->MultiCell($this->header['Service'], 5, $row->service, "T", "L");
+			$this->MultiCell($this->header['Service'], 5.5, $row->service, "T", "L");
 			if ( $this->GetY() > $new_y ) { $new_y = $this->GetY(); }
 			$this->SetXY($current_x + $this->header['Service'], $current_y);
 
 			$current_y = $this->GetY();
 			$current_x = $this->GetX();
-			$this->MultiCell($this->header['Property'], 5, $row->address, "T", "L");
+			$this->MultiCell($this->header['Property'], 5.5, $row->address, "T", "L");
 			if ( $this->GetY() > $new_y ) { $new_y = $this->GetY(); }
 			$this->SetXY($current_x + $this->header['Property'], $current_y);	
 
@@ -123,9 +147,11 @@ class Quote_view extends FPDF
 
 			$this->Cell($this->header['Frequency'], $h, get_frequency($row->frequency), "T", 0, "L", 0);
 			$this->Cell($this->header['Value'], $h, '$'.$row->value, "T", 0, "C", 0);
+			$this->Cell($this->header['Yearly'], $h, '$'.$row->yearly, "T", 0, "C", 0);
 			$this->Cell($this->header['Last'], $h, local_date($row->last_contact), "T", 0, "C", 0);
 			$this->Cell($this->header['Next'], $h, local_date($row->next_contact), "T", 0, "C", 0);
 			$this->Cell($this->header['Expected'], $h, local_date($row->expected_signoff), "T", 0, "C", 0);
+			$this->Cell($this->header['Quote Won'], $h, local_date($row->quote_won), "T", 0, "C", 0);
 			$currentPageY = $this->GetY();
 			$x = $this->GetX();
 			$this->Ln();

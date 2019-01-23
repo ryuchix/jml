@@ -190,9 +190,9 @@
 
                 </ul>
             </li>
-           
             <?php endif; // end if equipments access
-             if ( $controller->hasAccess(['add-complaint', 'view-complaint']) ) : ?>
+            
+            if ( $controller->hasAccess(['add-complaint', 'view-complaint']) ) : ?>
 
             <li class="treeview <?php set_active_menu('complaints', $active_menu); ?>">
 

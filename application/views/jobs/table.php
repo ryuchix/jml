@@ -4,7 +4,7 @@
             <th>Job no.</th>
             <th>Property/Client</th>
             <th>Type of job</th>
-            <th>Category</th>
+            <th>Job</th>
             <!-- <th>Last Visit</th> -->
             <th>Next Visit</th>
             <th>Value</th>
@@ -17,7 +17,7 @@
         <td>Job-<?php echo $row->id; ?></td>
         <td><?php echo $row->address . ' <br> ' . $row->client; ?></td>
         <td><?php echo get_job_types($row->job_type); ?></td>
-        <td><?php echo $row->job_category . ' - ' . $row->job_title; ?></td>
+        <td><?php echo $row->job_title; ?></td>
         <td><?php echo ($row->next_visit && !$row->closed)? local_date($row->next_visit):''; ?></td>
         <!-- <td><?php echo ''; ?></td> -->
         <td>$<?php echo $row->value; ?></td>
@@ -36,6 +36,8 @@
                     <?php endif ?>
 
                     <li><?php echo anchor(site_url($class_name.'/view/'.$row->id),'<i class="fa fa-eye"></i> View Job'); ?></li>
+
+                    <li><?php echo anchor(site_url('job_files/add_files/'.$row->id),'<i class="fa fa-file-o"></i> Add Files'); ?></li>
                     
                     <?php if (!$row->closed && $controller->hasAccess('close-job')): ?>
                     <li><?php echo anchor(site_url($class_name.'/close/'.$row->id),'<i class="fa fa-times"></i> Close Job', 'class="close-job"'); ?></li>

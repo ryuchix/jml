@@ -41,13 +41,9 @@ class Users extends MY_Controller
                     $this->session->set_userdata('email', $found->email);
                     if (isset($_GET['redirect'])&&$found->user_role==ADMIN_ROLE) 
                     {
-
                         redirect(site_url($_GET['redirect']));
-
                     }else{ 
-
                         redirect( site_url() );
-
                     }
 
 	    		}else{

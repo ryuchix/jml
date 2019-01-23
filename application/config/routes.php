@@ -22,6 +22,7 @@ $route['client/change-password'] = 'client/change_password';
 $route['client/login'] = 'Client_login_controller/login';
 
 $route['client/dashboard'] = 'clients/dashboard/index';
+// $route['clients/properties'] = 'clients/properties/index';
 
 
 

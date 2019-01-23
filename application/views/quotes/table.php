@@ -12,9 +12,13 @@
             <th>Sales</th>
             <th>Frequency</th>
             <th>Value</th>
+            <th>Yearly</th>
             <th>Last Contacted</th>
             <th>Next Contact</th>
             <th>Expected Signoff</th>
+            <?php if(isset($won) && $won): ?>
+            <th>Quote Won</th>
+            <?php endif; ?>
             <th>Action</th>
         </tr>
     </thead>
@@ -35,9 +39,13 @@
         <td><?php echo $row->sales; ?></td>
         <td><?php echo get_frequency($row->frequency); ?></td>
         <td>$<?php echo $row->value; ?></td>
+        <td>$<?php echo $row->yearly; ?></td>
         <td><?php echo local_date($row->last_contact); ?></td>
         <td><?php echo local_date($row->next_contact); ?></td>
         <td><?php echo local_date($row->expected_signoff); ?></td>
+        <?php if(isset($won) && $won): ?>
+        <td><?php echo local_date($row->quote_won); ?></td>
+        <?php endif; ?>
         <td>
 
             <?php if( $controller->hasAccess(['edit-quote', 'view-quote-history']) ): ?>

@@ -7,7 +7,7 @@ class Dashboard extends MY_Controller {
 	{
 		parent::__construct();
 		
-		if(!$this->session->userdata('is_client'))
+		if($this->session->userdata('is_client'))
 		{
 			redirect('clients/dashboard');
 		}
@@ -57,3 +57,17 @@ class Dashboard extends MY_Controller {
 		$this->load->view('dashboard/index', $this->get_data());
 	}
 }
+
+
+/* 
+
+Yahoo App for Wheather
+App ID
+wgkSWC6o
+Client ID (Consumer Key)
+dj0yJmk9c0R6MWYyQ2tpWGV5JnM9Y29uc3VtZXJzZWNyZXQmc3Y9MCZ4PWUz
+Client Secret (Consumer Secret)
+c380214c733e148fc8226dd9e12d9639bd3b301b
+
+
+*/

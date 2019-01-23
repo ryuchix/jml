@@ -28,9 +28,9 @@
 
             </div>
 
-            <div class="box-body chart-responsive table-responsive">
+            <div class="box-body chart-responsive table-responsive fleet-table">
 				
-				<table class="table table-bordered">
+				<table class="table table-bordered table-striped">
 					
 					<thead>
 							

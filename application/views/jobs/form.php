@@ -448,7 +448,7 @@ $('#job_type').on('change', function(event) {
 var rowNumber = <?php $this->input->post('line_items[]')? (count($this->input->post('line_items[]'))-1) : 0; ?> 0;
 $('#addItem').on('click', function(event) {
     event.preventDefault();
-    rowNumber++;
+    rowNumber = parseInt($('#lineItemTable tbody tr:last td:first select').attr('name').match(/\d+/).shift()) + 1;
     var row = '<tr>'+
         '<td>' +
             '<div class="form-group ">'+
@@ -544,7 +544,7 @@ $('#dayOfMonth td').not(".not").click(function() {
     var $this = $(this);
     $this.toggleClass('selected');
 
-    dirty = true;
+    dirty = <?php echo $record->id? 'true':'false'; ?>;
     checkWarning();
 
     var t = new Array();
@@ -564,7 +564,8 @@ $('.nav-tabs li a').click(function(event) {
     }
 });
 var $start_date = $('#start_date'),
-    start_date_value = $start_date.val();
+    dateArray = $start_date.val().split('/'),
+    start_date_value = new Date(dateArray[2],dateArray[1],dateArray[0]);
 
 $('.date').on('dp.change', function(event) {
     // event.preventDefault();
@@ -572,7 +573,10 @@ $('.date').on('dp.change', function(event) {
 });
 
 function checkWarning() {
-    if ( ($start_date.val() != start_date_value) || dirty) {
+    var dateArray = $start_date.val().split('/'),
+    selected_date_value = new Date(dateArray[2],dateArray[1],dateArray[0]);
+
+    if ( (selected_date_value < start_date_value) || dirty) {
         $('#warning').slideDown('slow');
         $('button[type=submit]').prop('disabled', true);
         $('#confirmation').prop('disabled', false);

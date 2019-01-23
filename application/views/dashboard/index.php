@@ -121,6 +121,57 @@
     right: -7px;
 }
 
+@media only screen and (max-width: 800px) {
+	
+	/* Force table to not be like tables anymore */
+	.no-mobile-tables table, 
+	.no-mobile-tables thead, 
+	.no-mobile-tables tbody, 
+	.no-mobile-tables th, 
+	.no-mobile-tables td, 
+	.no-mobile-tables tr { 
+		display: block; 
+	}
+ 
+	/* Hide table headers (but not display: none;, for accessibility) */
+	.no-mobile-tables thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+ 
+	.no-mobile-tables tr { border: 1px solid #ccc; }
+ 
+	.no-mobile-tables td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+		padding-left: 50%; 
+		white-space: normal;
+		text-align:left;
+	}
+ 
+	.no-mobile-tables td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+		text-align:left;
+		font-weight: bold;
+	}
+ 
+	/*
+	Label the data
+	*/
+	.no-mobile-tables td:before { content: attr(data-title); }
+}
+
+
 </style>
 
 

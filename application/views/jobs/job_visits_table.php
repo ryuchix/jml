@@ -1,4 +1,4 @@
-<table id="example1" class="table table-bordered table-striped">
+<table  id="firstDateSort" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Visit Date</th>

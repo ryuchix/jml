@@ -76,13 +76,13 @@
 
                                 <div class="tab-pane" id="tab_1-2">
 
-                                    <?php $this->load->view($class_name.'s/table', array('records'=>$won_records)); ?>
+                                    <?php $this->load->view($class_name.'s/table', array('records'=>$won_records, 'won' => true)); ?>
 
                                 </div><!-- /.tab-pane -->
 
                                 <div class="tab-pane" id="tab_1-3">
 
-                                    <?php $this->load->view($class_name.'s/table', array('records'=>$lost_records)); ?>
+                                    <?php $this->load->view($class_name.'s/table', array('records'=>$lost_records, 'won' => false)); ?>
 
                                 </div><!-- /.tab-pane -->
 
