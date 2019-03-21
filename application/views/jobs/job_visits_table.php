@@ -3,6 +3,7 @@
         <tr>
             <th>Visit Date</th>
             <th>Assignee</th>
+            <th>Amount</th>
         </tr>
     </thead>
     <tbody>
@@ -23,6 +24,9 @@
         </td>
         <td>
             <?php echo $row->assignee; ?>
+        </td>
+        <td>
+            $<?php echo $row->amount; ?>
         </td>
     </tr>
     <?php } ?>
