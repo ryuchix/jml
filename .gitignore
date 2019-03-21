@@ -6,3 +6,11 @@ application/config/config.php
 uploads/*/*
 
 vendor/*
+
+api/*
+
+*.zip
+
+api_*
+
+application/vendor/*

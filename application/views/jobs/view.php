@@ -69,7 +69,7 @@
                         
                         <h5 class="widget-user-desc">
                             <a href="<?php echo site_url("jobs/save/{$record->id}") ?>">
-                                <?php echo $record->job_title . ' - ' . get_job_categories($record->job_category); ?>
+                                <?php echo $record->job_title . ' - ' . JobCategory::find($record->job_category)->type; ?>
                                 &nbsp;&nbsp;&nbsp;<i class="fa fa-edit"></i>
                             </a>
                         </h5>
