@@ -111,9 +111,9 @@ class Jobs extends MY_Controller
 
 						// dd($this->input->post());
 						// if($this->input->post('end_date'))
-						$record->end_date = $this->input->post('end_date')? db_date($this->input->post('end_date')): db_date($this->input->post('start_date'));
 						$record->added_by = $this->session->userdata('user_id'); 
 					}
+					$record->end_date = $this->input->post('end_date')? db_date($this->input->post('end_date')): db_date($this->input->post('start_date'));
 
 					$this->db->trans_start();
 					$job_id = $record->save();
@@ -304,8 +304,10 @@ class Jobs extends MY_Controller
 		if ( JOB_TYPE_ONE_OFF == $this->input->post('data[job_type]') ) {
 			// $begin = new DateTime( '2010-05-01' );
 			// $end = new DateTime( '2010-05-10' );
+			// if($be)
 			$interval = DateInterval::createFromDateString('1 day');
 			$period = new DatePeriod($begin, $interval, $end->modify('+1 day'));
+			// dd($this->input->post('start_date'), $end_date);
 			foreach ( $period as $dt ){ $dates[] = $dt->format( "Y-m-d" ); }
 		}else{
 
