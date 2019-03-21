@@ -447,7 +447,7 @@ class Property extends MY_Controller
         $this->set_data('property_id', $id);
 
         if (isset($_POST['submit'])) {
-            $this->form_validation->set_rules('description','Description','required|max_length[255]');
+            $this->form_validation->set_rules('description','Description','required');
             if ( $this->form_validation->run() ) {
                 $this->add_history($id, $this->input->post('description'));
                 set_flash_message(0, "Record Submitted Successfully!");

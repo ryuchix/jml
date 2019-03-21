@@ -155,6 +155,10 @@
 
                             </div>
 
+                            <label>
+                                <input type="checkbox" <?php echo $record->show_in_app? 'checked':''; ?> value="1" name="show_in_app">Available in App?
+                            </label>
+
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">

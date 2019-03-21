@@ -55,7 +55,9 @@
                     <!-- Add the bg color to the header using any of the bg-* classes -->
                     <div class="widget-user-header bg-aqua-active" style="height: auto;">
                         
-                        <h3 class="widget-user-username"><?php echo $client; ?></h3>
+                        <h3 class="widget-user-username">
+                            <?php echo $client; ?>
+                        </h3>
 
                         <h5 class="widget-user-desc">
                             <?php echo anchor(site_url("property/map/$record->property_id"),'<i class="fa fa-map-marker"> </i> '. $address, ' data-remote="false" data-toggle="modal" data-target="#myModal" class=""')?>
@@ -66,8 +68,19 @@
                         </h5>
                         
                         <h5 class="widget-user-desc">
-                            <?php echo $record->job_title . ' - ' . get_job_categories($record->job_category); ?>
+                            <a href="<?php echo site_url("jobs/save/{$record->id}") ?>">
+                                <?php echo $record->job_title . ' - ' . get_job_categories($record->job_category); ?>
+                                &nbsp;&nbsp;&nbsp;<i class="fa fa-edit"></i>
+                            </a>
                         </h5>
+                        
+                        <?php if($record->job_type == 2): ?>
+
+                        <h5 class="widget-user-desc">
+                            Last for: <?php echo $record->duration . ' ' . $record->duration_schedule; ?>
+                        </h5>
+
+                        <?php endif;?>
                         
                         <h5 class="widget-user-desc">
                             Contact: <?php echo "$contact->contact_name $contact->surname 

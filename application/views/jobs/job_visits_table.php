@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Visit Date</th>
+            <th>Assignee</th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +20,9 @@
                 </form>
             <?php endif ?>
             </label>
+        </td>
+        <td>
+            <?php echo $row->assignee; ?>
         </td>
     </tr>
     <?php } ?>

@@ -169,6 +169,11 @@
                             </div>
 
                             <div class="form-group">
+                                <label for="account_email">Account Email</label>
+                                <input type="text" class="form-control" name="data[account_email]" id="account_email" placeholder="Account Email" value="<?php echo set_value('data[account_email]', $record->account_email); ?>">
+                            </div>
+
+                            <div class="form-group">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" value="1" name="data[same_billing_address]" <?php echo 

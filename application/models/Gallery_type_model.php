@@ -17,6 +17,7 @@ class Gallery_type_model extends MY_Model
 
     function get_dropdown_lists($first_empty=1, $active=1)
     {
+        $this->db->order_by("type='other', type asc");
         $ret = array_map(
 
                 function($o){ 

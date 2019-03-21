@@ -1,9 +1,23 @@
+<?php 
+
+$frequency = [
+    'Weekly'    => 'Week',
+    'Daily'     => 'Day',
+    'Monthly'   => 'Month',
+    'Yearly'    => 'Year',
+];
+
+?>
+
 <table id="example1" data-ordering="false" class="table table-bordered table-striped">
     <thead>
         <tr>
             <th>Job no.</th>
+            <th>Duration</th>
+            <th>Schedule for</th>
             <th>Property/Client</th>
             <th>Type of job</th>
+            <th>Job Category</th>
             <th>Job</th>
             <!-- <th>Last Visit</th> -->
             <th>Next Visit</th>
@@ -15,8 +29,19 @@
     <?php foreach($records as $row){ ?>
     <tr>
         <td>Job-<?php echo $row->id; ?></td>
+        <?php if($row->job_type == 2): ?>
+            <td><?php echo $row->duration . ' ' . $row->duration_schedule; ?></td>
+        <?php else: ?>
+            <td><?php echo '&nbsp;'; ?></td>
+        <?php endif; ?>
+        <?php if($row->visit_frequency == 'custom'): ?>
+            <td>Every <?php echo $row->every_no_day . ' ' . $frequency[$row->frequency] . ' on ' . $row->week_days; ?></td>
+        <?php else: ?>
+            <td><?php echo '&nbsp;'; ?></td>
+        <?php endif; ?>
         <td><?php echo $row->address . ' <br> ' . $row->client; ?></td>
         <td><?php echo get_job_types($row->job_type); ?></td>
+        <td><?php echo $row->job_category; ?></td>
         <td><?php echo $row->job_title; ?></td>
         <td><?php echo ($row->next_visit && !$row->closed)? local_date($row->next_visit):''; ?></td>
         <!-- <td><?php echo ''; ?></td> -->

@@ -18,6 +18,7 @@ class Vehicle_model extends MY_Model
     public $description = '';
     public $image = '';
     public $active = 1;
+    public $show_in_app = 0;
     
     public $finance_status = null;
     public $finance_company = null;

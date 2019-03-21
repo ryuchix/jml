@@ -415,3 +415,71 @@ div.preloader {
 	.fleet-table td:nth-of-type(7):before { content: "Insurance Expires"; }
 }
 
+@media (min-width: 992px){
+    .modal-lg {
+        width: 1280px;
+    }
+}
+.fc-day-grid-event>.fc-content>span {
+    display: block;
+    white-space: normal;
+    font-size: 14px;
+    padding: 2px;
+}
+.fc-day-grid-event>.fc-content>span.fc-title {
+    font-weight: bold;
+}
+.fc .fc-toolbar button {
+    display: block;
+    background: #04579D;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50% !important;
+    text-align: center;
+    box-shadow: 0px 2px 6px #808080;
+}
+.fc-toolbar button:hover {
+    box-shadow: 0px 4px 10px #808080;
+    background-color: #003f74;
+}
+.fc-toolbar button:focus {
+    outline: none;
+}
+td.fc-widget-header th {
+    background: #04579D;
+    color: white;
+    padding: 10px;
+    border-color: #027adf;
+}
+.fc-view.fc-basicWeek-view.fc-basic-view td {
+    border: 1px solid #04579D;
+}
+td.fc-day.fc-today {
+    background-color: #007be208;
+}
+ul.crews-list {
+    background: #ffffff80;
+    padding: 5px;
+    text-align: center;
+    margin-bottom: 1px;
+    border-radius: 20px;
+}
+ul.crews-list li {
+    list-style: none;
+    display: inline-block;
+    width: 25px;
+    line-height: 25px;
+    text-align: center;
+    margin-right: 5px;
+    font-weight: bold;
+    border-radius: 50%;
+    cursor: pointer;
+    color: white;
+}
+a.fc-day-grid-event.fc-event {
+    padding: 10px;
+}
+ul.crews-list li:last-of-type {
+    margin-right: 0px;
+}

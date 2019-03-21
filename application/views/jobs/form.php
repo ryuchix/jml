@@ -78,11 +78,25 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
+                            
+                            <div class="form-group <?php echo form_error('data[job_category]')? 'has-error':''; ?>">
+                                <label for="job_category">Job Category:</label>
+                                <?php echo form_dropdown('data[job_category]', $categoies, 
+                                           isset($_POST['data']['job_category'])? $_POST['data']['job_category']:$record->job_category
+                                           , 'class="dropdown_lists form-control" id="job_category" data-placeholder="Job Category"'); ?>
+                                <?php echo form_error('data[job_category]','<p class="error-msg">','</p>') ?>
+                            </div>
 
                             <div class="form-group <?php echo form_error('data[job_title]')? 'has-error':''; ?>">
                                 <label for="job_title">Job Title</label>
                                     <input type="text" class="form-control" name="data[job_title]" id="job_title" placeholder="Job Title" value="<?php echo set_value('data[job_title]', $record->job_title); ?>">
                                 <?php echo form_error('data[job_title]','<p class="error-msg">','</p>'); ?>
+                            </div>
+
+                            <div class="form-group <?php echo form_error('data[instruction]')? 'has-error':''; ?>">
+                                <label for="instruction">Instructions</label>
+                                <textarea class="form-control" name="data[instruction]" id="instruction" placeholder="Instructions..." rows="3"><?php echo set_value('data[instruction]', $record->instruction); ?></textarea>
+                                <?php echo form_error('data[instruction]','<p class="error-msg">','</p>'); ?>
                             </div>
                             
                             <div class="form-group <?php echo form_error('data[client_id]')? 'has-error':''; ?>">
@@ -106,14 +120,6 @@
                                                                             '. $readonly . ' data-placeholder="Choose Property"'); ?>
                                 <?php echo form_error('data[property_id]','<p class="error-msg">','</p>') ?>
                             </div>
-                            
-                            <!-- <div class="form-group <?php echo form_error('data[job_category]')? 'has-error':''; ?>">
-                                <label for="job_category">Job Category:</label>
-                                <?php // echo form_dropdown('data[job_category]', $categoies, 
-                                      //      isset($_POST['data']['job_category'])? $_POST['data']['job_category']:$record->job_category
-                                      //      , 'class="dropdown_lists form-control" id="job_category" data-placeholder="Job Category"'); ?>
-                                <?php // echo form_error('data[job_category]','<p class="error-msg">','</p>') ?>
-                            </div> -->
                             
                             <div class="form-group <?php echo form_error('data[job_type]')? 'has-error':''; ?>">
                                 <label for="job_type">Job Type:</label>
@@ -209,7 +215,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-
+                            <input type="hidden" name="shouldRegenerateUsers" id="shouldRegenerateUsers" value="false">
                             <div class="form-group <?php echo form_error('users[]')? 'has-error':''; ?>">
                                 <label for="strata_plan">Crew Members</label>
                                 <?php 
@@ -217,7 +223,7 @@
                                 foreach ($users as $id => $name): ?>
                                     <div class="checkbox">
                                         <label>
-                                            <input type="checkbox" value="<?php echo $id; ?>" name="users[<?php echo $id; ?>]" 
+                                            <input class="crews-checkbox" type="checkbox" value="<?php echo $id; ?>" name="users[<?php echo $id; ?>]" 
                                                 <?php echo $this->input->post("users[$id]") == $id? 'checked':
                                                 in_array($id, $crew_users)? "checked":'';
                                                  ?>>
@@ -314,11 +320,51 @@
 <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 
+
+<?php if( $record->id ): ?>
+<script>
+
+function arraysEqual(a, b) {
+    a.sort();
+    b.sort();
+  if (a === b) return true;
+  if (a == null || b == null) return false;
+  if (a.length != b.length) return false;
+  for (var i = 0; i < a.length; ++i) {
+    if (a[i] !== b[i]) return false;
+  }
+  return true;
+}
+
+$(function(){
+    var existingUsers = [ <?php echo join(', ', $crew_users); ?> ];
+    var selectedUsers = [];
+    $('.crews-checkbox').on('change', function(){    
+        var selectedUsers = [];
+        $('.crews-checkbox:checked').each(function(){
+            selectedUsers.push(parseInt($(this).val()));
+        });
+
+        if(!arraysEqual(existingUsers, selectedUsers))
+        {
+            showWarning(true);
+        }else{
+            showWarning(false);        
+        }
+
+    });
+});
+
+</script>
+<?php endif; ?>
+
 <script>
 
 $('.date').datetimepicker({
-     format: 'DD/MM/YYYY'
-});
+    format: 'DD/MM/YYYY'
+})/* .on('dp.change', function(e){
+    
+}) */;
 
 $('#form').on('submit', function() {
     $('.dropdown_lists').prop('disabled', false);
@@ -425,6 +471,14 @@ $('#recurringOptions a').on('click', function(event) {
         text = $this.text();
     $this.parents('ul').prev().html( text +" <span class=\"caret\"></span>");
     $('#duration_recurring').val(text);
+
+    <?php if($record->id): ?>
+    var currentRecurringOption = '<?php echo $record->duration_schedule ?>';
+    if(text != currentRecurringOption)
+        showWarning(true);
+    else 
+        showWarning(false);
+    <?php endif; ?>
 });
 
 $('#job_type').on('change', function(event) {
@@ -516,6 +570,18 @@ $('#visit_frequency').on('change', function(event) {
 
 $('#frequency').on('change', function(event) {
     event.preventDefault();
+
+    <?php if($record->id): ?>
+    var currentFrequency = '<?php echo $record->frequency; ?>';
+
+    if (currentFrequency !== $(this).val())
+    {
+        showWarning(true);
+    }else{
+        showWarning(false);
+    }
+
+    <?php endif; ?>
     switch($(this).val()){
         case 'Daily':
             $('.carousel-indicators li:eq(0)').trigger('click');
@@ -543,10 +609,8 @@ var dirty = false;
 $('#dayOfMonth td').not(".not").click(function() {
     var $this = $(this);
     $this.toggleClass('selected');
-
     dirty = <?php echo $record->id? 'true':'false'; ?>;
     checkWarning();
-
     var t = new Array();
     $this.find('input[type=checkbox]').prop('checked', $this.has('selected'));
     $this.parents('table').find('td.selected').each(function(index, el) {
@@ -569,22 +633,64 @@ var $start_date = $('#start_date'),
 
 $('.date').on('dp.change', function(event) {
     // event.preventDefault();
-    checkWarning();
+    checkWarning(event);
 });
 
-function checkWarning() {
-    var dateArray = $start_date.val().split('/'),
-    selected_date_value = new Date(dateArray[2],dateArray[1],dateArray[0]);
-
-    if ( (selected_date_value < start_date_value) || dirty) {
-        $('#warning').slideDown('slow');
-        $('button[type=submit]').prop('disabled', true);
-        $('#confirmation').prop('disabled', false);
-    }else{
-        $('#warning').slideUp('slow');
-        $('button[type=submit]').prop('disabled', false);
-        $('#confirmation').prop('disabled', true);
+function checkWarning(e) 
+{
+    if(e)
+    {
+        <?php if($record->id): ?>
+        var sd = '<?php echo $record->start_date; ?>';
+        if(sd !== e.date.format('YYYY-MM-DD'))
+        {
+            showWarning(true);
+        }else{
+            showWarning(false);
+        }
+        <?php endif; ?>
     }
+    else{
+        var dateArray = $start_date.val().split('/'),
+        selected_date_value = new Date(dateArray[2],dateArray[1],dateArray[0]);
+
+        if ( (selected_date_value < start_date_value) || dirty) {
+            $('#warning').slideDown('slow');
+            $('button[type=submit]').prop('disabled', true);
+            $('#confirmation').prop('disabled', false);
+        }else{
+            $('#warning').slideUp('slow');
+            $('button[type=submit]').prop('disabled', false);
+            $('#confirmation').prop('disabled', true);
+        }
+    }
+
+}
+
+$('#duration').on('change', function(){
+    <?php if($record->id): ?>
+    var duration = <?php echo $record->duration ?>;
+    if(duration != $(this).val())
+        showWarning(true);
+    else
+        showWarning(false);
+    <?php endif; ?>
+});
+
+$('#duration').on('change', function(){
+    <?php if($record->id): ?>
+    var duration = <?php echo $record->duration ?>;
+    if(duration != $(this).val())
+        showWarning(true);
+    else
+        showWarning(false);
+    <?php endif; ?>
+});
+
+function showWarning(boolean){
+    $('#warning')[boolean? 'slideDown': 'slideUp']('slow');
+    $('button[type=submit]').prop('disabled', boolean);
+    $('#confirmation').prop('disabled', !boolean);
 }
 
 $('#confirmation').on('change', function() {

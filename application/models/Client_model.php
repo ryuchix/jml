@@ -29,7 +29,8 @@ class Client_model extends MY_Model
     public $same_billing_address;
     public $attention;
     public $co = null;
-    public $address_street;
+    public $account_email = null;
+    public $address_street = null;
     public $billing_address_street;
     public $billing_address_1 = null;
     public $billing_address_2 = null;

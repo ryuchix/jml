@@ -340,6 +340,44 @@ class Gallery extends MY_Controller
 		   ->save($data['full_path'], array('jpeg_quality' => 60));
 	}
 
+	public function image_rotate()
+	{
+	    if(!isset($_POST))
+	    {
+    		$data['message'] = 'Please use form to perform rotation action.!';
+    		$data['stauts'] = false;
+	    }
+	    
+        $file = basename($this->input->post('img'));
+        
+        $file_parts = pathinfo($file);
+        
+        $file_extension = $file_parts['extension'];
+        
+        $newFileName = time() . "_rotated.$file_extension";
+	    
+		$images = $this->Gallery_images_model->getWhere(array('image' => $file));
+		
+		$image = array_shift($images);
+		
+		$imagine = new Imagine\Gd\Imagine();
+		
+		$imagine->open($this->gallery_path . $file)->rotate(90)->save($this->gallery_path . $newFileName);
+		
+		//die();
+        
+        $image->image = $newFileName;
+        
+        $image->save();
+        
+        unlink($this->gallery_path . $file);
+		  
+		return $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(['status' => true, 'message' => 'success', 'index' => $this->input->post('index'), 'image' => base_url($this->gallery_path . $newFileName)]));
+            
+	}
+
 	public function download($gallery_id)
 	{
 		$record = new Gallery_model();
@@ -379,6 +417,20 @@ class Gallery extends MY_Controller
 		unlink($archive_file_name);
 		// return $zip;
 
+	}
+
+	function process(){
+		if(!$this->input->post('id'))
+		{
+			echo json_encode(['success' => false]);
+			die();
+		}
+
+		$gallery = new Gallery_model();
+		$gallery->load($this->input->post('id'));
+		$gallery->active = 1;
+		$gallery->save();
+		echo json_encode(['success' => true]);
 	}
 
 }

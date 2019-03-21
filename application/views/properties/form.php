@@ -263,6 +263,8 @@
             $('#client_id').trigger('change');
         }
 
+        $('input[readonly]').on('blur', function(e){ $(this).prop('readonly', true) });
+        $('input[readonly]').on('dblclick', function(e){ $(this).prop('readonly', false) });
     });
 
     var addressAutocomplete, billingAutocomplete;

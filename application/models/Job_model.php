@@ -10,6 +10,7 @@ class Job_model extends MY_Model
     public $property_id;
     public $job_category = 1;
     public $job_title;
+    public $instruction;
     public $job_type;
     public $start_date;
     public $end_date;
@@ -37,7 +38,7 @@ class Job_model extends MY_Model
     {
         $open_jobs = $open_jobs? 'IS NULL': ' = 1';
 
-        $sql = "SELECT j.id, j.job_title,
+        $sql = "SELECT j.*,
                     CONCAT(p.address, ', ', p.address_suburb, ', ', p.address_post_code) AS address, 
                     c.name AS client, j.job_type, jc.type as job_category,
                     SUM(li.total) AS value, j.closed, nv.date AS next_visit

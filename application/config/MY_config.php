@@ -19,3 +19,5 @@ $config['site_info'] = array(
 	'company_name'=>'JML Group Pty Ltd',
 	'version' => '2.0'
 	);
+
+$config['asset_version'] = 1.03;

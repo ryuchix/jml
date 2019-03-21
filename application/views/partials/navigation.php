@@ -114,6 +114,38 @@
            
             <?php endif; // end if jobs access ?>
 
+            <?php if ($controller->hasAccess(['view-weekly', 'view-map', 'view-schedule-list'])) : ?>
+            
+            <li class="treeview <?php set_active_menu('schedule', $active_menu); ?>">
+
+                <a href="#"><i class="fa fa-clock-o"></i> <span>Schedule</span> <i class="fa fa-angle-left pull-right"></i></a>
+
+                <ul class="treeview-menu">
+                    
+                    <?php if ($controller->hasAccess('view-weekly')): ?>
+                    <li class="<?php echo set_sub_menu('add_weekly', $sub_menu); ?>">
+                        <a href="<?php echo site_url('schedules/weekly'); ?>"><i class="fa fa-circle-o"></i> Weekly</a>
+                    </li>
+                    <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('view-map')): ?>
+                    <li class="<?php echo set_sub_menu('view_map', $sub_menu); ?>">
+                        <a href="<?php echo site_url('schedules/map'); ?>"><i class="fa fa-circle-o"></i> Map</a>
+                    </li>
+                    <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('view-schedule-list')): ?>
+                    <li class="<?php echo set_sub_menu('view_list', $sub_menu); ?>">
+                        <a href="<?php echo site_url('schedules/list'); ?>"><i class="fa fa-circle-o"></i> List</a>
+                    </li>
+                    <?php endif ?>
+
+                </ul>
+
+            </li>
+           
+            <?php endif; // end if Schedule Access ?>
+
             <?php if ($controller->hasAccess(['add-task', 'view-task'])) : ?>
             
             <li class="treeview <?php set_active_menu('tasks', $active_menu); ?>">

@@ -14,6 +14,11 @@ $route['reports/suppliers/pdf'] = 'reports/suppliers_controller';
 $route['reports/councils/pdf'] = 'reports/council_controller';
 $route['reports/properties/keys'] = 'reports/property_key_controller/pdf';
 $route['reports/properties/bins'] = 'reports/property_bin_controller/pdf';
+$route['reports/properties/services'] = 'reports/Property_services_controller/index';
+$route['schedules/list'] = 'reports/Schedule_controller/index';
+$route['schedules/map'] = 'reports/Schedule_controller/map';
+$route['schedules/weekly'] = 'reports/Schedule_controller/weekly';
+$route['schedules/weekly-visits'] = 'reports/Schedule_controller/weeklyPost';
 
 $route['clients/(:num)/marketing/save_note'] = 'Client_marketing_controller/save_note/$1';
 $route['clients/(:num)/marketing/save_note/(:num)'] = 'Client_marketing_controller/save_note/$1/$2';

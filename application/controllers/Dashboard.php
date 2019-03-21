@@ -18,6 +18,7 @@ class Dashboard extends MY_Controller {
 			'Property_model', 
 			'Complain_model',
 			'Quote_model',
+			'Gallery_model',
 			'Equipment_model',
 			'User_model',
 			'Vehicle_model',
@@ -50,6 +51,8 @@ class Dashboard extends MY_Controller {
 		$this->set_data('count_memos', $this->File_model->count_where([ 'type' => 'memo', 'active' => '1' ]));
 		$this->set_data('count_files', $this->File_model->count_where([ 'type' => 'staff file', 'active' => '1' ]));
 		$this->set_data('count_tutorial', $this->File_model->count_where([ 'type' => 'tutorial', 'active' => '1' ]));
+
+		$this->set_data('pending_galleries', $this->Gallery_model->pending_galleries());
 
 		$this->set_data('regoes', $this->Dashboard_vehicle_information_model->get());
 		$this->set_data('equipments', $this->Dashboard_equipment_information_model->get());

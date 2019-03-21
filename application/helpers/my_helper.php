@@ -116,7 +116,7 @@ function get_job_categories($job_category_index=0)
   return isset($job_category[$job_category_index])?$job_category[$job_category_index]:$job_category;
 }
 
-function str_limit($value, $length = 30, $delimiter = '...')
+function str_limit2($value, $length = 30, $delimiter = '...')
 {
   if (strlen($value) <= $length) {
     return $value;

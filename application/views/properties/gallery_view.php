@@ -37,6 +37,10 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
+    <?php if($record->source == 'app'): ?>
+    <h3>Description:</h3>
+    <p> <?= $record->description; ?> </p>
+    <?php endif; ?>
 
 <script>
 

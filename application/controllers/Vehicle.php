@@ -56,7 +56,7 @@ class Vehicle extends MY_Controller
 			if ( $this->form_validation->run() == TRUE ) {
 
 				foreach ($this->input->post('data') as $field => $value) { $record->{$field} = $value; }
-
+				$record->show_in_app = $this->input->post('show_in_app')?? 0;
 				if ($record->save()) {
 					set_flash_message(0, "Record Submitted Successfully!");
 					redirect( site_url( 'vehicle/' ) );
@@ -64,7 +64,6 @@ class Vehicle extends MY_Controller
 					set_flash_message(1, "No changes made!");
 					redirect( site_url( 'vehicle/' ) );
 				}
-
 			}
 		}
 		$this->load->view('vehicles/form',$this->get_data());
@@ -82,11 +81,8 @@ class Vehicle extends MY_Controller
 		    	$this->form_validation->set_rules('data[finance_monthly_payment]','Monthly Payment','required|numeric');
 
 		    	foreach ($this->input->post('links') as $index => $link) {
-		    		
 		    		$this->form_validation->set_rules("links[$index][name]",'Link Name','required');
-
 		    		$this->form_validation->set_rules("links[$index][url]",'Url','required|valid_url');
-
 		    	}
 
 				break;

@@ -198,6 +198,8 @@
 
 		<?php $this->load->view('dashboard/widget'); ?>
 
+		<?php $this->load->view('dashboard/pending_gallery_table'); ?>
+
 		<?php $this->load->view('dashboard/rego_table'); ?>
 
 		<?php $this->load->view('dashboard/equipment_table'); ?>
@@ -289,3 +291,78 @@
 <script src="<?php echo site_url( 'assets/dist/js/image-preview.js' ); ?>"></script>
 <script src="<?php echo site_url( 'assets/dist/js/dashboard-weather.js' ); ?>"></script>
 <script src="<?php echo site_url( 'assets/dist/js/dashboard-balance-chart.js' ); ?>"></script>
+<script>
+
+$('.propcess-gallery').on('click',function(e){
+	e.preventDefault();
+	$link = $(this);
+	$.ajax({
+		url: './gallery/process',
+		method: "POST",
+		data: { 'id':$link.data('id') },
+		success: function(data){
+			$link.parents('tr').fadeOut(function(){ 
+				$(this).remove();
+				// alert($('.pendign-gallery').find('tr').length);
+				if($('.pendign-gallery').find('tr').length === 1)
+				{
+					$('.pendign-gallery').append('<p align="center">No pending gallery</p>');
+					$('.pendign-gallery table').remove();
+				}
+			})
+		}
+	});
+
+});
+
+$("#photoModel").on("show.bs.modal", function(e) {
+	var $link = $(e.relatedTarget);
+	$('#photoModelLabel').text( $link.parents('tr').find('td:eq(0)').text() );
+	$(this).find(".modal-body").load($link.attr("href"));
+});
+
+$(function(){
+    
+    $("#rotate").on('click', function(e){
+        var $btn = $(this).prop('disabled', true);
+        var currentImg = $('#photoModel .modal-body').find('.item.active img');
+        var index = $('#photoModel .modal-body').find('.item.active').index();
+        var src = currentImg.attr('src');
+        $.ajax({
+            url: '<?php echo base_url('gallery/image_rotate') ?>',
+            method: 'post',
+            data: { img: src, index: index },
+            success: function(data){
+                $('#photoModel .modal-body').find('.item:eq('+ data.index +') img').attr('src', data.image);
+                $btn.prop('disabled', false);
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+        
+    });
+    
+    /*$("#rotate").on('click', function(e){
+        var $btn = $(this).prop('disabled', true);
+        var currentImg = $('#photoModel .modal-body').find('.item.active img');
+        var index = $('#photoModel .modal-body').find('.item.active').index();
+        var src = currentImg.attr('src');
+        $.ajax({
+            url: 'http://api.jmlcleaningservices.com.au/galleries/rotate/image',
+            method: 'post',
+            data: { img: src, index: index },
+            success: function(data){
+                $('#photoModel .modal-body').find('.item:eq('+ data.index +') img').attr('src', '<?php echo base_url() ?>/' + data.image);
+                $btn.prop('disabled', false);
+            },
+            error: function(err){
+                console.log(err);
+            }
+        });
+        
+    });*/
+    
+});
+
+</script>

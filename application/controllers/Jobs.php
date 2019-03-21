@@ -12,11 +12,13 @@ class Jobs extends MY_Controller
 							'Job_category_model',
 							'Job_crew_model',
 							'Job_visits_model',
+							'Job_visit_crew_model',
 							'Job_services_model',
 							'Job_notes_model',
 							'Job_note_attachments_model',
 							'Client_model',
 							'Property_model',
+							'Job_visit_item_model',
 							'User_model',
 							'Contacts_model',
 							'Service_model'
@@ -50,19 +52,24 @@ class Jobs extends MY_Controller
 		$this->set_data('users', $this->User_model->get_dropdown_lists(0));
 		$this->set_data('services', $this->Service_model->get_dropdown_lists());
 		$this->set_data('clients', $this->Client_model->get_dropdown_lists());
-		// $this->set_data('categoies', $this->Job_category_model->get_dropdown_lists());
+		$this->set_data('categoies', $this->Job_category_model->get_dropdown_lists());
 		$this->set_data('properties', $this->Property_model->get_dropdown_lists_by_client_id($record->client_id));
 		$this->set_data('record', $record);
 		$this->set_data('line_items', $this->db->get_where('job_services', ['job_id'=>$id])->result());
 		// $this->set_data('attachments', $this->Job_note_attachments_model->getWhere(['job_id'=>$id]));
 		$this->set_data('crew_users', $this->Job_crew_model->get_dropdown_lists($id,0));
 		$this->load->library('form_validation');
+
+		// check if form is submitted or not.
 		if( isset($_POST['submit']) ){
 
+			// validate form
 			$this->validate_fields($id);
 			// x($this->input->post());
-			if ( $this->form_validation->run() === TRUE ) {
 
+			// perform action if validate returns true
+			if ( $this->form_validation->run() === TRUE ) {
+				
 				if ( !empty($_FILES) && $_FILES['upl_files']['error'][0] != 4) 
 				{ $uploaded_files = $this->multiple_upload(); }else{ $uploaded_files = []; }
 
@@ -71,6 +78,7 @@ class Jobs extends MY_Controller
 					foreach ($this->input->post('data') as $field => $value) { 
 						$record->{$field} = $value; 
 					}
+								
 					switch ($this->input->post('data[frequency]')) {
 						case 'Daily':
 							$record->every_no_day = $this->input->post('every_no_day');
@@ -96,11 +104,13 @@ class Jobs extends MY_Controller
 					// $record->month_type = $this->input->post('every_no_day');
 					// x( unserialize($record->selected_day_of_month));
 					// die();
+					
+					$record->start_date = db_date($this->input->post('start_date'));
+
 					if (!$id) {
 
 						// dd($this->input->post());
 						// if($this->input->post('end_date'))
-						$record->start_date = db_date($this->input->post('start_date'));
 						$record->end_date = $this->input->post('end_date')? db_date($this->input->post('end_date')): db_date($this->input->post('start_date'));
 						$record->added_by = $this->session->userdata('user_id'); 
 					}
@@ -110,14 +120,17 @@ class Jobs extends MY_Controller
 					$job_id = $id? $id : $job_id;
 					$this->add_crew_members( $job_id, $this->input->post('users') );
 					$this->add_line_items( $job_id, $this->input->post('line_items') );
+					
 					if ( !$id || $this->input->post('regenerate_visits') == 'yes' ) {
 						$end_date = $this->input->post('end_date')? $this->input->post('end_date'): $this->input->post('start_date');
 						$this->Job_visits_model->deleteWhere( ['job_id' => $job_id, 'completed'=>0] );
 						$this->add_visits( $job_id, $this->input->post('start_date'), $end_date );
+						// dd('inserting visits');
 					}
 					$this->db->trans_complete();
 					if ( $this->db->trans_status() === TRUE ) {
 						set_flash_message(0, "Record Submitted Successfully!");
+						// die('done');
 						redirect( site_url( 'jobs/' ) );
 					} // if transaction successfully completed
 				} // If File Successfully Uploaded
@@ -151,7 +164,8 @@ class Jobs extends MY_Controller
 		$this->set_data('notes', $this->Job_notes_model->get_note_with_attachment($id));
 		$this->set_data('crew_users', $this->Job_crew_model->get_by_job($id));
 		$this->set_data('line_items', $this->Job_services_model->get_by_job($id));
-		$this->set_data('visits', $this->Job_visits_model->getWhere(['job_id'=>$id],false,'*'));
+		// $this->set_data('visits', $this->Job_visits_model->getWhere(['job_id'=>$id],false,'*'));
+		$this->set_data('visits', $this->Job_visits_model->getVisitsWithAssignee($id));
 
 		$this->load->view('jobs/view.php', $this->get_data());
 	}
@@ -243,8 +257,19 @@ class Jobs extends MY_Controller
 
 	function add_crew_members($job_id, $user_ids)
 	{
-		$this->Job_crew_model->deleteWhere(['job_id'=>$job_id]);
+		// $this->Job_crew_model->deleteWhere(['job_id'=>$job_id]);
+		if($job_id)
+		{
+			$userIds = $this->db->query("SELECT user_id FROM `job_crew` WHERE job_id = $job_id")->result();
+			$userMaps = array_map(function($user){
+				return $user->user_id;
+			}, $userIds);
+
+			$user_ids = array_merge(array_diff($user_ids, $userMaps), array_diff($userMaps, $user_ids));
+		}
+		
 		foreach ($user_ids as $user_id) {
+			if(in_array($user_id, $userMaps)) continue;
 			$user = new Job_crew_model();
 			$user->job_id = $job_id;
 			$user->user_id = $user_id;
@@ -302,8 +327,60 @@ class Jobs extends MY_Controller
 			}
 		}
 		// x($dates);
-		// die();
 		$this->insert_visits_date($job_id, $dates);
+		$this->insert_visits_crew($job_id);
+		$this->insert_visits_items($job_id);
+	}
+
+	protected function insert_visits_crew($job_id)
+	{
+		$sql = "DELETE FROM job_visit_crew WHERE visit_id IN (SELECT id from job_visits WHERE job_id = $job_id AND completed = 0)";
+		if($this->db->simple_query($sql))
+		{
+			$data = [];
+			
+			$results = $this->db->query("SELECT id as visit_id FROM job_visits Where job_id = ? AND completed = 0", [$job_id])->result();
+			
+			foreach($this->input->post('users') as $user)
+			{
+				foreach ( $results as $visit_id ){
+					$temp_data = [];
+					$temp_data['visit_id'] 	= $visit_id->visit_id;
+					$temp_data['user_id'] 	= $user;
+
+					$data[] = $temp_data;
+				}
+			}
+			
+			$this->Job_visit_crew_model->insert_batch($data);
+
+		}
+	}
+
+	protected function insert_visits_items($job_id){
+		$sql = "DELETE FROM job_visit_item WHERE visit_id IN (SELECT id from job_services WHERE job_id = $job_id)";
+		if($this->db->simple_query($sql))
+		{
+			$data = [];
+			
+			$results = $this->db->query("SELECT id as visit_id FROM job_visits Where job_id = ?", [$job_id])->result();
+			
+			foreach($this->input->post('line_items') as $item)
+			{
+				foreach ( $results as $visit_id ){
+					$temp_data = [];
+					$temp_data['visit_id'] 		= $visit_id->visit_id;
+					$temp_data['service_id'] 	= $item['service_id'];
+					$temp_data['description'] 	= $item['description'];
+					$temp_data['qty'] 			= $item['qty'];
+					$temp_data['unit_cost'] 	= $item['unit_cost'];
+					$temp_data['total'] 		= str_replace('$', '', $item['total']);
+
+					$data[] = $temp_data;
+				}
+			}
+			$this->Job_visit_item_model->insert_batch($data);
+		}
 	}
 
 	function get_visit_dates_by_custom_frequency()
@@ -648,15 +725,17 @@ class Jobs extends MY_Controller
 
 	public function clean()
 	{
-		// $this->db->simple_query("DELETE FROM job_note_attachments");
-		// $this->db->simple_query("DELETE FROM job_files");
-		// $this->db->simple_query("DELETE FROM job_notes");
-		// $this->db->simple_query("DELETE FROM job_services");
-		// $this->db->simple_query("DELETE FROM job_visits");
-		// $this->db->simple_query("DELETE FROM job_crew");
-		// $this->db->simple_query("DELETE FROM job");
-		// set_flash_message(0, 'All jobs and related data are deleted!' );
-		// redirect('jobs');
+		$this->db->simple_query("DELETE FROM job_note_attachments");
+		$this->db->simple_query("DELETE FROM job_files");
+		$this->db->simple_query("DELETE FROM job_notes");
+		$this->db->simple_query("DELETE FROM job_services");
+		$this->db->simple_query("DELETE FROM job_visits");
+		$this->db->simple_query("DELETE FROM job_crew");
+		$this->db->simple_query("DELETE FROM job_visit_crew");
+		$this->db->simple_query("DELETE FROM job_visit_item");
+		$this->db->simple_query("DELETE FROM job");
+		set_flash_message(0, 'All jobs and related data are deleted!' );
+		redirect('jobs');
 	}
 
 }
