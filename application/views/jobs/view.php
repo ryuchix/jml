@@ -415,7 +415,7 @@ $(function () {
                                 <select name="line_items[0][service_id]" class="dropdown_lists serviceDD form-control select2-hidden-accessible" data-placeholder="Choose Service" tabindex="-1" aria-hidden="true">
                                     <option value=""></option>`;
                                     for(var j=0; j < this.services.length; j++)
-                                        row += `<option value="${this.services[j].id}" ${data && this.services[j].id === data.pivot.service_id? 'selected': ''}>${this.services[j].name}</option>`;
+                                        row += `<option value="${this.services[j].id}" ${data && this.services[j].id == data.pivot.service_id? 'selected': ''}>${this.services[j].name}</option>`;
                         row += `</select>
                                 <textarea class="form-control" rows="2" placeholder="Description...">${data? data.pivot.description: ''}</textarea>
                             </div>
