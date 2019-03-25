@@ -56,7 +56,7 @@
                                 <div class="tab-pane <?php echo $active_list; ?>" id="tab_2-1">
 
                                     <?php $this->load->view("$class_name/table", array('records'=>$opened_records)); ?>
-                                    
+
                                 </div><!-- /.tab-pane -->
 
                                 <div class="tab-pane <?php echo $inactive_list; ?>" id="tab_2-2">

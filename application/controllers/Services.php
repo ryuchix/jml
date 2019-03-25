@@ -166,5 +166,10 @@ class Services extends MY_Controller
     	}
     }
 
+    function get_list()
+    {
+		$this->sendResponse(Service::select('id', 'name', 'description','rate')->get()->toArray());
+    }
+
 
 }

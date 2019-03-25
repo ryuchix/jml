@@ -1,9 +1,39 @@
 <?php $this->load->view( 'partials/header' ); ?>
+<link rel="stylesheet" href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
 
 <style>
     .widget-user-desc a {
         color: white;
         text-decoration: underline;
+    }
+    .form-group.delRow {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form-group.delRow .deleteRow {
+        background-color: red;
+        display: block;
+        line-height: 30px;
+        width: 30px;
+        text-align: center;
+        color: white;
+        border-radius: 3px;
+        margin-left: 5px;
+        opacity: 0.3;
+        transition: all ease-in-out 0.2s;
+        display: none;
+        cursor: pointer;
+    }
+
+    tr:hover .form-group.delRow .deleteRow {
+        opacity: 1;
+    }
+    .form-group.delRow .deleteRow.active {
+        transform: scale(2);
+        opacity: 1;
+        transition: all cubic-bezier(0.68, -0.55, 0.27, 1.55) 0.2s;
     }
 </style>
 
@@ -194,7 +224,16 @@
 
 <?php $this->load->view( 'partials/footer' ); ?>
 
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
+
 <script>
+
+$(function () {
+
+    $('#VisitDateInput').datetimepicker({
+        format: 'DD/MM/YYYY'
+    });
 
     $('.edit_note').on('click', function (e) {
         var $this = $(this),
@@ -212,7 +251,6 @@
     $('.reactivate').on('click', function (e) {
         if (!confirm("do you really want to Reactivate this Bin type?")) { e.preventDefault(); }
     });
-
 
     $('a .badge').on('click', function(event) {
         $that = $(this);
@@ -246,5 +284,183 @@
     $('[name="visit_id"]').on('change', function() {
         $(this).parent('form').submit();
     });
+
+    // $('#editVisitModal').on('show.bs.modal', function(e){
+    //     var visitId = $(e.relatedTarget).data('vpk');
+    // });
+
+    var JobVisit = {
+        modal: "#editVisitModal",
+        visitId: 0,
+        titleInput: '',
+        date: '',
+        userText: '',
+        users: [],
+        services: [],
+        itemRowNumber: 0,
+        init: function() {
+            $(this.modal).on('show.bs.modal', this.loadVisitForm);
+            $('#saveBtn').on('click', this.save);
+            this.loadServices();
+            $('#addItem').on('click', this.addItemRow);
+            $('#deleteItem').on('click', this.showDeleteBtns);
+            $('#lineItemTable').on('change', 'tr td select', this.serviceSelected);
+        },
+        loadVisitForm: e => {
+            // get clicked anchor
+            var $anchor     = $(e.relatedTarget);
+            var $row        = $anchor.parents('tr'); // get current table row
+
+            this.visitId    = $anchor.data('vpk'); // get row visit id
+            this.titleInput = $row.find('td:first'); // extract title from first table cell
+            this.date       = $row.find('td:eq(1)'); // extract date from second table call
+            this.userText   = $row.find('td:eq(2)'); // extra users name from third cell
+            this.users      = this.userText.text().trim().split(','); // split by , from users name string
+
+            // setting edit form value
+            $('#VisitTitleInput').val(this.titleInput.text().trim());
+            $('#VisitDateInput').val(this.date.text().trim());
+
+            // uncheck all checkboxes so that we can check the box again with current selected rows
+            $(".crew-users input").prop('checked', false);
+            // loop through users array and check them by default.
+            for(var i = 0; i < this.users.length; i++)
+            {
+                var userId = $(".crew-users:contains('" + this.users[i] + "')")
+                                .find('input').val();
+                $(".crew-users input[value="+ userId +"]").prop('checked', true);
+            }
+            JobVisit.populateItems();
+        },
+        populateItems: () => {
+            $.ajax({
+                url: `<?php echo site_url('jobs/visits/${this.visitId}/items'); ?>`,
+                success: (data) => {
+                    var row = ``;
+                    for(var i = 0; i < data.length; i++){
+                        row += JobVisit.getRowTemplate(data[i]);
+                    };
+                    $('#lineItemTable tbody').html(row);
+
+                    $('#lineItemTable tbody').on('click', '.deleteRow', JobVisit.rowDeleteClickHandler)
+                }
+            });
+        },
+        save: () => {
+            var lineItems = {};
+            $('#lineItemTable tbody tr').each(function(e){
+                var service_id = $(this).find('select:first').val();
+                var quantity = $(this).find('input:first').val();
+                var rate = $(this).find('input:eq(1)').val();
+                var desc = $(this).find('textarea').val();
+                if(!service_id || !quantity || !rate)
+                {
+                    alert('Please provide valid data.');
+                    return;
+                }
+                lineItems[service_id] = { unit_cost: rate, qty: quantity, total: rate*quantity, description: desc };
+                // lineItems.push(syncData);
+            });
+            var title = $('#VisitTitleInput').val();
+            var date = $('#VisitDateInput').val();
+            var users = [];
+            $('.crew-users input:checked').each((idx, el) => {
+                users.push( $(el).val() );
+            });
+
+            $.ajax({
+                url: `<?php echo site_url('jobs/visits/${this.visitId}/edit'); ?>`,
+                method: 'POST',
+                data: {
+                    title : title,
+                    date: date,
+                    users: users,
+                    lineItems: lineItems
+                },
+                success: (data) => {
+                    // update the updated data into table without refreshing the page.
+                    this.titleInput.text(data.title);
+                    var date = data.date.split('-');
+                    var $dateHtml = `<form action="<?php echo site_url('jobs/close_visit'); ?>" method="post">
+                                        <input type="checkbox" name="visit_id" value="${data.id}">
+                                        ${date[2]}/${date[1]}/${date[0]}
+                                    </form>`;
+                    this.date.html($dateHtml);
+
+                    $('[data-dismiss="modal"]').trigger('click');
+                }
+            });
+        },
+        loadServices: () => {
+            $.ajax({
+                url: '<?php echo site_url("services/get_list"); ?>',
+                success: (data) => {
+                    this.services = data;
+                    JobVisit.services = data;
+                }
+            });
+        },
+        addItemRow: () => {
+            var tr = JobVisit.getRowTemplate();
+            $('#lineItemTable tbody').append(tr);
+        },
+        showDeleteBtns: () => {
+            $('#lineItemTable tbody .deleteRow').show('slow');
+        },
+        getRowTemplate: (data) => {
+            var i = this.itemRowNumber++;
+            var row = `<tr>
+                        <td>
+                            <div class="form-group">
+                                <select name="line_items[0][service_id]" class="dropdown_lists serviceDD form-control select2-hidden-accessible" data-placeholder="Choose Service" tabindex="-1" aria-hidden="true">
+                                    <option value=""></option>`;
+                                    for(var j=0; j < this.services.length; j++)
+                                        row += `<option value="${this.services[j].id}" ${data && this.services[j].id === data.pivot.service_id? 'selected': ''}>${this.services[j].name}</option>`;
+                        row += `</select>
+                                <textarea class="form-control" rows="2" placeholder="Description...">${data? data.pivot.description: ''}</textarea>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control itemQty" name="line_items[${i}][qty]" placeholder="Quantity" value="${data? data.pivot.qty: ''}">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group">
+                                <input type="text" class="form-control itemCost" name="line_items[${i}][unit_cost]" placeholder="Unit Cost" value="${data? data.pivot.unit_cost: ''}">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-group delRow">
+                                <input type="text" readonly class="form-control" name="line_items[${i}][total]" placeholder="Total" value="$${data? data.pivot.total: ''}">
+                                <span class="deleteRow"><i class="fa fa-trash"></i></span>
+                            </div>
+                        </td>
+                    </tr>`;
+            return row;
+        },
+        serviceSelected: function(e) {
+            var service_id = $(this).val();
+            var service = JobVisit.services.filter(item => item.id == service_id).shift();
+            $(this).next().val(service.description);
+            console.log(service);
+            $(this).parents('tr').find('input:eq(1)').val(service.rate);
+        },
+        rowDeleteClickHandler: function(e) {
+            if($(this).hasClass('active'))
+            {
+                $(this).parents('tr').fadeOut('slow', function(){
+                    $(this).remove();
+                });
+            }
+            else{
+                $(this).addClass('active');
+            }
+        }
+    };
+
+    JobVisit.init();
+
+});
 
 </script>

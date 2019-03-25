@@ -740,4 +740,53 @@ class Jobs extends MY_Controller
 		redirect('jobs');
 	}
 
+	// Edit Individual Visit
+
+	public function visits($visitId, $type)
+	{
+		switch($type)
+		{
+			case 'edit':
+				return $this->editVisit($visitId);
+			break;
+			case 'users':
+				return $this->getVisitUsers($visitId);
+			break;
+			case 'items':
+				return $this->getVisitItems($visitId);
+			break;
+		};
+		return $this->sendResponse(['message' => 'Method not allowed'], 404);
+	}
+
+	// Edit Visit By Given Id
+	protected function editVisit($visitId)
+	{
+		$visit = JobVisit::find($visitId);
+		$post = $this->input->post();
+		$visit->date = db_date($post['date']);
+		$visit->title = $post['title'];
+		$visit->save();
+		$visit->crews()->sync($post['users']);
+
+		$items = [];
+		
+		$visit->items()->sync($post['lineItems']);
+		return $this->sendResponse($visit);
+	}
+
+	// Get Users List For Given Visit
+	protected function getVisitUsers($visitId)
+	{
+		$visit = JobVisit::find($visitId);
+		return $this->sendResponse($visit->crews);
+	}
+
+	// Get Users List For Given Visit
+	protected function getVisitItems($visitId)
+	{
+		$visit = JobVisit::find($visitId);
+		return $this->sendResponse($visit->items);
+	}
+
 }
