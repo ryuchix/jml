@@ -112,6 +112,10 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <label>
+                    <input type="checkbox" name="regenerate_visit" id="regenerate_visit">
+                    Apply all uncompleted visits
+                </label>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="saveBtn">Save changes</button>
             </div>

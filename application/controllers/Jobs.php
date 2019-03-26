@@ -764,6 +764,15 @@ class Jobs extends MY_Controller
 	{
 		$visit = JobVisit::find($visitId);
 		$post = $this->input->post();
+		
+		if($post['regenerate'] == 'true')
+		{
+			$this->insertVisitData($post);
+			return $this->sendResponse($visit);
+			exit;
+		}
+
+
 		$visit->date = db_date($post['date']);
 		$visit->title = $post['title'];
 		$visit->save();
@@ -787,6 +796,57 @@ class Jobs extends MY_Controller
 	{
 		$visit = JobVisit::find($visitId);
 		return $this->sendResponse($visit->items);
+	}
+
+	protected function insertVisitData($post)
+	{
+		$visits = JobVisit::where('job_id', $post['job_id'])->where('completed', 0)->select('id', 'date')->get();
+
+		$sql = "DELETE FROM job_visit_crew WHERE visit_id IN (SELECT id from job_visits WHERE job_id = " . $post['job_id'] . " AND completed = 0)";
+		if($this->db->simple_query($sql))
+		{
+			$data = [];
+			
+			$results = $this->db->query("SELECT id as visit_id FROM job_visits Where job_id = ? AND completed = 0", [$post['job_id']])->result();
+			
+			foreach($post['users'] as $user)
+			{
+				foreach ( $results as $visit_id ){
+					$temp_data = [];
+					$temp_data['visit_id'] 	= $visit_id->visit_id;
+					$temp_data['user_id'] 	= $user;
+
+					$data[] = $temp_data;
+				}
+			}
+			
+			$this->Job_visit_crew_model->insert_batch($data);
+		}
+
+		$sql = "DELETE FROM job_visit_item WHERE visit_id IN (SELECT id from job_services WHERE job_id = " . $post['job_id'] . ")";
+		if($this->db->simple_query($sql))
+		{
+			$data = [];
+			
+			$results = $this->db->query("SELECT id as visit_id FROM job_visits Where job_id = ?", [$post['job_id']])->result();
+			
+			foreach($post['lineItems'] as $item)
+			{
+				foreach ( $results as $visit_id ){
+					$temp_data = [];
+					$temp_data['visit_id'] 		= $visit_id->visit_id;
+					$temp_data['service_id'] 	= $item['service_id'];
+					$temp_data['description'] 	= $item['description'];
+					$temp_data['qty'] 			= $item['qty'];
+					$temp_data['unit_cost'] 	= $item['unit_cost'];
+					$temp_data['total'] 		= str_replace('$', '', $item['total']);
+
+					$data[] = $temp_data;
+				}
+			}
+			$this->Job_visit_item_model->insert_batch($data);
+		}
+
 	}
 
 }

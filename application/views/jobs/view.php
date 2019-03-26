@@ -358,7 +358,7 @@ $(function () {
                     alert('Please provide valid data.');
                     return;
                 }
-                lineItems[service_id] = { unit_cost: rate, qty: quantity, total: rate*quantity, description: desc };
+                lineItems[service_id] = { unit_cost: rate, service_id: service_id, qty: quantity, total: rate*quantity, description: desc };
                 // lineItems.push(syncData);
             });
             var title = $('#VisitTitleInput').val();
@@ -375,7 +375,9 @@ $(function () {
                     title : title,
                     date: date,
                     users: users,
-                    lineItems: lineItems
+                    lineItems: lineItems,
+                    regenerate: $('#regenerate_visit').prop('checked'),
+                    job_id: <?php echo $record->id; ?>
                 },
                 success: (data) => {
                     // update the updated data into table without refreshing the page.
