@@ -353,12 +353,12 @@
                 <ul class="treeview-menu">
                     <?php if ($controller->hasAccess('add-client')): ?>
                     <li class="<?php echo set_sub_menu('add_client', $sub_menu); ?>">
-                        <a href="<?php echo site_url( 'client/save' );?>"><i class="fa fa-circle-o"></i> Add Client/Prospect</a>
+                        <a href="<?php echo site_url( 'client/save' );?>"><i class="fa fa-circle-o"></i> Add Client/Prospect/Lead</a>
                     </li>
                     <?php endif ?>
                     <?php if ($controller->hasAccess('view-client')): ?>
                     <li class="<?php echo set_sub_menu('active_client_lists', $sub_menu); ?>">
-                        <a href="<?php echo site_url('client/'); ?>"><i class="fa fa-circle-o"></i> View Clients/Prospects</a>
+                        <a href="<?php echo site_url('client/'); ?>"><i class="fa fa-circle-o"></i> View Client/Prospect/Lead</a>
                     </li>
                     <?php endif ?>
                 </ul>

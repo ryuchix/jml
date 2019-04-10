@@ -18,6 +18,9 @@ class Client_model extends MY_Model
     public $strata_plan = null;
     public $is_parent = 1;
     public $is_prospect = 0;
+    public $is_lead = 0;
+    public $lead_date;
+    public $lead_by = null;
     public $child_of = null;
     public $address_1 = '';
     public $address_2 = null;
@@ -81,13 +84,15 @@ class Client_model extends MY_Model
         return $first_empty? array(''=>'') + $ret : $ret;
     }
 
-    function get_list_where($active = 1, $prospect = 0)
+    function get_list_where($active = 1, $prospect = 0, $lead = 0)
     {
-        $sql = "SELECT c.id, c.name, c.phone, c.active, ct.type AS client_type, c.email, c.address_1, c.address_suburb, c.address_post_code, c.is_parent, cp.name AS parent_name
+        $sql = "SELECT c.id, c.name, c.phone, c.active, ct.type AS client_type, c.email, c.address_1, c.address_suburb, c.address_post_code, c.is_parent, cp.name AS parent_name, lt.type AS lead_type, CONCAT(u.first_name, ' ', u.last_name) AS lead_by, c.lead_date
                 FROM client AS c
                     LEFT JOIN client AS cp ON c.child_of = cp.id
                     LEFT JOIN client_type AS ct ON c.client_type = ct.id
-                WHERE c.active = $active AND c.is_prospect = $prospect";
+                    LEFT JOIN lead_type AS lt ON c.lead_type = lt.id
+                    LEFT JOIN users AS u ON c.lead_by = u.id
+                WHERE c.active = $active AND c.is_prospect = $prospect AND c.is_lead = $lead";
         return $this->db->query($sql)->result();
     }
 
@@ -161,5 +166,3 @@ class Client_model extends MY_Model
     }
 
 }
-
-?>

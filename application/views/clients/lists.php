@@ -41,6 +41,10 @@
                                 <li class="<?php echo $inactive_prospect_list; ?>"><a href="#tab_3-3" data-toggle="tab" aria-expanded="false">Inactive Prospects</a></li>
 
                                 <li class="<?php echo $active_prospect_list; ?>"><a href="#tab_4-4" data-toggle="tab" aria-expanded="false">Active Prospects</a>
+
+                                <li class="<?php echo $inactive_prospect_list; ?>"><a href="#tab_5-5" data-toggle="tab" aria-expanded="false">Inactive Leads</a></li>
+
+                                <li class="<?php echo $active_prospect_list; ?>"><a href="#tab_6-6" data-toggle="tab" aria-expanded="false">Active Leads</a>
                                 </li>
                                 
                                 <?php if ($controller->hasAccess('add-client')): ?>
@@ -76,6 +80,18 @@
                                 <div class="tab-pane <?php echo $active_prospect_list; ?>" id="tab_4-4">
 
                                     <?php $this->load->view('clients/client_table', array('records'=>$prospect_records)); ?>
+                                    
+                                </div><!-- /.tab-pane -->
+
+                                <div class="tab-pane <?php echo $inactive_lead_list; ?>" id="tab_5-5">
+
+                                    <?php $this->load->view('clients/client_table', array('records'=>$inactive_lead_records)); ?>
+
+                                </div><!-- /.tab-pane -->
+
+                                <div class="tab-pane <?php echo $active_lead_list; ?>" id="tab_6-6">
+
+                                    <?php $this->load->view('clients/client_table', array('records'=>$lead_records)); ?>
                                     
                                 </div><!-- /.tab-pane -->
 

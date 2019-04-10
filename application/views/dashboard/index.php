@@ -202,6 +202,8 @@
 
 		<?php $this->load->view('dashboard/rego_table'); ?>
 
+		<?php $this->load->view('dashboard/lead_table'); ?>
+
 		<?php $this->load->view('dashboard/equipment_table'); ?>
 
 		<?php $this->load->view('dashboard/daily_balances_progress'); ?>

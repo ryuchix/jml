@@ -22,7 +22,7 @@ class Client extends MY_Controller
 		$this->context = 'client';
 	}
 
-	function index($disable = false, $modified_item_id=0, $prospect=0)
+	function index($disable = false, $modified_item_id=0, $prospect=0, $lead=0)
 	{
 		$this->redirectIfNotAllowed('view-client');
 
@@ -30,22 +30,31 @@ class Client extends MY_Controller
 		$this->set_data( 'active_prospect_list', '');
 		$this->set_data( 'inactive_list', '');
 		$this->set_data( 'inactive_prospect_list', '');
+		$this->set_data( 'active_lead_list', '');
+		$this->set_data( 'inactive_lead_list', '');
 
 		if ($prospect) {
 			$this->set_data( 'active_prospect_list', ($disable)?'':'active');
 			$this->set_data( 'inactive_prospect_list', !($disable)?'':'active');
+		}elseif ($lead) {
+			$this->set_data( 'active_lead_list', ($disable)?'':'active');
+			$this->set_data( 'inactive_lead_list', !($disable)?'':'active');
 		}else{
 			$this->set_data( 'active_list', ($disable)?'':'active');
 			$this->set_data( 'inactive_list', !($disable)?'':'active');
 		}
 		
-
 		$this->set_data( 'modified_item_id', $modified_item_id);
 		$this->set_data('sub_menu', 'active_client_lists');
+		
 		$this->set_data( 'records', $this->Client_model->get_list_where( 1, 0) );
 		$this->set_data( 'prospect_records', $this->Client_model->get_list_where( 1, 1 ) );
-    	$this->set_data( 'inactive_records', $this->Client_model->get_list_where( 0, 0 ) );
-    	$this->set_data( 'inactive_prospect_records', $this->Client_model->get_list_where( 0, 1 ) );
+		$this->set_data( 'lead_records', $this->Client_model->get_list_where( 1, 0, 1 ) );
+
+		$this->set_data( 'inactive_records', $this->Client_model->get_list_where( 0, 0 ) );
+		$this->set_data( 'inactive_prospect_records', $this->Client_model->get_list_where( 0, 1 ) );
+		$this->set_data( 'inactive_lead_records', $this->Client_model->get_list_where( 0, 0, 1 ) );
+		
 		$this->load->view('clients/lists', $this->get_data());
 	}
 
@@ -94,7 +103,30 @@ class Client extends MY_Controller
 					$record->child_of = null;
 				}
 				$record->same_billing_address = $this->input->post('data[same_billing_address]')? 1: 0;
+				$record->is_prospect = $this->input->post('data[is_prospect]') == 1 ? 1: 0;
+				if($this->input->post('data[is_prospect]') == 2)
+				{
+					$record->is_lead = 1;
+					if(!$id)
+					{
+						$record->lead_date = db_date($this->input->post('lead_date'));
+
+						$marketingDescription = sprintf("Leads created by %s on %s - %s", 
+							$this->session->userdata('user_id'),
+							$this->input->post('lead_date'),
+							LeadType::find($this->input->post('data[client_type]'))->type
+						);
+
+						Marketing::create([
+							'description' => $marketingDescription,
+							'date' => $record->lead_date,
+							'created_by' => $this->session->userdata('user_id'),
+						]);
+					}
+				}
 				$record->active = $id? $record->active: 1;
+
+			
 				$inserted_id_or_affected_rows = $record->save();
 				if ($inserted_id_or_affected_rows) {
 					$msg = $record->is_prospect? "Prospect ": "Client ";
@@ -135,6 +167,11 @@ class Client extends MY_Controller
     		$this->form_validation->set_rules('data[billing_suburb]','Suburb','required|max_length[255]');
     		$this->form_validation->set_rules('data[billing_post_code]','Post Code','required|max_length[255]');
 		}
+
+		// if ( $this->input->post('data[is_prospect]') == 2 ) {
+    	// 	$this->form_validation->set_rules('data[lead_by]','Lead by','required');
+    	// 	$this->form_validation->set_rules('lead_date','Lead date','required');
+		// }
 	}
 
 	function delete($id)
@@ -929,6 +966,45 @@ class Client extends MY_Controller
 		return $this->sendResponse(['message' => 'username / password has changed successfully.']);
 		// return $this->sendResponse($this->input->post());
 	}
+
+	public function change_type($id, $type)
+    {
+		$lead = new Client_model();
+		$lead->load($id);
+
+		if(!$lead || !$lead->is_lead)
+			die('only leade can be changed');
+
+		if($type == 'prospect')
+		{
+			$lead->is_prospect = 1;
+			$lead->is_lead = 0;
+		}
+
+		if($type == 'client')
+		{
+			$lead->is_prospect = 0;
+			$lead->is_lead = 0;
+		}
+
+		$lead->save();
+
+
+		$marketingDescription = sprintf("Record changed from Lead to %s on %s by %s", 
+			$type,
+			(new DateTime())->format('d/m/Y H:i:s'),
+			$this->session->userdata('fullname')
+		);
+
+		Marketing::create([
+			'description' => $marketingDescription,
+			'date' => (new DateTime())->format('Y-m-d'),
+			'created_by' => $this->session->userdata('user_id'),
+		]);
+		
+		set_flash_message(0, "Action Successful!");
+		redirect( site_url( '/' ) );
+    }
 
 	public function custom_username_check($user_name,$id)
     {

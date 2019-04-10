@@ -11,4 +11,14 @@ class Client extends Eloquent
     {
         return $this->hasMany('Job');
     }
+
+    public function leadType()
+    {
+        return $this->belongsTo(LeadType::class, 'lead_type');
+    }
+
+    public function leadBy()
+    {
+        return $this->belongsTo(User::class, 'lead_by');
+    }
 }

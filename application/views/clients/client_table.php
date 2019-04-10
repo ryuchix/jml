@@ -4,10 +4,14 @@
             <th>Client Name</th>
             <th>Client Type</th>
             <th>Address </th>
+            <th>Suburb </th>
             <th>Phone </th>
             <th>Email</th>
             <th>Parent</th>
             <th>Parent Name</th>
+            <th>Lead Type</th>
+            <th>Lead By</th>
+            <th>Lead Date</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -16,11 +20,15 @@
     <tr class="<?php echo ($row->id == $modified_item_id)?"animated tada\" style=\"animation-fill-mode: backwards;\"":""; ?>">
         <td><?php echo $row->name; ?></td>
         <td><?php echo $row->client_type; ?></td>
-        <td><?php echo $row->address_1 . ', ' . $row->address_suburb . ', ' . $row->address_post_code; ?></td>
+        <td><?php echo $row->address_1 ?></td>
+        <td><?php echo $row->address_suburb; ?></td>
         <td><?php echo $row->phone; ?></td>
         <td><?php echo $row->email; ?></td>
         <td><?php echo $row->is_parent? '<i class="fa fa-check text-primary"></i>':'-'; ?></td>
         <td><?php echo $row->parent_name; ?></td>
+        <td><?php echo $row->lead_type; ?></td>
+        <td><?php echo $row->lead_by; ?></td>
+        <td><?php echo $row->lead_date? local_date($row->lead_date): '-'; ?></td>
         <td>
           <div class="btn-group">
                 <button data-toggle="dropdown" class="dropdown-toggle btn btn-icon-toggle btn-default ink-reaction">

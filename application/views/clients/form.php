@@ -1,4 +1,5 @@
 <?php $this->load->view( 'partials/header' ); ?>
+<link rel="stylesheet" href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 <style>
     .select2-container--default .select2-selection--single {
@@ -43,12 +44,29 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                            
                             <div class="form-group <?php echo form_error('data[is_prospect]')? 'has-error':''; ?>">
-                                <label for="is_prospect">Select Client/Prospect:</label>
+                                <label for="is_prospect">Select Client/Prospect/Lead:</label>
                                 <?php 
-                                echo form_dropdown('data[is_prospect]', array('Client', 'Prospect'), isset($_POST['data']['is_prospect'])?$_POST['data']['is_prospect']: $record->is_prospect, 'class="is_parent_choose form-control" id="is_prospect"'); ?>
+                                echo form_dropdown('data[is_prospect]', array('Client', 'Prospect', 'Lead'), isset($_POST['data']['is_prospect'])?$_POST['data']['is_prospect']: $record->is_prospect? 1: $record->is_lead? 1: 0, 'class="is_parent_choose form-control" id="is_prospect"'); ?>
                                 <?php echo form_error('data[is_prospect]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                            <div id="leadContainer" style="display: none;">
+                                <?php $salesUsers = Role::where('name', 'Sales/Marketing Officer')->first()->users()->select('first_name', 'last_name', 'id')->get()->pluck('full_name', 'id')->toArray(); ?>
+                                <div class="form-group <?php echo form_error('data[lead_by]')? 'has-error':''; ?>">
+                                    <label for="id_label_single">Lead By:</label>
+                                    <?php echo form_dropdown('data[lead_by]', $salesUsers, isset($_POST['data']['lead_by'])?$_POST['data']['lead_by']: $record->lead_by, 'class="is_parent_choose form-control" id="id_label_single"'); ?>
+                                    <?php echo form_error('data[lead_by]','<p class="error-msg">','</p>') ?>
+                                </div>
+                                <div class="form-group <?php echo form_error('lead_date')? 'has-error':''; ?>">
+                                    <label for="lead_date">Lead Date</label>
+                                    <div class='input-group date' id='datetimepicker'>
+                                        <input type="text" class="form-control" name="lead_date" id="lead_date" placeholder="Start Date" value="<?php echo set_value('lead_date', $record->id && $record->lead_date? local_date($record->lead_date):date('d/m/Y')); ?>">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>
+                                    <?php echo form_error('lead_date','<p class="error-msg">','</p>'); ?>
+                                </div>
                             </div>
 
                             <div class="form-group <?php echo form_error('data[lead_type]')? 'has-error':''; ?>">
@@ -237,8 +255,13 @@
 <?php $this->load->view( 'partials/footer' ); ?>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-<script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
 
+<script>
+    $('.date').datetimepicker({
+        format: 'DD/MM/YYYY'
+    });
 
     var addressAutocomplete, billingAutocomplete;
     function initAutocomplete() {
@@ -381,5 +404,33 @@
         });
 
     });
+
+
+    var lead = {
+        container : $('#leadContainer'),
+        type : $('#is_prospect'),
+        leadDate : $('[name=lead_date]'),
+        init: function(){
+            lead.hide();
+            this.type.on('change.select2', lead.toggle);
+            this.leadDate.prop('disabled', true);
+        },
+        show: function(){
+            lead.container.slideDown();
+            this.leadDate.prop('disabled', false);
+        },
+        hide: function(){
+            lead.container.slideUp();
+            this.leadDate.prop('disabled', true);
+        },
+        toggle: function(){;
+            if($(this).val() == 2)
+                lead.show();
+            else
+                lead.hide();
+        }
+    };
+    
+    lead.init();
 
 </script>
