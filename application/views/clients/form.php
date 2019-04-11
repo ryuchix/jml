@@ -51,7 +51,7 @@
                                 <?php echo form_error('data[is_prospect]','<p class="error-msg">','</p>') ?>
                             </div>
 
-                            <div id="leadContainer" style="display: none;">
+                            <div id="leadContainer" <?php echo !$record->is_lead? 'style="display: none;"':'' ?>>
                                 <?php $salesUsers = Role::where('name', 'Sales/Marketing Officer')->first()->users()->select('first_name', 'last_name', 'id')->get()->pluck('full_name', 'id')->toArray(); ?>
                                 <div class="form-group <?php echo form_error('data[lead_by]')? 'has-error':''; ?>">
                                     <label for="id_label_single">Lead By:</label>
@@ -405,15 +405,15 @@
 
     });
 
-
     var lead = {
         container : $('#leadContainer'),
         type : $('#is_prospect'),
         leadDate : $('[name=lead_date]'),
         init: function(){
-            lead.hide();
+            // lead.hide();
+            
             this.type.on('change.select2', lead.toggle);
-            this.leadDate.prop('disabled', true);
+            // this.leadDate.prop('disabled', true);
         },
         show: function(){
             lead.container.slideDown();
@@ -421,7 +421,7 @@
         },
         hide: function(){
             lead.container.slideUp();
-            this.leadDate.prop('disabled', true);
+            // this.leadDate.prop('disabled', true);
         },
         toggle: function(){;
             if($(this).val() == 2)

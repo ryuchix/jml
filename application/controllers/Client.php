@@ -122,6 +122,7 @@ class Client extends MY_Controller
 				{
 					$record->is_lead = 1;
 					$record->is_prospect = 0;
+					// dd($this->input->post());
 					$record->lead_date = db_date($this->input->post('lead_date'));
 
 					$marketingDescription = sprintf("Leads created by %s on %s - %s", 
