@@ -103,27 +103,38 @@ class Client extends MY_Controller
 					$record->child_of = null;
 				}
 				$record->same_billing_address = $this->input->post('data[same_billing_address]')? 1: 0;
-				$record->is_prospect = $this->input->post('data[is_prospect]') == 1 ? 1: 0;
+
+				$clientType = $this->input->post('data[is_prospect]');
+
+				if($clientType == 0)
+				{
+					$record->is_lead = 0;
+					$record->is_prospect = 0;
+				}
+
+				if($clientType == 1)
+				{
+					$record->is_lead = 0;
+					$record->is_prospect = 1;
+				}
+
 				if($this->input->post('data[is_prospect]') == 2)
 				{
 					$record->is_lead = 1;
 					$record->is_prospect = 0;
-					if(!$id)
-					{
-						$record->lead_date = db_date($this->input->post('lead_date'));
+					$record->lead_date = db_date($this->input->post('lead_date'));
 
-						$marketingDescription = sprintf("Leads created by %s on %s - %s", 
-							$this->session->userdata('user_id'),
-							$this->input->post('lead_date'),
-							LeadType::find($this->input->post('data[client_type]'))->type
-						);
+					$marketingDescription = sprintf("Leads created by %s on %s - %s", 
+						$this->session->userdata('user_id'),
+						$this->input->post('lead_date'),
+						LeadType::find($this->input->post('data[client_type]'))->type
+					);
 
-						Marketing::create([
-							'description' => $marketingDescription,
-							'date' => $record->lead_date,
-							'created_by' => $this->session->userdata('user_id'),
-						]);
-					}
+					Marketing::create([
+						'description' => $marketingDescription,
+						'date' => $record->lead_date,
+						'created_by' => $this->session->userdata('user_id'),
+					]);
 				}
 				$record->active = $id? $record->active: 1;
 
