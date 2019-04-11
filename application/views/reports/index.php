@@ -61,9 +61,13 @@
 				  		<a href="<?php echo site_url('reports/properties/bins') ?>" class="list-group-item self-report">Proterties Bins</a>
 				  	<?php endif ?>
 
-				  	<?php if ($controller->hasAccess('property-services')): ?>
-				  		<a href="<?php echo site_url('reports/properties/services') ?>" class="list-group-item self-report">Properties Services</a>
-				  	<?php endif ?>
+					<?php if ($controller->hasAccess('property-services')): ?>
+						<a href="<?php echo site_url('reports/properties/services') ?>" class="list-group-item self-report">Properties Services</a>
+					<?php endif ?>
+
+					<?php // if ($controller->hasAccess('leads-report')): ?>
+						<a href="<?php echo site_url('reports/leads') ?>" class="list-group-item self-report">Leads</a>
+					<?php // endif ?>
 
 				</div>
 	            

@@ -25,7 +25,7 @@ class ClientReportController extends MY_Controller
 	{
 		$this->redirectIfNotAllowed('client-report');
 
-		$this->set_data('clients_or_prospects', array('All', 'Client', 'Prospect')[$this->input->get('client_or_prospect')? $this->input->get('client_or_prospect'): 0 ]);
+		$this->set_data('clients_or_prospects', array('All', 'Client', 'Prospect', 'Lead')[$this->input->get('client_or_prospect')? $this->input->get('client_or_prospect'): 0 ]);
 
 		if (isset($_GET['client_or_prospect']) && isset($_GET['lead_type']) && isset($_GET['client_type'])) 
 		{

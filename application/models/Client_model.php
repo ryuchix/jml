@@ -126,6 +126,8 @@ class Client_model extends MY_Model
         {
             if ($client_or_prospect === 1) {
                 $clients->where('c.is_prospect', 0);
+            }elseif ($client_or_prospect === 3) {
+                $clients->where('c.is_lead', 1);
             }else{
                 $clients->where('c.is_prospect', 1);
             }

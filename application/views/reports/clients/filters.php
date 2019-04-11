@@ -49,7 +49,7 @@
 
                                         <label for="is_prospect">Client/Prospect:</label>
 
-                                        <?php echo form_dropdown('client_or_prospect', array('All', 'Client', 'Prospect'), isset($_GET['client_or_prospect'])?$_GET['client_or_prospect']: 'All', 'class="form-control"'); ?>
+                                        <?php echo form_dropdown('client_or_prospect', array('All', 'Client', 'Prospect', 'Lead'), isset($_GET['client_or_prospect'])?$_GET['client_or_prospect']: 'All', 'class="form-control"'); ?>
 
                                         <?php echo form_error('client_or_prospect','<p class="error-msg">','</p>') ?>
 

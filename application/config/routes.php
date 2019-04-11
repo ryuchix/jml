@@ -7,6 +7,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 $route['reports'] = 'reports/reportscontroller/index';
 $route['reports/clients'] = 'reports/ClientReportController/index';
+$route['reports/leads'] = 'reports/LeadReportController/index';
 $route['reports/client/filter'] = 'reports/ClientReportController/filters';
 $route['reports/bin-liner-management'] = 'reports/Bin_liner_management_controller/pdf';
 $route['reports/bin-liner-management/filter'] = 'reports/Bin_liner_management_controller';
