@@ -107,6 +107,7 @@ class Client extends MY_Controller
 				if($this->input->post('data[is_prospect]') == 2)
 				{
 					$record->is_lead = 1;
+					$record->is_prospect = 0;
 					if(!$id)
 					{
 						$record->lead_date = db_date($this->input->post('lead_date'));
