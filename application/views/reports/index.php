@@ -89,11 +89,6 @@
 	        </div>
 	        <!-- /.col -->
 
-        </div>
-        <!-- /.row -->
-
-        <div class="row">
-
 	        <div class="col-md-4">
 
 				<div class="list-group">
@@ -107,24 +102,6 @@
 						<a href="<?php echo site_url('reports/councils/pdf') ?>" class="list-group-item self-report">Export Councils</a>
 					<?php endif ?>
 
-				</div>
-	            
-	        </div>
-	        <!-- /.col -->
-
-	        <div class="col-md-4">
-
-				<div class="list-group">
-				  	
-				</div>
-	            
-	        </div>
-	        <!-- /.col -->
-
-	        <div class="col-md-4">
-
-				<div class="list-group">
-				  	
 				</div>
 	            
 	        </div>
@@ -168,6 +145,7 @@
 		</div>
 	</div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.2.2/masonry.pkgd.min.js"></script>
 <style>
 @media (min-width: 992px){
     .modal-lg {
@@ -176,6 +154,12 @@
 }
 </style>
 <script>
+
+	$('.content .row').masonry({
+		itemSelector: '.col-md-4',
+	});
+
+
 	$('.self-report').click(function(e) {
 		e.preventDefault();
 		

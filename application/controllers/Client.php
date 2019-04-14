@@ -131,17 +131,26 @@ class Client extends MY_Controller
 						LeadType::find($this->input->post('data[client_type]'))->type
 					);
 
-					Marketing::create([
+					$marketing = Marketing::create([
+						'description' => $marketingDescription,
 						'description' => $marketingDescription,
 						'date' => $record->lead_date,
 						'created_by' => $this->session->userdata('user_id'),
 					]);
 				}
+				
 				$record->active = $id? $record->active: 1;
 
-			
 				$inserted_id_or_affected_rows = $record->save();
+
+				if(!$id)
+				{
+					$marketing->lead_id = $inserted_id_or_affected_rows;
+					$marketing->save();
+				}
+
 				if ($inserted_id_or_affected_rows) {
+
 					$msg = $record->is_prospect? "Prospect ": "Client ";
 					if (!$id) { 
 						$id=$inserted_id_or_affected_rows;

@@ -774,6 +774,7 @@ class Jobs extends MY_Controller
 
 
 		$visit->date = db_date($post['date']);
+		$visit->description = $post['description'];
 		$visit->title = $post['title'];
 		$visit->save();
 		$visit->crews()->sync($post['users']);

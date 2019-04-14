@@ -294,6 +294,7 @@ $(function () {
         visitId: 0,
         titleInput: '',
         date: '',
+        description: '',
         userText: '',
         users: [],
         services: [],
@@ -313,13 +314,15 @@ $(function () {
 
             this.visitId    = $anchor.data('vpk'); // get row visit id
             this.titleInput = $row.find('td:first'); // extract title from first table cell
-            this.date       = $row.find('td:eq(1)'); // extract date from second table call
-            this.userText   = $row.find('td:eq(2)'); // extra users name from third cell
+            this.description= $row.find('td:eq(1)'); // extract date from second table call
+            this.date       = $row.find('td:eq(2)'); // extract date from second table call
+            this.userText   = $row.find('td:eq(3)'); // extra users name from third cell
             this.users      = this.userText.text().trim().split(','); // split by , from users name string
 
             // setting edit form value
             $('#VisitTitleInput').val(this.titleInput.text().trim());
             $('#VisitDateInput').val(this.date.text().trim());
+            $('#VisitDescriptionInput').val(this.date.text().trim());
 
             // uncheck all checkboxes so that we can check the box again with current selected rows
             $(".crew-users input").prop('checked', false);
@@ -363,6 +366,7 @@ $(function () {
             });
             var title = $('#VisitTitleInput').val();
             var date = $('#VisitDateInput').val();
+            var mainDescription = $('#visitDescriptionInput').val();
             var users = [];
             $('.crew-users input:checked').each((idx, el) => {
                 users.push( $(el).val() );
@@ -374,6 +378,7 @@ $(function () {
                 data: {
                     title : title,
                     date: date,
+                    description: mainDescription,
                     users: users,
                     lineItems: lineItems,
                     regenerate: $('#regenerate_visit').prop('checked'),

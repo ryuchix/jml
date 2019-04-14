@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Title</th>
+            <th>Description</th>
             <th>Visit Date</th>
             <th>Assignee</th>
             <th>Amount</th>
@@ -13,6 +14,9 @@
     <tr>
         <td>
             <?php echo $row->title ?? $record->job_title ?>
+        </td>
+        <td>
+            <?php echo $row->description; ?>
         </td>
         <td>
             <label class="checkbox-inline">
@@ -80,6 +84,15 @@
                             </label>
                         </div>
                     <?php endforeach; ?>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="visitDescriptionInput">Description</label>
+                            <textarea class="form-control" name="Description" id="visitDescriptionInput" placeholder="Description"></textarea>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row" style="margin-top: 20px;">
