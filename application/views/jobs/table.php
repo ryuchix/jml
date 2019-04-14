@@ -32,7 +32,7 @@ $frequency = [
         <?php if($row->job_type == 2): ?>
             <td><?php echo $row->duration . ' ' . $row->duration_schedule; ?></td>
         <?php else: ?>
-            <td><?php echo '&nbsp;'; ?></td>
+            <td><?php echo '1 Day'; ?></td>
         <?php endif; ?>
         <?php if($row->visit_frequency == 'custom'): ?>
             <td>Every <?php echo $row->every_no_day . ' ' . $frequency[$row->frequency] . ' on ' . $row->week_days; ?></td>
@@ -43,7 +43,13 @@ $frequency = [
         <td><?php echo get_job_types($row->job_type); ?></td>
         <td><?php echo $row->job_category; ?></td>
         <td><?php echo $row->job_title; ?></td>
-        <td><?php echo ($row->next_visit && !$row->closed)? local_date($row->next_visit):''; ?></td>
+        
+        <?php if($row->job_type == 1): ?>
+            <td><?php echo local_date(date('Y-m-d')); ?></td>
+        <?php else: ?>
+            <td><?php echo ($row->next_visit && !$row->closed)? local_date($row->next_visit):''; ?></td>
+        <?php endif; ?>
+
         <!-- <td><?php echo ''; ?></td> -->
         <td>$<?php echo $row->value; ?></td>
         <td>
