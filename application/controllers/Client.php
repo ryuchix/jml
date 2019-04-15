@@ -126,7 +126,7 @@ class Client extends MY_Controller
 					$record->lead_date = db_date($this->input->post('lead_date'));
 
 					$marketingDescription = sprintf("Leads created by %s on %s - %s", 
-						$this->session->userdata('user_id'),
+						$this->session->userdata('fullname'),
 						$this->input->post('lead_date'),
 						LeadType::find($this->input->post('data[client_type]'))->type
 					);
@@ -153,7 +153,7 @@ class Client extends MY_Controller
 
 					$msg = $record->is_prospect? "Prospect ": "Client ";
 					if (!$id) { 
-						$id=$inserted_id_or_affected_rows;
+						$id = $inserted_id_or_affected_rows;
 						$this->add_history($id, $msg . " added ");
 					}else{
 						$this->add_history($id, $msg . " Upldated ");

@@ -120,12 +120,22 @@
                                                                             '. $readonly . ' data-placeholder="Choose Property"'); ?>
                                 <?php echo form_error('data[property_id]','<p class="error-msg">','</p>') ?>
                             </div>
-                            
                             <div class="form-group <?php echo form_error('data[job_type]')? 'has-error':''; ?>">
                                 <label for="job_type">Job Type:</label>
-                                <?php echo form_dropdown('data[job_type]', get_job_types(), 
+                                <?php 
+                                if(((int)$record->job_type === 1))
+                                {
+                                    $dropdown = '';
+                                    $readonly = 'disabled';
+                                    echo '<input type="hidden" name="data[job_type]" value"' . (isset($_POST['data']['job_type'])? $_POST['data']['job_type']:(int) $record->job_type) . '">';
+                                }else{
+                                    $dropdown = 'dropdown_lists';
+                                    $readonly = '';
+                                }
+                                
+                                echo form_dropdown('data[job_type]', get_job_types(), 
                                                                             isset($_POST['data']['job_type'])? $_POST['data']['job_type']:(int) $record->job_type
-                                                                            , 'class="dropdown_lists form-control" id="job_type" data-placeholder="Job Type"'); ?>
+                                                                            , 'class="' . $dropdown . ' form-control" '. $readonly .' id="job_type" data-placeholder="Job Type"'); ?>
                                 <?php echo form_error('data[job_type]','<p class="error-msg">','</p>') ?>
                             </div>
 
@@ -374,6 +384,10 @@ $(".dropdown_lists").select2({
     placeholder: $(this).data('placeholder'),
     allowClear: true
 });
+
+<?php if((int)$record->job_type === 1) : ?>
+    $('#job_type').select2('readonly', true);
+<?php endif; ?>
 
 $('#client_id').on('change', function(event) {
     event.preventDefault();

@@ -47,7 +47,7 @@
                             <div class="form-group <?php echo form_error('data[is_prospect]')? 'has-error':''; ?>">
                                 <label for="is_prospect">Select Client/Prospect/Lead:</label>
                                 <?php 
-                                echo form_dropdown('data[is_prospect]', array('Client', 'Prospect', 'Lead'), isset($_POST['data']['is_prospect'])?$_POST['data']['is_prospect']: $record->is_prospect? 1: $record->is_lead? 2: 0, 'class="is_parent_choose form-control" id="is_prospect"'); ?>
+                                echo form_dropdown('data[is_prospect]', array('Client', 'Prospect', 'Lead'), isset($_POST['data']['is_prospect'])?$_POST['data']['is_prospect']: $record->is_prospect? 1: $record->is_prospect == 1? 1: $record->is_lead? 1: 0, 'class="is_parent_choose form-control" id="is_prospect"'); ?>
                                 <?php echo form_error('data[is_prospect]','<p class="error-msg">','</p>') ?>
                             </div>
 
