@@ -33,7 +33,7 @@
                 $leads = Client::with(['leadType' => function($q){
                 }, 'leadBy' => function($q){
                     $q->select('first_name', 'last_name', 'id');
-                }])->where('is_lead', 1)->get();
+                }])->where('is_lead', 1)->orderBy('id', 'desc')->get();
 
                 // dd($leads->toArray());
             ?>
@@ -48,9 +48,13 @@
 
 						<th>Address</th>
 
+						<th>Suburb</th>
+
 						<th>Phone</th>
 
 						<th>Email</th>
+
+						<th>Lead Date</th>
 
 						<th>Lead Type</th>
 
@@ -69,9 +73,13 @@
 								
 								<td><?php echo ($lead->address_1); ?></td>
 
+								<td><?php echo ($lead->address_suburb); ?></td>
+
 								<td><?php echo ($lead->phone); ?></td>
 								
 								<td><?php echo ($lead->email); ?></td>
+								
+								<td><?php echo local_date($lead->lead_date); ?></td>
 								
 								<td><?php echo ($lead->leadType->type); ?></td>
 								
