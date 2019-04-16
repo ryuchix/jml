@@ -385,10 +385,6 @@ $(".dropdown_lists").select2({
     allowClear: true
 });
 
-<?php if((int)$record->job_type === 1) : ?>
-    $('#job_type').select2('readonly', true);
-<?php endif; ?>
-
 $('#client_id').on('change', function(event) {
     event.preventDefault();
     var client_id = $(this).val();
@@ -474,6 +470,10 @@ var lineItemList =
         }else{
             total.val(0);
         }
+        
+        <?php if($record->id): ?>
+        showWarning(true);
+        <?php endif;?>
     }
 };
 
@@ -552,13 +552,16 @@ $('#addItem').on('click', function(event) {
         placeholder: $(this).data('placeholder'),
         allowClear: true
     });
+
+    <?php if($record->id): ?>
+    showWarning(true);
+    <?php endif;?>
 });
 
 var deleteShowing = false;
 $('#deleteItem').on('click', function(event) {
     event.preventDefault();
     if ($('#lineItemTable tbody').find('tr').length == 1) { return }
-    console.log('clicked');
     $('#lineItemTable').find('.deleteRow').fadeToggle('fast');
 });
 
@@ -567,6 +570,9 @@ $('#lineItemTable').on('click', '.deleteRow', function(event) {
     $(this).parents('tr').fadeOut('slow', function() {
         $(this).remove();
         $('#lineItemTable').find('.deleteRow').fadeOut('fast');
+        <?php if($record->id): ?>
+        showWarning(true);
+        <?php endif;?>
     });
 });
 
