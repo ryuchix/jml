@@ -15,7 +15,8 @@ class Client extends MY_Controller
 				'Service_model', 
 				'Client_note_model', 
 				'Client_file_model',
-				'Property_model'
+				'Property_model',
+				'Client_marketing_log_model'
 			));
 		$this->set_data('active_menu', 'client');
 		$this->set_data('class_name', strtolower(get_class($this)));
@@ -145,12 +146,22 @@ class Client extends MY_Controller
 
 				if(!$id)
 				{
-					$marketing->lead_id = $inserted_id_or_affected_rows;
-					$marketing->save();
+					// $marketing->lead_id = $inserted_id_or_affected_rows;
+					// $marketing->save();
+					$marketingDescription = sprintf("Leads created by %s on %s - %s", 
+						$this->session->userdata('fullname'),
+						$this->input->post('lead_date'),
+						LeadType::find($this->input->post('data[client_type]'))->type
+					);
+					$note = new Client_marketing_log_model();
+					$note->note = $marketingDescription;
+					$note->added_by = $this->session->userdata('user_id');
+					$note->client_id = $inserted_id_or_affected_rows;
+					$note->save();
 				}
 
-				if ($inserted_id_or_affected_rows) {
-
+				if ($inserted_id_or_affected_rows) 
+				{
 					$msg = $record->is_prospect? "Prospect ": "Client ";
 					if (!$id) { 
 						$id = $inserted_id_or_affected_rows;
