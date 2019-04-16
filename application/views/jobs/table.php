@@ -45,7 +45,7 @@ $frequency = [
         <td><?php echo $row->job_title; ?></td>
         
         <?php if($row->job_type == 1): ?>
-            <td><?php echo local_date(date('Y-m-d')); ?></td>
+            <td><?php echo local_date($row->start_date); ?></td>
         <?php else: ?>
             <td><?php echo ($row->next_visit && !$row->closed)? local_date($row->next_visit):''; ?></td>
         <?php endif; ?>
