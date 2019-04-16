@@ -22,8 +22,8 @@ class Client extends Eloquent
         return $this->belongsTo(User::class, 'lead_by');
     }
 
-    public function marketingLogs()
+    public function clinetLogs()
     {
-        return $this->hasMany(Marketing::class, 'lead_id');
+        return $this->hasMany(ClientLogs::class, 'client_id');
     }
 }

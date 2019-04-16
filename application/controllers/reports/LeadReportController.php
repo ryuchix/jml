@@ -18,7 +18,7 @@ class LeadReportController extends MY_Controller
 
 	function index()
 	{
-        $leads = Client::with(['marketingLogs', 'leadBy'])->where('is_lead', 1)->get();
+		$leads = Client::with(['clinetLogs', 'leadBy'])->where('is_lead', 1)->get();
         
         $html = $this->load->view('reports/lead_pdf_view', compact('leads'), true);
 

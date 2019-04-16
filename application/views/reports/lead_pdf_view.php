@@ -46,7 +46,7 @@
                 <td><?php echo $lead->leadBy->full_name ?></td>
             </tr>
             <tr>
-                <td colspan="5"><?php echo $lead->marketingLogs->implode('description', '<br>') ?></td>
+                <td colspan="5"><?php echo $lead->clinetLogs->implode('note', '<br>') ?></td>
             </tr>
             <?php endforeach;?>
         </tbody>

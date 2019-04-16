@@ -1034,7 +1034,13 @@ class Client extends MY_Controller
 			'date' => (new DateTime())->format('Y-m-d'),
 			'created_by' => $this->session->userdata('user_id'),
 		]);
-		
+
+		$note = new Client_marketing_log_model();
+		$note->note = $marketingDescription;
+		$note->added_by = $this->session->userdata('user_id');
+		$note->client_id = $id;
+		$note->save();
+
 		set_flash_message(0, "Action Successful!");
 		redirect( site_url( '/' ) );
     }
