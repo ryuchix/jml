@@ -73,7 +73,7 @@
                     <div class="box box-primary">
                         <div class="box-header with-border">
                           <h3 class="box-title"><?php echo $record->id? 'Edit ': 'Add New '; 
-                          echo $record->id? get_job_types($record->job_type):'';
+                          echo $record->id? get_job_types($record->job_type?$record->job_type:1):'';
                           echo ' '. ucfirst(str_replace(['_','s'], ' ', $class_name)); echo  $record->id? " # ($record->id) ":''; ?></h3>
                         </div>
                         <!-- /.box-header -->
