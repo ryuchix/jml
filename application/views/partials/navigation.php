@@ -36,7 +36,7 @@
                 </ul>
 
             </li>
-           
+
             <?php endif; // end if quotes access
 
             if ( $controller->hasAccess( ['add-file', 'view-file'] ) ): ?>
@@ -139,6 +139,12 @@
                         <a href="<?php echo site_url('schedules/list'); ?>"><i class="fa fa-circle-o"></i> List</a>
                     </li>
                     <?php endif ?>
+                    
+                    <?php if ($controller->hasAccess('view-schedule-bin-liner')): ?>
+                    <li class="<?php echo set_sub_menu('view_list', $sub_menu); ?>">
+                        <a href="<?php echo site_url('schedules/list'); ?>"><i class="fa fa-circle-o"></i>Bin Liner</a>
+                    </li>
+                    <?php endif ?>
 
                 </ul>
 
@@ -169,7 +175,7 @@
                 </ul>
 
             </li>
-           
+
             <?php endif; // end if jobs access
             
             if (true) : ?>
@@ -251,7 +257,7 @@
                 </ul>
                         
             </li>
-           
+
             <?php endif; // end if issues access
 
             if ( $controller->hasAccess(['add-service', 'view-service']) ) : ?>

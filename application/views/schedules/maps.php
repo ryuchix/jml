@@ -46,6 +46,12 @@
                                         <?php echo form_error('size','<p class="error-msg">','</p>') ?>
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="id_label_single">Show Address:</label>
+                                        <input type="checkbox" name="show_address" <?php echo isset($_GET['show_address'])? 'checked': null; ?> value="1">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -134,8 +140,8 @@ function getContentAddress(location)
     return `<div id="content">
                 <div id="siteNotice">
                 </div>
-                <h1 id="firstHeading" class="firstHeading">${location[2].toUpperCase()}</h1>
                 <div id="bodyContent">
+                    <p>${location[2].toUpperCase()}</p>
                     <p><b>Address</b>: ${location[0]}</p>
                 </div>
             </div>`;
@@ -206,12 +212,54 @@ function initMap() {
         zoom: 12,
         center: center
     });
+
+    <?php if(isset($_GET['show_address']) && $_GET['show_address']): ?>
+
+    var markers =  [];
+    var marker, count;
+    for (count = 0; count < locations.length; count++) {
+        var location = locations[count];
+        // console.log(location[4], location[5]);
+        marker = new google.maps.Marker({
+            position: new google.maps.LatLng(location[4], location[5]),
+            map: map,
+            title: location[0].replace('<br>', '')
+        });
+
+        var infowindow =  new google.maps.InfoWindow({});
+
+        bounds.extend({ lat: location[4], lng: location[5]});
+
+        markers.push(marker);
+        
+        infowindow.setContent(getContentAddress(locations[count]));
+        infowindow.open(map, marker);
+
+        $hold = $(`<li class="list-group-item" data-idx="${count}">${location[0]}${location[1]}${location[2]}${location[3]}</li>`)
+        // .hover(function(){
+        //     var index = $(this).data('idx');
+        //     var CurrentMarker = markers[index];
+        //     CurrentMarker.setAnimation(google.maps.Animation.WOBBLE);
+        //     infowindow.setContent(getContentAddress(locations[index]));
+        //     infowindow.open(map, CurrentMarker);
+        // }).mouseleave(function(){
+        //     infowindow.close();
+        //     var index = $(this).data('idx');
+        //     var CurrentMarker = markers[index];
+        //     CurrentMarker.setAnimation(null);
+        // })
+        ;
+        $('#visitsLists').append($hold)
+    }
+
+    <?php else:?>
+
     var infowindow =  new google.maps.InfoWindow({});
     var markers =  [];
     var marker, count;
     for (count = 0; count < locations.length; count++) {
         var location = locations[count];
-        console.log(location[4], location[5]);
+        // console.log(location[4], location[5]);
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(location[4], location[5]),
             map: map,
@@ -244,6 +292,8 @@ function initMap() {
 
         $('#visitsLists').append($hold)
     }
+
+    <?php endif; ?>
     
     map.fitBounds(bounds);
 }

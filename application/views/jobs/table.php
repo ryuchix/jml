@@ -40,7 +40,7 @@ $frequency = [
             <td><?php echo '&nbsp;'; ?></td>
         <?php endif; ?>
         <td><?php echo $row->address . ' <br> ' . $row->client; ?></td>
-        <td><?php echo get_job_types($row->job_type); ?></td>
+        <td><?php echo get_job_types($row->job_type ? $row->job_type: 1); ?></td>
         <td><?php echo $row->job_category; ?></td>
         <td><?php echo $row->job_title; ?></td>
         
