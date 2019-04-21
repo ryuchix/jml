@@ -20,6 +20,9 @@ $route['schedules/list'] = 'reports/Schedule_controller/index';
 $route['schedules/map'] = 'reports/Schedule_controller/map';
 $route['schedules/weekly'] = 'reports/Schedule_controller/weekly';
 $route['schedules/weekly-visits'] = 'reports/Schedule_controller/weeklyPost';
+$route['schedules/bin-liner'] = 'reports/Schedule_controller/binLiner';
+$route['schedules/bin-liner-filter'] = 'reports/Schedule_controller/binLinerFilter';
+
 
 $route['clients/(:num)/marketing/save_note'] = 'Client_marketing_controller/save_note/$1';
 $route['clients/(:num)/marketing/save_note/(:num)'] = 'Client_marketing_controller/save_note/$1/$2';

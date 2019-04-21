@@ -112,4 +112,91 @@ class Schedule_controller extends MY_Controller
 
         return $this->sendResponse($visits->toArray());
     }
+
+	public function binLiner()
+	{
+        $this->load->view('schedules/bin_liner', $this->get_data());
+    }
+
+	public function binLinerFilter()
+	{
+        $post = json_decode(file_get_contents("php://input"), true);
+
+        $dateChunks = [];
+
+        $startDate = new DateTime($post['fromDate']);
+        $endDate = new DateTime($post['toDate']);
+
+        $week = null;
+        $weekStartDate = new DateTime($startDate->format('Y-m-d'));
+        $weekEndDate = null;
+
+        while($startDate <= $endDate){
+            // Get day name for later conditions
+            $day = $startDate->format('D');
+
+            // if($week && $day === "Mon" && count($week) == 5) $week = [];
+
+            // assign week's last date so that we can make title relavent to the week start and end date
+            if($day === 'Fri') $weekEndDate = (new DateTime($startDate->format('Y-m-d')));
+            
+            // assign week's First date so that we can make title relavent to the week start and end date
+            if($day === 'Mon') $weekStartDate = (new DateTime($startDate->format('Y-m-d')));
+
+            // Skip the date if it is saturday or sunday because saturday or sunday is not required in report.
+            if(!in_array($day, ['Sat', 'Sun']))
+                $week[] = $startDate->format('d/m/Y') . ' - ' . $day;
+            
+            // In any case if start date or end date is same we have to make sure the current week itration is end right away
+            // Because users are free to choose any date from the calendar
+            if($startDate == $endDate) $weekEndDate = $endDate;
+            
+            // Push week to WeekChunk if Day is monday and also we have five in dates in week array
+            // OR
+            // Push week to weekChunck in case the start date or end date is same because
+            if($startDate == $endDate || ($day === "Fri"))
+            {
+                // get Week title based on week start and end dates.
+                $title = $this->getWeekTitle($weekStartDate, $weekEndDate);
+                $dateChunks[$title] = $week;
+            };
+
+            // Reset $week Array after pushing to chumk of weeks on every monday
+            if($day == 'Fri')
+                $week = [];
+
+            // Increment a day after every condition.
+            $startDate->modify('+1 day');
+        };
+
+        // return $this->sendResponse($dateChunks);
+
+        $jobs = Job::whereHas('category', function($q){ 
+            $q->where('id', JobCategory::where('type', 'Bin Cleaning')->first()->id); 
+        })->whereHas('client', function($q) use($post){
+            $q->where('active', $post['status']);
+            if($post['clientType']) $q->where('client_type', $post['clientType']);
+        })->with(['category' => function($q){
+            $q->select('id', 'type');
+        }, 'client' => function($q){
+            $q->select('id', 'name', 'address_1', 'address_suburb', 'client_type');
+            $q->with(['type' => function($q){ $q->select('id', 'type as name'); }]);
+        }, 'visits' => function($q) use($post){
+            $q->whereBetween('date', [$post['fromDate'], $post['toDate']]);
+            // $q->select('id', 'name', 'address_1', 'address_suburb', 'client_type');
+            $q->with('items');
+        }])->get();
+
+        return $this->sendResponse(['jobs' => $jobs, 'weeks' => $dateChunks]);
+    }
+
+    private function getWeekTitle($weekStartDate, $weekEndDate)
+    {
+        if($weekStartDate->format('M') === $weekEndDate->format('M'))
+            return $weekStartDate->format('d') . ' - ' . $weekEndDate->format('d') . ' ' . $weekEndDate->format('M');
+        
+        return $weekStartDate->format('d') . ' ' . $weekStartDate->format('M') . ' - ' . $weekEndDate->format('d') . ' ' . $weekEndDate->format('M');
+    }
+
+
 }

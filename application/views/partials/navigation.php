@@ -142,7 +142,7 @@
                     
                     <?php if ($controller->hasAccess('view-schedule-bin-liner')): ?>
                     <li class="<?php echo set_sub_menu('view_list', $sub_menu); ?>">
-                        <a href="<?php echo site_url('schedules/list'); ?>"><i class="fa fa-circle-o"></i>Bin Liner</a>
+                        <a href="<?php echo site_url('schedules/bin-liner'); ?>"><i class="fa fa-circle-o"></i>Bin Liner</a>
                     </li>
                     <?php endif ?>
 

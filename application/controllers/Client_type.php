@@ -97,7 +97,6 @@ class Client_type extends MY_Controller
 		}
 	}
 
-
     public function custom_client_type_name_check($name,$id){
         $this->db->where('type',$name);
         $this->db->where('id !=',$id);
@@ -108,6 +107,11 @@ class Client_type extends MY_Controller
         }else{
             return true;
         }
-    }
+	}
+	
+	public function get_client_types()
+	{
+		return $this->sendResponse(ClientType::all());
+	}
 
 }
