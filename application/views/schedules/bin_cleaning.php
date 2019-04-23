@@ -56,7 +56,10 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">
+                                Submit
+                                <i class="fa fa-spinner fa-spin" v-if="isLoading"></i>
+                            </button>
                         </div>
                     </div>
                 </form>
@@ -70,74 +73,75 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <table class="table table-striped table-bordered"  v-if="jobs.length">
-                                    <thead>
-                                        <tr>
-                                            <th colspan=7>&nbsp;</th>
-                                            <template v-for="key in Object.keys(weeks)">
-                                                <th :colspan="weeks[key].length * 2">{{ key }}</th>
-                                            </template>
-                                        </tr>
-                                        <tr>
-                                            <th>Clients</th>
-                                            <th>Suburb</th>
-                                            <th>Type</th>
-                                            <th>Day</th>
-                                            <th>Status</th>
-                                            <th>Notes</th>
-                                            <th>Freq</th>
-                                            <template v-for="week in weeks">
-                                                <template v-for="day in week">
-                                                    <th>{{ day[13] }}</th>
-                                                    <th>R</th>
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered"  v-if="jobs.length">
+                                        <thead>
+                                            <tr>
+                                                <th colspan=7>&nbsp;</th>
+                                                <template v-for="key in Object.keys(weeks)">
+                                                    <th :colspan="weeks[key].length * 2">{{ key }}</th>
                                                 </template>
-                                            </template>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="job in jobs">
-                                            <!-- <td>{{ job.client.name }}</td> -->
-                                            <td>{{ job.client.address_1 }}</td>
-                                            <td>{{ job.client.address_suburb }}</td>
-                                            <td>{{ job.client.type.name }}</td>
-                                            <td>{{ job.category.type }}</td>
-                                            <td>{{ job.client.status ? 'Active' : 'Inactive' }}</td>
-                                            <td>{{ job.instruction }}</td>
-                                            <td>{{ job.frequency }} {{ job.every_no_day }}</td>
-                                            <template v-for="week in weeks">
-                                                <template v-for="day in week">
-                                                    <td>{{ getNumberOfBins(job, day) }}</td>
-                                                    <td>{{ getRevenue(job, day) }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Clients</th>
+                                                <th>Suburb</th>
+                                                <th>Type</th>
+                                                <th>Day</th>
+                                                <th>Status</th>
+                                                <th>Notes</th>
+                                                <th>Freq</th>
+                                                <template v-for="week in weeks">
+                                                    <template v-for="day in week">
+                                                        <th>{{ day[13] }}</th>
+                                                        <th>R</th>
+                                                    </template>
                                                 </template>
-                                            </template>
-                                        </tr>
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <th colspan=5>&nbsp;</th>
-                                            <th>Total Bins</th>
-                                            <th>&nbsp;</th>
-                                            <template v-for="week in weeks">
-                                                <template v-for="day in week">
-                                                    <th>{{ getTotalBins(day) }}</th>
-                                                    <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="job in jobs">
+                                                <!-- <td>{{ job.client.name }}</td> -->
+                                                <td>{{ job.client.address_1 }}</td>
+                                                <td>{{ job.client.address_suburb }}</td>
+                                                <td>{{ job.client.type.name }}</td>
+                                                <td>{{ day(job.start_date) }}</td>
+                                                <td>{{ job.client.active ? 'Active' : 'Inactive' }}</td>
+                                                <td>{{ job.job_title }}</td>
+                                                <td>{{ job.every_no_day>0? job.every_no_day: '' }} {{ job.frequency }}</td>
+                                                <template v-for="week in weeks">
+                                                    <template v-for="day in week">
+                                                        <td>{{ getNumberOfBins(job, day) }}</td>
+                                                        <td>{{ getRevenue(job, day) }}</td>
+                                                    </template>
                                                 </template>
-                                            </template>
-                                        </tr>
-                                        <tr>
-                                            <th colspan=5>&nbsp;</th>
-                                            <th>Total Revenue</th>
-                                            <th>&nbsp;</th>
-                                            <template v-for="week in weeks">
-                                                <template v-for="day in week">
-                                                    <th></th>
-                                                    <th>{{ getTotalRevenue(day) }}</th>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan=5>&nbsp;</th>
+                                                <th>Total Bins</th>
+                                                <th>&nbsp;</th>
+                                                <template v-for="week in weeks">
+                                                    <template v-for="day in week">
+                                                        <th>{{ getTotalBins(day) }}</th>
+                                                        <th></th>
+                                                    </template>
                                                 </template>
-                                            </template>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-
+                                            </tr>
+                                            <tr>
+                                                <th colspan=5>&nbsp;</th>
+                                                <th>Total Revenue</th>
+                                                <th>&nbsp;</th>
+                                                <template v-for="week in weeks">
+                                                    <template v-for="day in week">
+                                                        <th></th>
+                                                        <th>{{ getTotalRevenue(day) }}</th>
+                                                    </template>
+                                                </template>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                                 <div class="alert" style="background-color: #ccc" v-if="!jobs.length">
                                     <p align=center>No records found</p>
                                 </div>
@@ -145,12 +149,12 @@
                         </div>
                     </div>
                     <!-- /.box-body -->
-                    <div class="box-footer">
+                    <!-- <div class="box-footer">
                         <button type="submit" class="btn btn-primary">
                             Submit
                             <i class="fa fa-spinner fa-spin" v-if="isLoading"></i>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -190,7 +194,7 @@
             report(){
                 this.jobs = [];
                 this.isLoading = true;
-                axios.post("<?php echo site_url('schedules/bin-liner-filter'); ?>", this.form).then((data) => {
+                axios.post("<?php echo site_url('schedules/bin-cleaning-filter'); ?>", this.form).then((data) => {
                     this.jobs = data.data.jobs;
                     this.weeks = data.data.weeks;
                     this.isLoading = false;
@@ -204,7 +208,7 @@
                 if(qty.length > 0)
                 {
                     var totalQty = 0;
-                    qty.forEach(q=> totalQty+=q);
+                    qty.forEach(q=> totalQty+=parseFloat(q));
                     return totalQty;
                 }
                 else{
@@ -219,7 +223,7 @@
                 if(total.length > 0)
                 {
                     var grandTotal = 0;
-                    total.forEach(q=> grandTotal+=q);
+                    total.forEach(q=> grandTotal+= parseFloat(q));
                     return grandTotal;
                 }
                 else{
@@ -252,12 +256,24 @@
                 if(items.length > 0)
                 {
                     var grandTotal = 0;
-                    items.forEach(q => grandTotal+= q.pivot[property]);
+                    items.forEach(q => grandTotal += parseFloat(q.pivot[property]));
                     return grandTotal;
                 }
                 else{
                     return '';
                 }
+            },
+            day(date) {
+                var a = new Date(date);
+                var weekdays = new Array(7);
+                weekdays[0] = "Sunday";
+                weekdays[1] = "Monday";
+                weekdays[2] = "Tuesday";
+                weekdays[3] = "Wednesday";
+                weekdays[4] = "Thursday";
+                weekdays[5] = "Friday";
+                weekdays[6] = "Saturday";
+                return weekdays[a.getDay()];
             }
         }
     });

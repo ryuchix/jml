@@ -140,9 +140,9 @@
                     </li>
                     <?php endif ?>
                     
-                    <?php if ($controller->hasAccess('view-schedule-bin-liner')): ?>
+                    <?php if ($controller->hasAccess('view-schedule-bin-cleaning')): ?>
                     <li class="<?php echo set_sub_menu('view_list', $sub_menu); ?>">
-                        <a href="<?php echo site_url('schedules/bin-liner'); ?>"><i class="fa fa-circle-o"></i>Bin Liner</a>
+                        <a href="<?php echo site_url('schedules/bin-cleaning'); ?>"><i class="fa fa-circle-o"></i>Bin Cleaning</a>
                     </li>
                     <?php endif ?>
 

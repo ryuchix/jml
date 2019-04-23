@@ -113,12 +113,12 @@ class Schedule_controller extends MY_Controller
         return $this->sendResponse($visits->toArray());
     }
 
-	public function binLiner()
+	public function binCleaning()
 	{
-        $this->load->view('schedules/bin_liner', $this->get_data());
+        $this->load->view('schedules/bin_cleaning', $this->get_data());
     }
 
-	public function binLinerFilter()
+	public function binCleaningFilter()
 	{
         $post = json_decode(file_get_contents("php://input"), true);
 
@@ -174,12 +174,12 @@ class Schedule_controller extends MY_Controller
         $jobs = Job::whereHas('category', function($q){ 
             $q->where('id', JobCategory::where('type', 'Bin Cleaning')->first()->id); 
         })->whereHas('client', function($q) use($post){
-            $q->where('active', $post['status']);
+            $q->where('active', (int)$post['status']);
             if($post['clientType']) $q->where('client_type', $post['clientType']);
         })->with(['category' => function($q){
             $q->select('id', 'type');
         }, 'client' => function($q){
-            $q->select('id', 'name', 'address_1', 'address_suburb', 'client_type');
+            $q->select('id', 'name', 'address_1', 'active', 'address_suburb', 'client_type');
             $q->with(['type' => function($q){ $q->select('id', 'type as name'); }]);
         }, 'visits' => function($q) use($post){
             $q->whereBetween('date', [$post['fromDate'], $post['toDate']]);
