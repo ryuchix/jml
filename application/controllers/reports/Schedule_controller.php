@@ -172,7 +172,7 @@ class Schedule_controller extends MY_Controller
         // return $this->sendResponse($dateChunks);
 
         $jobs = Job::whereHas('category', function($q){ 
-            $q->where('id', JobCategory::where('type', 'Bin Cleaning')->first()->id); 
+            $q->whereIn('id', JobCategory::whereIn('type', ['Bin Cleaning', 'Bin Cleaning - Residential'])->select('id')->get()); 
         })->whereHas('client', function($q) use($post){
             $q->where('active', (int)$post['status']);
             if($post['clientType']) $q->where('client_type', $post['clientType']);

@@ -1,13 +1,35 @@
 <?php $this->load->view( 'partials/header' ); ?>
+<link rel="stylesheet" href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
+
+<style>
+table.table td:nth-child(1)  {
+    min-width: 150px;
+}
+table.table td:nth-child(2)  {
+    min-width: 100px;
+}
+table.table td:nth-child(6)  {
+    min-width: 150px;
+}
+
+table.table td:nth-child(n+8)  {
+    min-width: 50px;
+}
+
+table.table th {
+    text-align: center;
+}
+
+</style>
 
 <div class="content-wrapper" id="scheduleBinLiner">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1>Bin Liner</h1>
+        <h1>Bin Cleaning</h1>
         <ol class="breadcrumb">
             <li><a href="<?php echo site_url(); ?>"><i class="fa fa-dashboard"></i> Home</a></li>
             <li><a href="<?php echo site_url( 'reports/' ); ?>"><i class="fa fa-user"></i> Schedule</a></li>
-            <li><a href="<?php echo site_url( 'schedule/bin-liner' ); ?>"><i class="fa fa-user"></i> Bin Liner</a></li>
+            <li><a href="<?php echo site_url( 'schedule/bin-cleaning' ); ?>"><i class="fa fa-user"></i> Bin Cleaning</a></li>
         </ol>
     </section>
     <br>
@@ -18,7 +40,7 @@
                 <form role="form" @submit.prevent="report" autocomplete="off">
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Bin lIner</h3>
+                            <h3 class="box-title">Bin Cleaning</h3>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
@@ -26,19 +48,22 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="from_date">From Date:</label>
-                                        <input type="date" required id="from_date" v-model="form.fromDate" class="form-control date">
+                                        <!-- <input type="text" required id="from_date" v-model="form.fromDate" class="form-control date"> -->
+                                        <date-picker ref="fromDate" v-model="form.fromDate" required :config="{format: 'DD/MM/YYYY'}" class="form-control" value=""></date-picker>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="to_date">To Date:</label>
-                                        <input type="date" required id="to_date" v-model="form.toDate" class="form-control date">
+                                        <!-- <input type="text" required id="to_date" v-model="form.toDate" class="form-control date"> -->
+                                        <date-picker ref="toDate" v-model="form.toDate" required :config="{format: 'DD/MM/YYYY'}" class="form-control" value=""></date-picker>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="client_type">Client Type:</label>
                                         <select v-model="form.clientType" id="client_type" class="form-control">
+                                            <option value="">All</option>
                                             <option v-for="type in clientTypes" :value="type.id">{{ type.type }}</option>
                                         </select>
                                     </div>
@@ -47,8 +72,8 @@
                                     <div class="form-group">
                                         <label for="status">Status:</label>
                                         <select v-model="form.status" id="status" class="form-control">
-                                            <option value="1">Enable</option>
-                                            <option value="0">Disable</option>
+                                            <option value="1">Active</option>
+                                            <option value="0">Inactive</option>
                                         </select>
                                     </div>
                                 </div>
@@ -165,14 +190,39 @@
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22"></script>
+
+<!-- Date-picker itself -->
+<script src="https://cdn.jsdelivr.net/npm/pc-bootstrap4-datetimepicker@4.17/build/js/bootstrap-datetimepicker.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/pc-bootstrap4-datetimepicker@4.17/build/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+ 
+<script src="https://cdn.jsdelivr.net/npm/vue-bootstrap-datetimepicker@5"></script>
 <script>
+  // Initialize as global component
+  Vue.component('date-picker', VueBootstrapDatetimePicker);
+</script> 
+<!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script> -->
+
+
+<script>
+
+    $(function () {
+
+        $('.date').datetimepicker({
+             format: 'DD/MM/YYYY'
+        }).on('change', function (ev) {
+            alert('changed');
+        });
+
+    });
 
     var app = new Vue({
         el: '#scheduleBinLiner',
         data:{
             form: {
-                fromDate: '2019-04-08',
-                toDate: '2019-04-25',
+                fromDate: '08/04/2019',
+                toDate: '25/04/2019',
                 status: 1,
                 clientType: '',
             },
@@ -194,7 +244,12 @@
             report(){
                 this.jobs = [];
                 this.isLoading = true;
-                axios.post("<?php echo site_url('schedules/bin-cleaning-filter'); ?>", this.form).then((data) => {
+                var modifiedData = this.form;
+                modifiedData.fromDate = this.convertDate(this.form.fromDate);
+                modifiedData.toDate = this.convertDate(this.form.toDate);
+
+                console.log(modifiedData);
+                axios.post("<?php echo site_url('schedules/bin-cleaning-filter'); ?>", modifiedData).then((data) => {
                     this.jobs = data.data.jobs;
                     this.weeks = data.data.weeks;
                     this.isLoading = false;
@@ -274,6 +329,10 @@
                 weekdays[5] = "Friday";
                 weekdays[6] = "Saturday";
                 return weekdays[a.getDay()];
+            },
+            convertDate(date){
+                var d = date.split('/');
+                return d[2] + '-' + d[1] + "-" + d['0'];
             }
         }
     });
