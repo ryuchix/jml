@@ -122,11 +122,22 @@ class Schedule_controller extends MY_Controller
 	{
         $post = json_decode(file_get_contents("php://input"), true);
 
+        $post['fromDate'] = (DateTime::createFromFormat('d/m/Y', $post['fromDate']))->format('Y-m-d');
+        $post['toDate'] = (DateTime::createFromFormat('d/m/Y', $post['toDate']))->format('Y-m-d');
+
+        $dateChunks = $this->getDateChunks($post['fromDate'], $post['toDate']);
+
+        $jobs = $this->getJobs($post);
+
+        return $this->sendResponse(['jobs' => $jobs, 'weeks' => $dateChunks]);
+    }
+
+    private function getDateChunks($fromDate, $toDate)
+    {
+        $startDate = new DateTime($fromDate);
+        $endDate = new DateTime($toDate);
+        
         $dateChunks = [];
-
-        $startDate = new DateTime($post['fromDate']);
-        $endDate = new DateTime($post['toDate']);
-
         $week = null;
         $weekStartDate = new DateTime($startDate->format('Y-m-d'));
         $weekEndDate = null;
@@ -169,13 +180,21 @@ class Schedule_controller extends MY_Controller
             $startDate->modify('+1 day');
         };
 
-        // return $this->sendResponse($dateChunks);
+        return $dateChunks;
+    }
 
-        $jobs = Job::whereHas('category', function($q){ 
+    private function getJobs($post)
+    {
+        $jobsQuery = Job::whereHas('category', function($q){ 
             $q->whereIn('id', JobCategory::whereIn('type', ['Bin Cleaning', 'Bin Cleaning - Residential'])->select('id')->get()); 
         })->whereHas('client', function($q) use($post){
             $q->where('active', (int)$post['status']);
             if($post['clientType']) $q->where('client_type', $post['clientType']);
+            
+            if($post['suburb'])
+            {
+                $q->where('address_suburb', $post['suburb']);
+            }
         })->with(['category' => function($q){
             $q->select('id', 'type');
         }, 'client' => function($q){
@@ -185,9 +204,18 @@ class Schedule_controller extends MY_Controller
             $q->whereBetween('date', [$post['fromDate'], $post['toDate']]);
             // $q->select('id', 'name', 'address_1', 'address_suburb', 'client_type');
             $q->with('items');
-        }])->get();
+        }]);
 
-        return $this->sendResponse(['jobs' => $jobs, 'weeks' => $dateChunks]);
+        if($post['withEmpty'])
+        {
+            $jobsQuery->whereHas('visits', function($q) use($post){
+                $q->whereHas('items', function($q) use($post){
+                    $q->whereBetween('date', [$post['fromDate'], $post['toDate']]);
+                });
+            });
+        }
+        
+        return $jobsQuery->get();
     }
 
     private function getWeekTitle($weekStartDate, $weekEndDate)

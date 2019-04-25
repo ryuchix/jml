@@ -943,8 +943,6 @@ class Client extends MY_Controller
 		}
 	}
 
-
-
 	function send_credentails()
 	{
 		if ( !in_array('can-change-client-username-password', $this->data['roles']) ) 
@@ -1062,5 +1060,14 @@ class Client extends MY_Controller
 
         return true;
     }
+
+	public function suburbs()
+	{
+		$this->db->distinct('address_suburb')
+				->select('address_suburb')
+				->order_by('address_suburb');
+		$suburbs = $this->db->get('client')->result();
+		$this->sendResponse($suburbs);
+	}
 
 }

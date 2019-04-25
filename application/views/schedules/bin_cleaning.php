@@ -77,6 +77,23 @@ table.table th {
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="allClients">
+                                        <input type="checkbox" id="allClients" value="1" v-model="form.withEmpty" id="allClients">
+                                            All Clients
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="suburb">Suburb:</label>
+                                        <select v-model="form.suburb" id="suburb" class="form-control">
+                                            <option value="">All</option>
+                                            <option v-for="suburb in suburbs" :value="suburb.address_suburb" v-text="suburb.address_suburb"></option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -101,8 +118,17 @@ table.table th {
                                 <div class="table-responsive">
                                     <table class="table table-striped table-bordered"  v-if="jobs.length">
                                         <thead>
-                                            <tr>
-                                                <th colspan=7>&nbsp;</th>
+                                            
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
                                                 <template v-for="key in Object.keys(weeks)">
                                                     <th :colspan="weeks[key].length * 2">{{ key }}</th>
                                                 </template>
@@ -122,8 +148,6 @@ table.table th {
                                                     </template>
                                                 </template>
                                             </tr>
-                                        </thead>
-                                        <tbody>
                                             <tr v-for="job in jobs">
                                                 <!-- <td>{{ job.client.name }}</td> -->
                                                 <td>{{ job.client.address_1 }}</td>
@@ -143,7 +167,11 @@ table.table th {
                                         </tbody>
                                         <tfoot>
                                             <tr>
-                                                <th colspan=5>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
                                                 <th>Total Bins</th>
                                                 <th>&nbsp;</th>
                                                 <template v-for="week in weeks">
@@ -221,12 +249,15 @@ table.table th {
         el: '#scheduleBinLiner',
         data:{
             form: {
-                fromDate: '08/04/2019',
-                toDate: '25/04/2019',
+                fromDate: '',
+                toDate: '',
                 status: 1,
                 clientType: '',
+                withEmpty: 1,
+                suburb: ''
             },
             clientTypes: [],
+            suburbs: [],
             jobs: [],
             weeks: [],
             isLoading: false
@@ -240,16 +271,17 @@ table.table th {
                 axios.get("<?php echo site_url('client_type/get_client_types'); ?>").then((data) => {
                     this.clientTypes = data.data;
                 });
+
+                axios.get("<?php echo site_url('client/suburbs'); ?>").then((data) => {
+                    this.suburbs = data.data;
+                });
+
+                
             },
             report(){
                 this.jobs = [];
                 this.isLoading = true;
-                var modifiedData = this.form;
-                modifiedData.fromDate = this.convertDate(this.form.fromDate);
-                modifiedData.toDate = this.convertDate(this.form.toDate);
-
-                console.log(modifiedData);
-                axios.post("<?php echo site_url('schedules/bin-cleaning-filter'); ?>", modifiedData).then((data) => {
+                axios.post("<?php echo site_url('schedules/bin-cleaning-filter'); ?>", this.form).then((data) => {
                     this.jobs = data.data.jobs;
                     this.weeks = data.data.weeks;
                     this.isLoading = false;
@@ -257,13 +289,13 @@ table.table th {
             },
             getNumberOfBins(job, day){
                 var date = this.makeDate(day);
-                var currentVisits = job.visits.filter(v => v.date === date);
-                var qty = currentVisits.map( v => v.items.map( i => i.pivot.qty));
+                var currentVisits = job.visits.find(v => v.date === date);
+                var qty = 0;
                 
-                if(qty.length > 0)
+                if( currentVisits && currentVisits.items )
                 {
                     var totalQty = 0;
-                    qty.forEach(q=> totalQty+=parseFloat(q));
+                    currentVisits.items.forEach(q=> totalQty += parseFloat(q.pivot.qty));
                     return totalQty;
                 }
                 else{
@@ -272,14 +304,14 @@ table.table th {
             },
             getRevenue(job, day){
                 var date = this.makeDate(day);
-                var currentVisits = job.visits.filter(v => v.date === date);
-                var total = currentVisits.map( v => v.items.map( i => i.pivot.total));
+                var currentVisits = job.visits.find(v => v.date === date);
+                var qty = 0;
                 
-                if(total.length > 0)
+                if( currentVisits && currentVisits.items )
                 {
-                    var grandTotal = 0;
-                    total.forEach(q=> grandTotal+= parseFloat(q));
-                    return grandTotal;
+                    var totalQty = 0;
+                    currentVisits.items.forEach(q=> totalQty += parseFloat(q.pivot.total));
+                    return totalQty;
                 }
                 else{
                     return '';
@@ -329,10 +361,6 @@ table.table th {
                 weekdays[5] = "Friday";
                 weekdays[6] = "Saturday";
                 return weekdays[a.getDay()];
-            },
-            convertDate(date){
-                var d = date.split('/');
-                return d[2] + '-' + d[1] + "-" + d['0'];
             }
         }
     });
