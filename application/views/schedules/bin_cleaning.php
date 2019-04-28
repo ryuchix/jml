@@ -20,6 +20,110 @@ table.table th {
     text-align: center;
 }
 
+/* Table Column Freez */
+#table tr th:nth-child(1),
+#table tr td:nth-child(1),
+#table tr th:nth-child(2),
+#table tr td:nth-child(2),
+#table tr th:nth-child(3),
+#table tr td:nth-child(3),
+#table tr th:nth-child(4),
+#table tr td:nth-child(4),
+#table tr th:nth-child(5),
+#table tr td:nth-child(5),
+#table tr th:nth-child(6),
+#table tr td:nth-child(6),
+#table tr th:nth-child(7),
+#table tr td:nth-child(7){
+    position: absolute;
+    display: block;
+    top: auto;
+    word-break: break-word;
+    box-sizing: border-box;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-top: -1px;
+}
+
+#table tr td:nth-child(1),
+#table tr td:nth-child(2),
+#table tr td:nth-child(3),
+#table tr td:nth-child(4),
+#table tr td:nth-child(5),
+#table tr td:nth-child(6),
+#table tr td:nth-child(7){
+    margin-top: 0px;
+}
+
+#table tr th:nth-child(1),
+#table tr th:nth-child(2),
+#table tr th:nth-child(3),
+#table tr th:nth-child(4),
+#table tr th:nth-child(5),
+#table tr th:nth-child(6),
+#table tr th:nth-child(7){
+    height: 40px;
+}
+
+#table tr th:nth-child(1),
+#table tr td:nth-child(1){
+    width: 152px;
+    min-width: auto;
+}
+#table tr th:nth-child(2),
+#table tr td:nth-child(2){
+    width: 102px;
+}
+#table tr th:nth-child(3),
+#table tr td:nth-child(3){
+    width: 84px;
+}
+#table tr th:nth-child(4),
+#table tr td:nth-child(4){
+    width: 87px;
+}
+#table tr th:nth-child(5),
+#table tr td:nth-child(5){
+    width: 58px;
+}
+#table tr th:nth-child(6),
+#table tr td:nth-child(6){
+    width: 152px;
+}
+#table tr th:nth-child(7),
+#table tr td:nth-child(7){
+    width: 67px;
+/*     border-right: 0; */
+}
+#table tr th:nth-child(8),
+#table tr td:nth-child(8){
+    border-left: 0;
+}
+
+#table tr:nth-child(1) > th{
+    border-top: 1px solid #f4f4f4;
+}
+
+#table.table-bordered{
+    border-left: 0px;
+}
+
+#table tr:nth-child(2n+1) th,
+#table tr:nth-child(2n+1) > td {
+    background: #f9f9f9 !important;
+}
+#table tr th:nth-child(10n+7), 
+#table tr td:nth-child(10n+7)
+{
+    border-right-color: #000 !important;
+}
+
+#table thead tr:first-child th:nth-child(1n+7)
+{
+    border-right-color: #000 !important;
+}
+
 </style>
 
 <div class="content-wrapper" id="scheduleBinLiner">
@@ -116,21 +220,18 @@ table.table th {
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="table-responsive">
-                                    <table class="table table-striped table-bordered"  v-if="jobs.length">
+                                    <table class="table table-striped table-bordered"  v-if="jobs.length" id="table">
                                         <thead>
-                                            
-                                        </thead>
-                                        <tbody>
-                                        <tr>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
+                                            <tr>
+                                                <th style="border-right-color: #f9f9f9;">&nbsp;</th>
+                                                <th style="border-right-color: #f9f9f9;">&nbsp;</th>
+                                                <th style="border-right-color: #f9f9f9;">&nbsp;</th>
+                                                <th style="border-right-color: #f9f9f9;">&nbsp;</th>
+                                                <th style="border-right-color: #f9f9f9;">&nbsp;</th>
+                                                <th style="border-right-color: #f9f9f9;">&nbsp;</th>
                                                 <th>&nbsp;</th>
                                                 <template v-for="key in Object.keys(weeks)">
-                                                    <th :colspan="weeks[key].length * 2">{{ key }}</th>
+                                                    <th v-if="weeks[key].length > 0" :colspan="weeks[key].length * 2">{{ key }}</th>
                                                 </template>
                                             </tr>
                                             <tr>
@@ -148,19 +249,21 @@ table.table th {
                                                     </template>
                                                 </template>
                                             </tr>
+                                        </thead>
+                                        <tbody>
                                             <tr v-for="job in jobs">
                                                 <!-- <td>{{ job.client.name }}</td> -->
-                                                <td>{{ job.client.address_1 }}</td>
-                                                <td>{{ job.client.address_suburb }}</td>
-                                                <td>{{ job.client.type.name }}</td>
-                                                <td>{{ day(job.start_date) }}</td>
-                                                <td>{{ job.client.active ? 'Active' : 'Inactive' }}</td>
-                                                <td>{{ job.job_title }}</td>
-                                                <td>{{ job.every_no_day>0? job.every_no_day: '' }} {{ job.frequency }}</td>
+                                                <td data-toggle="tooltip" data-container="body" :title="job.client.address_1">{{ job.client.address_1 }}</td>
+                                                <td data-toggle="tooltip" data-container="body" :title="job.client.address_suburb">{{ job.client.address_suburb }}</td>
+                                                <td data-toggle="tooltip" data-container="body" :title="job.client.type.name">{{ job.client.type.name }}</td>
+                                                <td data-toggle="tooltip" data-container="body" :title="day(job.start_date)">{{ day(job.start_date) }}</td>
+                                                <td data-toggle="tooltip" data-container="body" :title="job.client.active ? 'Active' : 'Inactive'">{{ job.client.active ? 'Active' : 'Inactive' }}</td>
+                                                <td data-toggle="tooltip" data-container="body" :title="job.job_title">{{ job.job_title }}</td>
+                                                <td data-toggle="tooltip" data-container="body" :title="job.every_no_day>0? job.every_no_day + job.frequency: job.frequency">{{ job.every_no_day>0? job.every_no_day: '' }} {{ job.frequency }}</td>
                                                 <template v-for="week in weeks">
                                                     <template v-for="day in week">
-                                                        <td>{{ getNumberOfBins(job, day) }}</td>
-                                                        <td>{{ getRevenue(job, day) }}</td>
+                                                        <td align="center" v-html="getNumberOfBins(job, day)"></td>
+                                                        <td align="center" v-html="getRevenue(job, day)"></td>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -182,7 +285,11 @@ table.table th {
                                                 </template>
                                             </tr>
                                             <tr>
-                                                <th colspan=5>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
                                                 <th>Total Revenue</th>
                                                 <th>&nbsp;</th>
                                                 <template v-for="week in weeks">
@@ -284,7 +391,10 @@ table.table th {
                 axios.post("<?php echo site_url('schedules/bin-cleaning-filter'); ?>", this.form).then((data) => {
                     this.jobs = data.data.jobs;
                     this.weeks = data.data.weeks;
-                    this.isLoading = false;
+                    setTimeout(() => {
+                        this.adjustColumnPositions();
+                        this.isLoading = false;
+                    }, 500);
                 })
             },
             getNumberOfBins(job, day){
@@ -299,7 +409,7 @@ table.table th {
                     return totalQty;
                 }
                 else{
-                    return '';
+                    return '&nbsp;';
                 }
             },
             getRevenue(job, day){
@@ -311,10 +421,10 @@ table.table th {
                 {
                     var totalQty = 0;
                     currentVisits.items.forEach(q=> totalQty += parseFloat(q.pivot.total));
-                    return totalQty;
+                    return '$' + totalQty;
                 }
                 else{
-                    return '';
+                    return '&nbsp;';
                 }
             },
             getTotalRevenue(day){
@@ -361,6 +471,52 @@ table.table th {
                 weekdays[5] = "Friday";
                 weekdays[6] = "Saturday";
                 return weekdays[a.getDay()];
+            },
+            adjustColumnPositions(){
+                var width = {
+                    firstColWidth: 152, 
+                    secondColWidth: 102, 
+                    thirdColWidth: 84, 
+                    fourthColWidth: 87, 
+                    fifthColWidth: 58,
+                    sixthColWidth: 152,
+                    SeventhColWidth: 67
+                };
+
+                var columns = Object.keys(width);
+
+                $("#table tr").each(function(columnIndex, col){
+
+                    $(col).find('td, th').each(function(cellIndex, cell){
+
+                        if(cellIndex < 7)
+                        {
+                            if(width[columns[cellIndex]] <= 0)
+                                width[columns[cellIndex]] = $(cell).width();
+                            // $(cell).width(width[columns[cellIndex]]);
+                            $(cell).css('left', getLeftPosition(cellIndex));
+                        }
+
+                    });
+
+                });
+
+                $('.table-responsive').css('margin-left', getContainerMarginLeft());
+
+                function getLeftPosition(index)
+                {
+                    var left = 0;
+                    for(var i = 0; i < index; i++)
+                        left += width[columns[i]];
+                    return left + 18;
+                }
+
+                function getContainerMarginLeft()
+                {
+                    var ml = 0;
+                    columns.forEach(c => ml += width[c]);
+                    return ml;
+                }
             }
         }
     });

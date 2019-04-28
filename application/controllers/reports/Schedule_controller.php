@@ -206,7 +206,7 @@ class Schedule_controller extends MY_Controller
             $q->with('items');
         }]);
 
-        if($post['withEmpty'])
+        if(!$post['withEmpty'])
         {
             $jobsQuery->whereHas('visits', function($q) use($post){
                 $q->whereHas('items', function($q) use($post){
