@@ -676,13 +676,13 @@
                     
                     <?php if ($controller->hasAccess('add-bin-cleaning-costing')) { ?>
                     <li class="<?php echo set_sub_menu('add_bin_cleaning_costing', $sub_menu); ?>">
-                        <a href="<?php echo site_url( 'bin-cleaning-consting/create' ); ?>"><i class="fa fa-circle-o"></i> Add new Costing</a>
+                        <a href="<?php echo site_url( 'bin-cleaning-costing/create' ); ?>"><i class="fa fa-circle-o"></i> Add new Costing</a>
                     </li>
                     <?php } ?>
 
                     <?php if ($controller->hasAccess('view-bin-cleaning-costing')) { ?>
                     <li class="<?php echo set_sub_menu('view_bin_cleaning_costing', $sub_menu); ?>">
-                        <a href="<?php echo site_url( 'bin-cleaning-consting' ); ?>"><i class="fa fa-circle-o"></i> View Costing</a>
+                        <a href="<?php echo site_url( 'bin-cleaning-costing' ); ?>"><i class="fa fa-circle-o"></i> View Costing</a>
                     </li>
                     <?php } ?>
 
