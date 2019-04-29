@@ -639,9 +639,9 @@
             </li>
 
             <?php endif; // end if bin_liners_managements access
-            
-            if ($controller->hasAccess(['add-daily-balance', 'view-daily-balance'])) { ?>
-            
+
+            if ($controller->hasAccess(['add-daily-balance', 'view-daily-balance'])): ?>
+
             <li class="treeview <?php set_active_menu('daily_balance', $active_menu); ?>">
 
                 <a href="#"><i class="fa fa-balance-scale"></i> <span>Daily Balance</span> <i class="fa fa-angle-left pull-right"></i></a>
@@ -663,7 +663,33 @@
                 </ul>
 
             </li>
-            <?php } ?>
+
+            <?php endif; // end if daily balance access
+
+            if ($controller->hasAccess(['add-bin-cleaning-costing', 'view-bin-cleaning-costing'])): ?>
+
+            <li class="treeview <?php set_active_menu('bin_cleaning_costing', $active_menu); ?>">
+
+                <a href="#"><i class="fa fa-money"></i> <span>Bin Cleaning Costing</span> <i class="fa fa-angle-left pull-right"></i></a>
+
+                <ul class="treeview-menu">
+                    
+                    <?php if ($controller->hasAccess('add-bin-cleaning-costing')) { ?>
+                    <li class="<?php echo set_sub_menu('add_bin_cleaning_costing', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'bin-cleaning-consting/create' ); ?>"><i class="fa fa-circle-o"></i> Add new Costing</a>
+                    </li>
+                    <?php } ?>
+
+                    <?php if ($controller->hasAccess('view-bin-cleaning-costing')) { ?>
+                    <li class="<?php echo set_sub_menu('view_bin_cleaning_costing', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'bin-cleaning-consting' ); ?>"><i class="fa fa-circle-o"></i> View Costing</a>
+                    </li>
+                    <?php } ?>
+
+                </ul>
+
+            </li>
+            <?php endif; ?>
 
             <li class="<?php set_active_menu('reports', $active_menu); ?>">
                 

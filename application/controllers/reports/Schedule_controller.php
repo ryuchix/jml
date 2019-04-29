@@ -17,7 +17,10 @@ class Schedule_controller extends MY_Controller
         $date = isset($_GET['date'])? \Carbon\Carbon::createFromFormat('d/m/Y', $_GET['date']): \Carbon\Carbon::today();
         $staff = isset($_GET['staff'])? $_GET['staff']: false;
 
-        $job_visits = JobVisit::whereDate('date', $date)->with(['job.property', 'crews']);
+        $job_visits = JobVisit::whereHas('job', function($q){
+            $q->whereNull('closed');
+            $q->whereHas('client', function($q){ $q->where('active', '1'); });
+        })->whereDate('date', $date)->with(['job.property', 'crews']);
 
         if($staff)
         {
@@ -49,7 +52,10 @@ class Schedule_controller extends MY_Controller
         $date = isset($_GET['date'])? \Carbon\Carbon::createFromFormat('d/m/Y', $_GET['date']): \Carbon\Carbon::today();
         $staff = isset($_GET['staff'])? $_GET['staff']: false;
 
-        $job_visits = JobVisit::whereDate('date', $date)->with(['job.property', 'crews', 'job.category']);
+        $job_visits = JobVisit::whereHas('job', function($q){
+            $q->whereNull('closed');
+            $q->whereHas('client', function($q){ $q->where('active', '1'); });
+        })->whereDate('date', $date)->with(['job.property', 'crews', 'job.category']);
 
         if($staff)
         {
@@ -99,7 +105,10 @@ class Schedule_controller extends MY_Controller
         $startDate = $this->input->post('start_date');
         $endDate = $this->input->post('end_date');
 
-        $visits = JobVisit::with(['crews' => function($q){
+        $visits = JobVisit::whereHas('job', function($q){
+            $q->whereNull('closed');
+            $q->whereHas('client', function($q){ $q->where('active', '1'); });
+        })->with(['crews' => function($q){
 
         }, 'job' => function($q){
             $q->select('id', 'job_title', 'job_type', 'client_id', 'job_category', 'property_id');

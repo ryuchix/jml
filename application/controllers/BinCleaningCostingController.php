@@ -1,0 +1,77 @@
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+
+class BinCleaningCostingController extends MY_Controller
+{
+	private $validation_state = array();
+
+	private $validation_message = array();
+
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->library('form_validation');
+		$this->load->model('Daily_balance_model');
+		$this->set_data('active_menu', 'daily_balance');
+	}
+
+
+	function index($modified_item_id = 0)
+	{
+		$this->set_data('sub_menu', 'view_daily_balance');
+
+		$this->set_data( 'records', $this->Daily_balance_model->get() );
+
+		$this->load->view('daily_balances/lists', $this->get_data());
+	}
+
+	function create()
+	{
+
+		$this->set_data('sub_menu', 'add_bin_cleaning_costing');
+		
+		$this->set_data('costing', new BinCleaningConsting);
+		
+		$this->load->view('bin_cleaning_costing/create', $this->get_data());
+	}
+
+
+	function validate_fields($id)
+	{
+   		$this->form_validation->set_rules('data[date]','Date', 'required');
+
+   		$this->form_validation->set_rules('data[balance]','Balance', 'required|numeric');
+	}
+
+	public function get_progress()
+	{
+
+		$balances = $this->Daily_balance_model->get_progress();
+
+		$data = [];
+		
+		foreach ($balances as $balance) {
+
+			$date = DateTime::createFromFormat('Y-m-d', $balance->date);
+
+			$data[] = [
+				
+				'y' => $date->format('d/m/y'),
+
+				'item1' => $balance->balance
+
+			];
+		}
+
+
+		return $this->output
+
+	        ->set_status_header(200, "")
+
+	        ->set_content_type('application/json', 'utf-8')
+
+	        ->set_output(json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+
+	}
+
+}

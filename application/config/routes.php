@@ -48,3 +48,7 @@ $route['tasks/create'] = 'Tasks_controller/create';
 $route['tasks/store'] = 'Tasks_controller/store';
 $route['tasks/(:num)/edit'] = 'Tasks_controller/$1/edit';
 $route['tasks/(:num)/update'] = 'Tasks_controller/$1/update';
+
+
+$route['bin-cleaning-costing'] = 'BinCleaningCostingController/index';
+$route['bin-cleaning-costing/create'] = 'BinCleaningCostingController/create';
