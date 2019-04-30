@@ -44,27 +44,28 @@
                         <!-- /.box-header -->
                         <div class="box-body">
 
-                            <div class="form-group">
+                            <div class="form-group" :class="{'has-error': form.errors.cost_title}">
                                 <label for="cost-title">Cost Title</label>
                                 <input type="text" class="form-control" id="cost-title" placeholder="Cost Title" v-model="form.cost_title">
-                                <p class="error-msg"></p>
+                                <p class="error-msg" v-if="form.errors.cost_title" v-text="form.errors.cost_title"></p>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" :class="{'has-error': form.errors.monthly_cost}">
                                 <label for="monthly-cost">Montly Cost</label>
                                 <input type="text" class="form-control" id="monthly-cost" placeholder="Monthly Cost" v-model="form.monthly_cost">
-                                <p class="error-msg"></p>
+                                <p class="error-msg" v-if="form.errors.monthly_cost" v-text="form.errors.monthly_cost"></p>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" :class="{'has-error': form.errors.daily_cost}">
                                 <label for="daily-cost">Daily Cost</label>
                                 <input type="text" class="form-control" id="daily-cost" placeholder="Daily Cost" v-model="daily_cost">
-                                <p class="error-msg"></p>
+                                <p class="error-msg" v-if="form.errors.daily_cost" v-text="form.errors.daily_cost"></p>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group" :class="{'has-error': form.errors.notes}">
                                 <label>Notes</label>
                                 <textarea class="form-control" rows="3" v-model="form.notes" placeholder="Notes..."></textarea>
+                                <p class="error-msg" v-if="form.errors.notes" v-text="form.errors.notes"></p>
                             </div>
 
                         </div>
@@ -100,7 +101,9 @@ var app = new Vue({
             id: undefined,
             cost_title: '',
             monthly_cost: '',
-            notes: ''
+            daily_cost: '',
+            notes: '',
+            errors: {}
         },
         isLoading: false
     },
@@ -108,19 +111,36 @@ var app = new Vue({
         daily_cost(){
             if(!this.form.monthly_cost)
                 return '';
-            return this.monthly_cost / 260;
+            return (parseFloat(this.form.monthly_cost) / 260).toFixed(2);
+        }
+    },
+    watch: {
+        daily_cost(dailyCost){
+            this.form.daily_cost = dailyCost;
         }
     },
     methods: {
         save(){
-            this.showAlert();
+            axios.post('<?= site_url('bin-cleaning-costing/store'); ?>', this.form)
+            .then((data) => {
+                this.showAlert();
+                this.form = {
+                    cost_title: '',
+                    monthly_cost: '',
+                    daily_cost: '',
+                    notes: '',
+                    errors: {}
+                };
+            }).catch(error => {
+                this.form.errors = error.response.data;
+            });
         },
 
         showAlert()
         {
-            this.$toasted.show('this part is in progress and will be done by tomorrow.!', {
+            this.$toasted.show('Costing is saved successfully!', {
                 action : {
-                    text : 'Visit List',
+                    text : 'Go to List',
                     onClick : (e, toastObject) => {
                         window.location = '<?= site_url('bin-cleaning-costing'); ?>';
                     }

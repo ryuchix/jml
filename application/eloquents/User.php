@@ -16,4 +16,9 @@ class User extends Eloquent
     {
         return $this->belongsToMany(Role::class, 'role_user');
     }
+
+    public function bin_cleaning_costings()
+    {
+        return $this->hasMany(BinCleaningCosting::class, 'created_by');
+    }
 }
