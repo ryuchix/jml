@@ -45,30 +45,50 @@ class BinCleaningCostingController extends MY_Controller
 		return $this->sendResponse($costing, 201);		
 	}
 
+	public function edit($id)
+	{
+		$costing = BinCleaningCosting::find($id);
+
+		if(!$costing)
+		{
+			set_flash_message(2, "No record found!");
+			redirect('bin-cleaning-costing');
+		}
+		$this->set_data('sub_menu', 'add_bin_cleaning_costing');
+		$this->set_data('costing', $costing);
+		$this->load->view('bin_cleaning_costing/create', $this->get_data());
+	}
+
+	function update($id)
+	{
+        $_POST = json_decode(file_get_contents("php://input"), true);
+		$this->validate_fields();
+
+		if ( $this->form_validation->run() == FALSE ) 
+			return $this->sendResponse($this->form_validation->error_array(), 422);
+
+		$costing = BinCleaningCosting::find($id);
+
+		$costing->fill($_POST);
+
+		$costing->save();
+
+		return $this->sendResponse($costing, 201);		
+	}
+
+	function destroy($id)
+	{
+		$costing = BinCleaningCosting::find($id);
+		$costing->delete();
+		set_flash_message(0, "Record deleted Successfully!");
+		redirect('bin-cleaning-costing');
+	}
+
 	function validate_fields()
 	{
    		$this->form_validation->set_rules('cost_title','Cost Title', 'required');
    		$this->form_validation->set_rules('monthly_cost','Monthly Cost', 'required|numeric');
    		$this->form_validation->set_rules('daily_cost','Daily Cost', 'required|numeric');
    		$this->form_validation->set_rules('notes','Notes', 'required');
-	}
-
-	public function get_progress()
-	{
-		$balances = $this->Daily_balance_model->get_progress();
-		$data = [];
-		foreach ($balances as $balance) 
-		{
-			$date = DateTime::createFromFormat('Y-m-d', $balance->date);
-			$data[] = [
-				'y' => $date->format('d/m/y'),
-				'item1' => $balance->balance
-			];
-		}
-
-		return $this->output
-	        ->set_status_header(200, "")
-	        ->set_content_type('application/json', 'utf-8')
-	        ->set_output(json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
 	}
 }

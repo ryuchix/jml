@@ -88,21 +88,22 @@
 
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://unpkg.com/vue-toasted"></script>
+<!-- <script src="https://unpkg.com/vue-toasted"></script> -->
+<script src="http://www.gsgd.co.uk/sandbox/jquery/easing/jquery.easing.1.3.js"></script>
 
 <script>
-Vue.use(Toasted, {
-    duration: 5000,
-});
+// Vue.use(Toasted, {
+//     duration: 5000,
+// });
 var app = new Vue({
     el: '#form',
     data: {
         form: {
-            id: undefined,
-            cost_title: '',
-            monthly_cost: '',
-            daily_cost: '',
-            notes: '',
+            id: '<?= $costing->id; ?>',
+            cost_title: '<?= $costing->cost_title; ?>',
+            monthly_cost: '<?= $costing->monthly_cost; ?>',
+            daily_cost: '<?= $costing->daily_cost; ?>',
+            notes: `<?= $costing->notes; ?>`,
             errors: {}
         },
         isLoading: false
@@ -121,16 +122,20 @@ var app = new Vue({
     },
     methods: {
         save(){
-            axios.post('<?= site_url('bin-cleaning-costing/store'); ?>', this.form)
+            var baseUrl = "<?= site_url('bin-cleaning-costing/'); ?>";
+            axios.post(this.form.id ? `${baseUrl}/${this.form.id}/update`: `${baseUrl}/store`, this.form)
             .then((data) => {
                 this.showAlert();
-                this.form = {
-                    cost_title: '',
-                    monthly_cost: '',
-                    daily_cost: '',
-                    notes: '',
-                    errors: {}
-                };
+                
+                if(!this.form.id){
+                    this.form = {
+                        cost_title: '',
+                        monthly_cost: '',
+                        daily_cost: '',
+                        notes: '',
+                        errors: {}
+                    };
+                }
             }).catch(error => {
                 this.form.errors = error.response.data;
             });
@@ -138,15 +143,31 @@ var app = new Vue({
 
         showAlert()
         {
-            this.$toasted.show('Costing is saved successfully!', {
-                action : {
-                    text : 'Go to List',
-                    onClick : (e, toastObject) => {
-                        window.location = '<?= site_url('bin-cleaning-costing'); ?>';
-                    }
-                },
-                theme: 'outline'
-            });
+            toastr.options = {
+                'closeButton': true,
+                'debug': false,
+                'progressBar': true,
+                'positionClass': 'toast-bottom-right',
+                'onclick': null,
+                'showDuration': 400,
+                'hideDuration': 1000,
+                'timeOut': 5000,
+                'extendedTimeOut': 1000,
+                'showEasing': 'easeInQuint',
+                'hideEasing': 'linear',
+                'showMethod': 'fadeIn',
+                'hideMethod': 'fadeOut'
+            };
+            toastr.success('<div>Costing is saved successfully</div><div><a href="<?= base_url('bin-cleaning-costing')?>">Visit List page</a></div>');
+            // this.$toasted.show('Costing is saved successfully!', {
+            //     action : {
+            //         text : 'Go to List',
+            //         onClick : (e, toastObject) => {
+            //             window.location = '<?= site_url('bin-cleaning-costing'); ?>';
+            //         }
+            //     },
+            //     theme: 'outline'
+            // });
         }
     }
 });

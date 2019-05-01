@@ -53,3 +53,6 @@ $route['tasks/(:num)/update'] = 'Tasks_controller/$1/update';
 $route['bin-cleaning-costing'] = 'BinCleaningCostingController/index';
 $route['bin-cleaning-costing/create'] = 'BinCleaningCostingController/create';
 $route['bin-cleaning-costing/store'] = 'BinCleaningCostingController/store';
+$route['bin-cleaning-costing/(:num)/edit'] = 'BinCleaningCostingController/edit/$1';
+$route['bin-cleaning-costing/(:num)/update'] = 'BinCleaningCostingController/update/$1';
+$route['bin-cleaning-costing/(:num)/delete'] = 'BinCleaningCostingController/destroy/$1';
