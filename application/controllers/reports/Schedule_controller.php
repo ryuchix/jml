@@ -138,7 +138,7 @@ class Schedule_controller extends MY_Controller
 
         $jobs = $this->getJobs($post);
 
-        return $this->sendResponse(['jobs' => $jobs, 'weeks' => $dateChunks]);
+        return $this->sendResponse(['jobs' => $jobs, 'weeks' => $dateChunks, 'costs' => $this->getBinCleaningCost()]);
     }
 
     private function getDateChunks($fromDate, $toDate)
@@ -233,6 +233,11 @@ class Schedule_controller extends MY_Controller
             return $weekStartDate->format('d') . ' - ' . $weekEndDate->format('d') . ' ' . $weekEndDate->format('M');
         
         return $weekStartDate->format('d') . ' ' . $weekStartDate->format('M') . ' - ' . $weekEndDate->format('d') . ' ' . $weekEndDate->format('M');
+    }
+
+    private function getBinCleaningCost()
+    {
+        return BinCleaningCosting::all();
     }
 
 

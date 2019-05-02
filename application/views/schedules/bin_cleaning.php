@@ -2,127 +2,127 @@
 <link rel="stylesheet" href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css">
 
 <style>
-table.table td:nth-child(1)  {
-    min-width: 150px;
-}
-table.table td:nth-child(2)  {
-    min-width: 100px;
-}
-table.table td:nth-child(6)  {
-    min-width: 150px;
-}
+    table.table td:nth-child(1)  {
+        min-width: 150px;
+    }
+    table.table td:nth-child(2)  {
+        min-width: 100px;
+    }
+    table.table td:nth-child(6)  {
+        min-width: 150px;
+    }
 
-table.table td:nth-child(n+8)  {
-    min-width: 50px;
-}
+    table.table td:nth-child(n+8)  {
+        min-width: 50px;
+    }
 
-table.table th {
-    text-align: center;
-}
+    table.table th {
+        text-align: center;
+    }
 
-/* Table Column Freez */
-#table tr th:nth-child(1),
-#table tr td:nth-child(1),
-#table tr th:nth-child(2),
-#table tr td:nth-child(2),
-#table tr th:nth-child(3),
-#table tr td:nth-child(3),
-#table tr th:nth-child(4),
-#table tr td:nth-child(4),
-#table tr th:nth-child(5),
-#table tr td:nth-child(5),
-#table tr th:nth-child(6),
-#table tr td:nth-child(6),
-#table tr th:nth-child(7),
-#table tr td:nth-child(7){
-    position: absolute;
-    display: block;
-    top: auto;
-    word-break: break-word;
-    box-sizing: border-box;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    margin-top: -1px;
-}
+    /* Table Column Freez */
+    #table tr th:nth-child(1),
+    #table tr td:nth-child(1),
+    #table tr th:nth-child(2),
+    #table tr td:nth-child(2),
+    #table tr th:nth-child(3),
+    #table tr td:nth-child(3),
+    #table tr th:nth-child(4),
+    #table tr td:nth-child(4),
+    #table tr th:nth-child(5),
+    #table tr td:nth-child(5),
+    #table tr th:nth-child(6),
+    #table tr td:nth-child(6),
+    #table tr th:nth-child(7),
+    #table tr td:nth-child(7){
+        position: absolute;
+        display: block;
+        top: auto;
+        word-break: break-word;
+        box-sizing: border-box;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin-top: -1px;
+    }
 
-#table tr td:nth-child(1),
-#table tr td:nth-child(2),
-#table tr td:nth-child(3),
-#table tr td:nth-child(4),
-#table tr td:nth-child(5),
-#table tr td:nth-child(6),
-#table tr td:nth-child(7){
-    margin-top: 0px;
-}
+    #table tr td:nth-child(1),
+    #table tr td:nth-child(2),
+    #table tr td:nth-child(3),
+    #table tr td:nth-child(4),
+    #table tr td:nth-child(5),
+    #table tr td:nth-child(6),
+    #table tr td:nth-child(7){
+        margin-top: 0px;
+    }
 
-#table tr th:nth-child(1),
-#table tr th:nth-child(2),
-#table tr th:nth-child(3),
-#table tr th:nth-child(4),
-#table tr th:nth-child(5),
-#table tr th:nth-child(6),
-#table tr th:nth-child(7){
-    height: 40px;
-}
+    #table tr th:nth-child(1),
+    #table tr th:nth-child(2),
+    #table tr th:nth-child(3),
+    #table tr th:nth-child(4),
+    #table tr th:nth-child(5),
+    #table tr th:nth-child(6),
+    #table tr th:nth-child(7){
+        height: 40px;
+    }
 
-#table tr th:nth-child(1),
-#table tr td:nth-child(1){
-    width: 152px;
-    min-width: auto;
-}
-#table tr th:nth-child(2),
-#table tr td:nth-child(2){
-    width: 102px;
-}
-#table tr th:nth-child(3),
-#table tr td:nth-child(3){
-    width: 84px;
-}
-#table tr th:nth-child(4),
-#table tr td:nth-child(4){
-    width: 87px;
-}
-#table tr th:nth-child(5),
-#table tr td:nth-child(5){
-    width: 58px;
-}
-#table tr th:nth-child(6),
-#table tr td:nth-child(6){
-    width: 152px;
-}
-#table tr th:nth-child(7),
-#table tr td:nth-child(7){
-    width: 67px;
-/*     border-right: 0; */
-}
-#table tr th:nth-child(8),
-#table tr td:nth-child(8){
-    border-left: 0;
-}
+    #table tr th:nth-child(1),
+    #table tr td:nth-child(1){
+        width: 152px;
+        min-width: auto;
+    }
+    #table tr th:nth-child(2),
+    #table tr td:nth-child(2){
+        width: 102px;
+    }
+    #table tr th:nth-child(3),
+    #table tr td:nth-child(3){
+        width: 84px;
+    }
+    #table tr th:nth-child(4),
+    #table tr td:nth-child(4){
+        width: 87px;
+    }
+    #table tr th:nth-child(5),
+    #table tr td:nth-child(5){
+        width: 58px;
+    }
+    #table tr th:nth-child(6),
+    #table tr td:nth-child(6){
+        width: 152px;
+    }
+    #table tr th:nth-child(7),
+    #table tr td:nth-child(7){
+        width: 67px;
+    /*     border-right: 0; */
+    }
+    #table tr th:nth-child(8),
+    #table tr td:nth-child(8){
+        border-left: 0;
+    }
 
-#table tr:nth-child(1) > th{
-    border-top: 1px solid #f4f4f4;
-}
+    #table tr:nth-child(1) > th{
+        border-top: 1px solid #f4f4f4;
+    }
 
-#table.table-bordered{
-    border-left: 0px;
-}
+    #table.table-bordered{
+        border-left: 0px;
+    }
 
-#table tr:nth-child(2n+1) th,
-#table tr:nth-child(2n+1) > td {
-    background: #f9f9f9 !important;
-}
-#table tr th:nth-child(10n+7), 
-#table tr td:nth-child(10n+7)
-{
-    border-right-color: #000 !important;
-}
+    #table tr:nth-child(2n+1) th,
+    #table tr:nth-child(2n+1) > td {
+        background: #f9f9f9 !important;
+    }
+    #table tr th:nth-child(10n+7), 
+    #table tr td:nth-child(10n+7)
+    {
+        border-right-color: #000 !important;
+    }
 
-#table thead tr:first-child th:nth-child(1n+7)
-{
-    border-right-color: #000 !important;
-}
+    #table thead tr:first-child th:nth-child(1n+7)
+    {
+        border-right-color: #000 !important;
+    }
 
 </style>
 
@@ -299,6 +299,51 @@ table.table th {
                                                     </template>
                                                 </template>
                                             </tr>
+                                            <tr>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <th>&nbsp;</th>
+                                                <template v-for="week in weeks">
+                                                    <template v-for="day in week">
+                                                        <th>{{ day[13] }}</th>
+                                                        <th>C</th>
+                                                    </template>
+                                                </template>
+                                            </tr>
+                                            <tr v-for="item in costs">
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td><strong>{{ item.cost_title }}</strong></td>
+                                                <td>&nbsp;</td>
+                                                <template v-for="week in weeks">
+                                                    <template v-for="day in week">
+                                                        <td>&nbsp;</td>
+                                                        <td>{{ parseFloat(item.daily_cost) }}</td>
+                                                    </template>
+                                                </template>
+                                            </tr>
+                                            <tr v-for="item in costs">
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>&nbsp;</td>
+                                                <td>Total Cost</td>
+                                                <td>&nbsp;</td>
+                                                <template v-for="week in weeks">
+                                                    <template v-for="day in week">
+                                                        <td>&nbsp;</td>
+                                                        <td><strong>{{ totalCost() }}</strong></td>
+                                                    </template>
+                                                </template>
+                                            </tr>
                                         </tfoot>
                                     </table>
                                 </div>
@@ -367,6 +412,7 @@ table.table th {
             suburbs: [],
             jobs: [],
             weeks: [],
+            costs: [],
             isLoading: false
         },
         mounted(){
@@ -391,6 +437,7 @@ table.table th {
                 axios.post("<?php echo site_url('schedules/bin-cleaning-filter'); ?>", this.form).then((data) => {
                     this.jobs = data.data.jobs;
                     this.weeks = data.data.weeks;
+                    this.costs = data.data.costs;
                     setTimeout(() => {
                         this.adjustColumnPositions();
                         this.isLoading = false;
@@ -471,6 +518,11 @@ table.table th {
                 weekdays[5] = "Friday";
                 weekdays[6] = "Saturday";
                 return weekdays[a.getDay()];
+            },
+            totalCost(){
+                var cost = 0;
+                this.costs.forEach(item => cost += parseFloat(item.daily_cost));
+                return cost;
             },
             adjustColumnPositions(){
                 var width = {

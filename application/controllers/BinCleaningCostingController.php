@@ -3,10 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class BinCleaningCostingController extends MY_Controller
 {
-	private $validation_state = array();
-
-	private $validation_message = array();
-
 	function __construct()
 	{
 		parent::__construct();
