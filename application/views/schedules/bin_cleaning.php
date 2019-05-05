@@ -285,28 +285,28 @@
                                                 </template>
                                             </tr>
                                             <tr>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>Total Revenue</th>
-                                                <th>&nbsp;</th>
+                                                <th style="border-right: none;">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none;">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none;">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none;">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none;">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none">Total Revenue</th>
+                                                <th style="border-left: none;">&nbsp;</th>
                                                 <template v-for="week in weeks">
                                                     <template v-for="day in week">
                                                         <th></th>
-                                                        <th>{{ getTotalRevenue(day) }}</th>
+                                                        <th>${{ getTotalRevenue(day) }}</th>
                                                     </template>
                                                 </template>
                                             </tr>
                                             <tr>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
-                                                <th>&nbsp;</th>
+                                                <th style="border-right: none; border-left: none">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none">&nbsp;</th>
+                                                <th style="border-right: none; border-left: none">&nbsp;</th>
+                                                <th style="border-left: none">&nbsp;</th>
                                                 <template v-for="week in weeks">
                                                     <template v-for="day in week">
                                                         <th>{{ day[13] }}</th>
@@ -315,32 +315,47 @@
                                                 </template>
                                             </tr>
                                             <tr v-for="item in costs">
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td><strong>{{ item.cost_title }}</strong></td>
-                                                <td>&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none"><strong>{{ item.cost_title }}</strong></td>
+                                                <td style="border-left: none;">&nbsp;</td>
                                                 <template v-for="week in weeks">
                                                     <template v-for="day in week">
                                                         <td>&nbsp;</td>
-                                                        <td>{{ parseFloat(item.daily_cost) }}</td>
+                                                        <td align=center>${{ parseFloat(item.daily_cost) }}</td>
                                                     </template>
                                                 </template>
                                             </tr>
-                                            <tr v-for="item in costs">
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>&nbsp;</td>
-                                                <td>Total Cost</td>
-                                                <td>&nbsp;</td>
+                                            <tr>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none"><strong>Total Cost</strong></td>
+                                                <td style="border-left: none;">&nbsp;</td>
                                                 <template v-for="week in weeks">
                                                     <template v-for="day in week">
                                                         <td>&nbsp;</td>
-                                                        <td><strong>{{ totalCost() }}</strong></td>
+                                                        <td align=center><strong>${{ totalCost() }}</strong></td>
+                                                    </template>
+                                                </template>
+                                            </tr>
+                                            <tr>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none">&nbsp;</td>
+                                                <td style="border-right: none; border-left: none"><strong>Profit/Loss</strong></td>
+                                                <td style="border-left: none;">&nbsp;</td>
+                                                <template v-for="week in weeks">
+                                                    <template v-for="day in week">
+                                                        <td :style="getStyle(day)">&nbsp;</td>
+                                                        <td align='center' :style="getStyle(day)"><strong>${{ (getTotalRevenue(day) - totalCost()).toFixed(2) }}</strong></td>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -477,7 +492,7 @@
             getTotalRevenue(day){
                 var date = this.makeDate(day);
                 var amount = this.getTotalByDateAndProperty(date, 'total');
-                return amount? `$${amount}`: '';
+                return amount? amount: '';
             },
             getTotalBins(day){
                 var date = this.makeDate(day);
@@ -523,6 +538,10 @@
                 var cost = 0;
                 this.costs.forEach(item => cost += parseFloat(item.daily_cost));
                 return cost;
+            },
+            getStyle(day){
+                let backgroundColor = (this.getTotalRevenue(day) - this.totalCost()) > 0 ? 'lightgreen !important': 'lightpink !important';
+                return { 'background-color':  backgroundColor }
             },
             adjustColumnPositions(){
                 var width = {
