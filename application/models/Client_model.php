@@ -86,7 +86,7 @@ class Client_model extends MY_Model
 
     function get_list_where($active = 1, $prospect = 0, $lead = 0)
     {
-        $sql = "SELECT c.id, c.name, c.phone, c.active, ct.type AS client_type, c.email, c.address_1, c.address_suburb, c.address_post_code, c.is_parent, cp.name AS parent_name, lt.type AS lead_type, CONCAT(u.first_name, ' ', u.last_name) AS lead_by, c.lead_date
+        $sql = "SELECT c.id, c.name, c.phone, c.active, c.attention, ct.type AS client_type, c.email, c.address_1, c.address_suburb, c.address_post_code, c.is_parent, cp.name AS parent_name, lt.type AS lead_type, CONCAT(u.first_name, ' ', u.last_name) AS lead_by, c.lead_date
                 FROM client AS c
                     LEFT JOIN client AS cp ON c.child_of = cp.id
                     LEFT JOIN client_type AS ct ON c.client_type = ct.id

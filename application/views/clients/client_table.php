@@ -5,6 +5,7 @@
             <th>Client Type</th>
             <th>Address </th>
             <th>Suburb </th>
+            <th>Contact Name</th>
             <th>Phone </th>
             <th>Email</th>
             <th>Parent</th>
@@ -22,6 +23,7 @@
         <td><?php echo $row->client_type; ?></td>
         <td><?php echo $row->address_1 ?></td>
         <td><?php echo $row->address_suburb; ?></td>
+        <td><?php echo $row->attention; ?></td>
         <td><?php echo $row->phone; ?></td>
         <td><?php echo $row->email; ?></td>
         <td><?php echo $row->is_parent? '<i class="fa fa-check text-primary"></i>':'-'; ?></td>
