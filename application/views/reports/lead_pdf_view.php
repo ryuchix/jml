@@ -46,7 +46,12 @@
                 <td><?php echo $lead->leadBy->full_name ?></td>
             </tr>
             <tr>
-                <td colspan="5"><?php echo $lead->clinetLogs->implode('note', '<br>') ?></td>
+                <td colspan="5"><?php 
+                foreach ($lead->clinetLogs as $log) {
+                    echo $log->note . ' - ' . local_datetime($log->added_time) . '<br>';
+                }
+                // echo $lead->clinetLogs->implode('note', '<br>') 
+                ?></td>
             </tr>
             <?php endforeach;?>
         </tbody>

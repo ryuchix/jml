@@ -344,7 +344,13 @@ $(function(){
         });
         
     });
-    
+	
+    $("#leadModal").on("show.bs.modal", function(e) {
+		var $link = $(e.relatedTarget);
+		$("#leadModal form").attr('action', $link.data('href'));
+        $(this).find(".modal-body").load($link.attr("href"));
+    });
+
     /*$("#rotate").on('click', function(e){
         var $btn = $(this).prop('disabled', true);
         var currentImg = $('#photoModel .modal-body').find('.item.active img');

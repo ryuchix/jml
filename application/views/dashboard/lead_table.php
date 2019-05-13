@@ -50,6 +50,8 @@
 
 						<th>Suburb</th>
 
+						<th>Contact name</th>
+
 						<th>Phone</th>
 
 						<th>Email</th>
@@ -74,6 +76,8 @@
 								<td><?php echo ($lead->address_1); ?></td>
 
 								<td><?php echo ($lead->address_suburb); ?></td>
+								
+								<td><?php echo $lead->attention; ?></td>
 
 								<td><?php echo ($lead->phone); ?></td>
 								
@@ -88,7 +92,8 @@
 								<td>
                                     <a href="<?php echo site_url("client/save/$lead->id"); ?>">Edit</a> | 
                                     <a href="<?php echo site_url("client/change_type/$lead->id/prospect"); ?>">Prospect</a> | 
-                                    <a href="<?php echo site_url("client/change_type/$lead->id/client"); ?>">Client</a>
+                                    <a href="<?php echo site_url("client/change_type/$lead->id/client"); ?>">Client</a> |
+									<a data-remote="false" data-href="<?php echo site_url( "clients/$lead->id/marketing/save_note" ); ?>" data-toggle="modal" data-target="#leadModal">Marketing</a>
                                 </td>
 
 							</tr>
@@ -110,5 +115,38 @@
 
 </div>
 <!-- .row -->
+
+<!-- Modal -->
+<div class="modal fade" id="leadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  	<div class="modal-dialog" role="document">
+        <form role="form" id="form" method="post" action="#" enctype="multipart/form-data">
+	    
+	    <div class="modal-content">
+	      	<div class="modal-header">
+	        	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        	<h4 class="modal-title" id="myModalLabel">New Notes & Attachments</h4>
+	      	</div>
+	      	<div class="modal-body">
+				
+				<input type="hidden" name="job_id" value="">
+                <div class="form-group">
+                    <label for="image">Choose Files</label>
+                    <input type="file" class="form-control" id="imageFile" name="upl_files[]" multiple>
+                </div>
+
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea class="form-control" rows="3" name="notes" placeholder="Notes..."></textarea>
+                </div>
+
+	      	</div>
+	      	<div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+	    	    <button type="submit" name="submit" class="btn btn-primary">Save</button>
+	      	</div>
+    	</div>
+    	</form>
+  	</div>
+</div>
 
 <?php endif; ?>
