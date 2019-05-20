@@ -93,6 +93,9 @@ class Client_marketing_controller extends MY_Controller
 				{
 					set_flash_message(0, 'Log has been Added.' );
 
+					if($this->input->post('redirect'))
+						redirect(site_url($this->input->post('redirect')));
+
 					redirect( site_url( "clients-marketing/$client_id/logs" ) );
 				}
 

@@ -33,9 +33,8 @@
                 $leads = Client::with(['leadType' => function($q){
                 }, 'leadBy' => function($q){
                     $q->select('first_name', 'last_name', 'id');
-                }])->where('is_lead', 1)->orderBy('id', 'desc')->get();
+                }, 'clinetLogs'])->where('is_lead', 1)->where('active', 1)->orderBy('id', 'desc')->get();
 
-                // dd($leads->toArray());
             ?>
 
             <div class="box-body chart-responsive table-responsive fleet-table">
@@ -93,7 +92,9 @@
                                     <a href="<?php echo site_url("client/save/$lead->id"); ?>">Edit</a> | 
                                     <a href="<?php echo site_url("client/change_type/$lead->id/prospect"); ?>">Prospect</a> | 
                                     <a href="<?php echo site_url("client/change_type/$lead->id/client"); ?>">Client</a> |
-									<a data-remote="false" data-href="<?php echo site_url( "clients/$lead->id/marketing/save_note" ); ?>" data-toggle="modal" data-target="#leadModal">Marketing</a>
+									<span data-toggle="tooltip" data-html="true" data-placement="top" title="<?= $lead->clinetLogs->implode('note', '<br>'); ?>">
+										<a data-remote="false" data-href="<?php echo site_url( "clients/$lead->id/marketing/save_note" ); ?>" data-toggle="modal" data-target="#leadModal">Marketing</a>
+									</span>
                                 </td>
 
 							</tr>
@@ -129,6 +130,7 @@
 	      	<div class="modal-body">
 				
 				<input type="hidden" name="job_id" value="">
+				<input type="hidden" name="redirect" value="/">
                 <div class="form-group">
                     <label for="image">Choose Files</label>
                     <input type="file" class="form-control" id="imageFile" name="upl_files[]" multiple>
