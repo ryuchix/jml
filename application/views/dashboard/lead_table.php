@@ -92,7 +92,7 @@
                                     <a href="<?php echo site_url("client/save/$lead->id"); ?>">Edit</a> | 
                                     <a href="<?php echo site_url("client/change_type/$lead->id/prospect"); ?>">Prospect</a> | 
                                     <a href="<?php echo site_url("client/change_type/$lead->id/client"); ?>">Client</a> |
-									<span data-toggle="tooltip" data-html="true" data-placement="top" title="<?= $lead->clinetLogs->implode('note', '<br>'); ?>">
+									<span data-toggle="tooltip" data-html="true" data-placement="top" title="<?= $lead->clinetLogs->map(function($log){ return local_date($log->added_time) . ' - ' . $log->note; })->implode('<br><br>'); ?>">
 										<a data-remote="false" data-href="<?php echo site_url( "clients/$lead->id/marketing/save_note" ); ?>" data-toggle="modal" data-target="#leadModal">Marketing</a>
 									</span>
                                 </td>
