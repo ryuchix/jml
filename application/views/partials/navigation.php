@@ -142,7 +142,7 @@
                     
                     <?php if ($controller->hasAccess('view-schedule-bin-cleaning')): ?>
                     <li class="<?php echo set_sub_menu('view_list', $sub_menu); ?>">
-                        <a href="<?php echo site_url('schedules/bin-cleaning'); ?>"><i class="fa fa-circle-o"></i>Bin Cleaning</a>
+                        <a href="<?php echo site_url('schedules/costing'); ?>"><i class="fa fa-circle-o"></i>Costing</a>
                     </li>
                     <?php endif ?>
 

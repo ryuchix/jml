@@ -20,8 +20,8 @@ $route['schedules/list'] = 'reports/Schedule_controller/index';
 $route['schedules/map'] = 'reports/Schedule_controller/map';
 $route['schedules/weekly'] = 'reports/Schedule_controller/weekly';
 $route['schedules/weekly-visits'] = 'reports/Schedule_controller/weeklyPost';
-$route['schedules/bin-cleaning'] = 'reports/Schedule_controller/binCleaning';
-$route['schedules/bin-cleaning-filter'] = 'reports/Schedule_controller/binCleaningFilter';
+$route['schedules/costing'] = 'reports/Schedule_controller/costing';
+$route['schedules/costing-filter'] = 'reports/Schedule_controller/costingFilter';
 
 
 $route['clients/(:num)/marketing/save_note'] = 'Client_marketing_controller/save_note/$1';

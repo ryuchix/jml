@@ -12,7 +12,6 @@ class Job_categories extends MY_Controller
 		$this->set_data('class_name', strtolower(get_class($this)));
 	}
 
-
 	function index($disable = false, $modified_item_id = 0)
 	{
 		$this->redirectIfNotAllowed('view-job-categories');
@@ -100,6 +99,12 @@ class Job_categories extends MY_Controller
         }else{
             return true;
         }
-    }
+	}
+	
+	function get_job_category_json()
+	{
+		$this->redirectIfNotAllowed('view-job-categories');
+		$this->sendResponse(JobCategory::select('id', 'type')->get());
+	}
 
 }

@@ -122,12 +122,12 @@ class Schedule_controller extends MY_Controller
         return $this->sendResponse($visits->toArray());
     }
 
-	public function binCleaning()
+	public function costing()
 	{
-        $this->load->view('schedules/bin_cleaning', $this->get_data());
+        $this->load->view('schedules/costing', $this->get_data());
     }
 
-	public function binCleaningFilter()
+	public function costingFilter()
 	{
         $post = json_decode(file_get_contents("php://input"), true);
 
@@ -194,16 +194,12 @@ class Schedule_controller extends MY_Controller
 
     private function getJobs($post)
     {
-        $jobsQuery = Job::whereHas('category', function($q){ 
-            $q->whereIn('id', JobCategory::whereIn('type', ['Bin Cleaning', 'Bin Cleaning - Residential'])->select('id')->get()); 
+        $jobsQuery = Job::whereHas('category', function($q) use($post){
+            if(! empty($post)) { $q->whereIn('id', $post['services']); }
         })->whereHas('client', function($q) use($post){
             $q->where('active', (int)$post['status']);
             if($post['clientType']) $q->where('client_type', $post['clientType']);
-            
-            if($post['suburb'])
-            {
-                $q->where('address_suburb', $post['suburb']);
-            }
+            if($post['suburb']) $q->where('address_suburb', $post['suburb']);
         })->with(['category' => function($q){
             $q->select('id', 'type');
         }, 'client' => function($q){
