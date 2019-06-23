@@ -14,3 +14,8 @@ api/*
 api_*
 
 application/vendor/*
+
+.htaccess
+.user.ini
+error_log
+php.ini

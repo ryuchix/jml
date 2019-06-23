@@ -23,6 +23,7 @@ class Jobs extends MY_Controller
 							'Contacts_model',
 							'Service_model'
 						]);
+		ini_set('memory_limit', '-1');
 		$this->set_data('active_menu', 'jobs');
 		$this->set_data('class_name', strtolower(get_class($this)));
 	}
@@ -443,12 +444,20 @@ class Jobs extends MY_Controller
 				}else{
 					$start_date->modify("next sunday");
 				}
+				
+				if (in_array('sunday', $days) && $interval == 1 && count($days) == 1 ) {
+					$start_date->modify("next sunday");
+				}
 			}
 
 			foreach ( $days as $day ) { // loop in every week day and modify to next {week_day}
 				if($day != 'sunday'){
 					$start_date->modify("next $day");
-				}	
+				}else{
+					if($day == 'sunday' && count($days) == 1 ){
+						$start_date->modify("next $day");
+					}
+				}
 				$dates[] = $start_date->format('Y-m-d');
 			}
 			
