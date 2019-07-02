@@ -77,13 +77,23 @@
 	        <div class="col-md-4">
 
 				<div class="list-group">
-				  	
-				  	<a href="#!" class="list-group-item active">Bin Liners Management</a>
-				  	
-				  	<?php if ($controller->hasAccess('export-bin-liner-management')): ?>
-				  	<a href="<?php echo site_url('reports/bin-liner-management/filter') ?>" class="list-group-item">Bin Liner Management</a>
+					
+					<a href="#!" class="list-group-item active">Bin Liners Management</a>
+					
+					<?php if ($controller->hasAccess('export-bin-liner-management')): ?>
+					<a href="<?php echo site_url('reports/bin-liner-management/filter') ?>" class="list-group-item">Bin Liner Management</a>
 					<?php endif; ?>
-				  	
+					
+				</div>
+
+				<div class="list-group">
+					
+					<a href="#!" class="list-group-item active">Finance</a>
+					
+					<?php if ($controller->hasAccess('daily-income')): ?>
+					<a href="<?php echo site_url('reports/daily-income/filter') ?>" class="list-group-item">Daily Income</a>
+					<?php endif; ?>
+					
 				</div>
 	            
 	        </div>

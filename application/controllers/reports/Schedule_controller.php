@@ -155,8 +155,6 @@ class Schedule_controller extends MY_Controller
             // Get day name for later conditions
             $day = $startDate->format('D');
 
-            // if($week && $day === "Mon" && count($week) == 5) $week = [];
-
             // assign week's last date so that we can make title relavent to the week start and end date
             if($day === 'Fri') $weekEndDate = (new DateTime($startDate->format('Y-m-d')));
             
