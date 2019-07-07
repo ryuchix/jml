@@ -111,10 +111,12 @@
                         <div class="box-body">
                             
                             <?php 
-                                $waste_department = ['surname' => '', 'name' => '', 'email' => '', 'phone' => '', 'role' => ''];
+                                $default_fields = ['surname' => '', 'name' => '', 'email' => '', 'phone' => '', 'role' => '', 'bins_check' => ''];
+                                $waste_department = $default_fields;
                                 if ($record->waste_department) {
+                                    
                                     $waste_department = (array)json_decode($record->waste_department);
-
+                                    $waste_department = array_merge($default_fields, $waste_department);
                                 }
                              ?>
 
@@ -146,6 +148,12 @@
                                 <label for="role">Role</label>
                                 <input type="text" class="form-control" name="data[waste_department][role]" id="role" placeholder="Role" value="<?php echo set_value('data[waste_department][role]', $waste_department['role']); ?>">
                                 <?php echo form_error('data[waste_department][role]','<p class="error-msg">','</p>') ?>
+                            </div>
+
+                            <div class="form-group <?php echo form_error('data[waste_department][bins_check]')? 'has-error':''; ?>">
+                                <label for="bins_check">Bins Check</label>
+                                <input type="url" class="form-control" name="data[waste_department][bins_check]" id="bins_check" placeholder="Bins Check" value="<?php echo set_value('data[waste_department][bins_check]', $waste_department['bins_check']); ?>">
+                                <?php echo form_error('data[waste_department][bins_check]','<p class="error-msg">','</p>') ?>
                             </div>
 
                         </div>

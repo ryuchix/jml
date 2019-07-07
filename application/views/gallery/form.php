@@ -86,6 +86,15 @@
                                 <textarea class="form-control" rows="3" name="data[description]" placeholder="description..."><?php echo set_value('data[description]', $record->description); ?></textarea>
                                 <?php echo form_error('data[description]','<p class="error-msg">','</p>') ?>
                             </div>
+                            <?php // dd($record); ?>
+                            <div class="form-group <?php echo form_error('data[include_in_property_info]')? 'has-error':''; ?>">
+                                <label>
+                                    <input type="checkbox" name="data[include_in_property_info]" value="1" <?php echo set_value('data[include_in_property_info]', $record->include_in_property_info)?'checked': ''; ?>>
+                                    Include in property info
+                                </label>
+                                <?php echo form_error('data[include_in_property_info]','<p class="error-msg">','</p>') ?>
+                            </div>
+
                             <?php if (!$record->id): ?>
                             <div class="form-group">
                                 <label for="image">Choose Files</label>

@@ -14,6 +14,7 @@ class Gallery_model extends MY_Model
     public $context;
     public $name;
     public $description = '';
+    public $include_in_property_info = 0;
     public $active = 1;
     public $source = 'web';
     public $added_by;

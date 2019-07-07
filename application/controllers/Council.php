@@ -39,7 +39,7 @@ class Council extends MY_Controller
 			$this->set_conditional_validation_roles($id);
        		
 			if ( $this->form_validation->run() == TRUE ) {
-				
+				// dd($this->input->post());
 				foreach ($this->input->post('data') as $field => $value) 
 				{
 					$record->{$field} = is_array($value)? json_encode($value): $value;
@@ -47,11 +47,10 @@ class Council extends MY_Controller
 
 				$record->active = $id? $record->active: 1;
 				$record->{$id? 'updated_by':'added_by'} = $this->session->userdata('user_id');
-
-				if ( $record->save() ) {
-					set_flash_message(0, "Record Submitted Successfully!");
-					redirect( site_url( $this->data['class_name'] ) );
-				}
+				//dd($record);
+				$record->save();
+				set_flash_message(0, "Record Submitted Successfully!");
+				redirect( site_url( $this->data['class_name'] ) );
 			}
 		}
 		$this->load->view('councils/form',$this->get_data());

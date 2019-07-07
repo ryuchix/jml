@@ -38,6 +38,7 @@ class Gallery extends MY_Controller
 					g.name, 
 					gt.type AS type, 
 					g.description, 
+					g.include_in_property_info, 
 					g.context_id AS context_id,
 					counts.count_images, 
 					g.active 
@@ -124,15 +125,15 @@ class Gallery extends MY_Controller
 				foreach ($this->input->post('data') as $key => $value) {
 					$record->{$key} = $value;
 				}
+				if($this->input->post('data[include_in_property_info]'))
+					$record->include_in_property_info = 1;
+				else
+					$record->include_in_property_info = 0;
 				$record->updated_by = $this->session->userdata('user_id');
-				if ($gal_id = $record->save()) {
-					$this->add_history($record->context_id, "Gallery Updated");
-					set_flash_message(0, "Gallery Updated Successfully");
-					redirect( site_url( "gallery/index/$record->context/$record->context_id" ) );
-				}else{
-					set_flash_message(1, "No Changes Made!");
-					redirect( site_url( "gallery/index/$record->context/$record->context_id" ) );
-				}
+				$gal_id = $record->save();
+				$this->add_history($record->context_id, "Gallery Updated");
+				set_flash_message(0, "Gallery Updated Successfully");
+				redirect( site_url( "gallery/index/$record->context/$record->context_id" ) );
 			}
 		}
     	$this->load->view('gallery/form', $this->get_data());

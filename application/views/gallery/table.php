@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Name</th>
+            <th>Property Info</th>
             <th>No Images</th>
             <th>Category</th>
             <th>Description</th>
@@ -13,6 +14,7 @@
 
     <tr>
         <td><?php echo $row->name; ?></td>
+        <td><?php echo $row->include_in_property_info? 'YES':'NO'; ?></td>
         <td><?php echo $row->count_images; ?></td>
         <td><?php echo $row->type; ?></td>
         <td><?php echo $row->description; ?></td>
