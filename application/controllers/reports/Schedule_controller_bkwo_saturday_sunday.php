@@ -156,13 +156,13 @@ class Schedule_controller extends MY_Controller
             $day = $startDate->format('D');
 
             // assign week's last date so that we can make title relavent to the week start and end date
-            if($day === 'Sun') $weekEndDate = (new DateTime($startDate->format('Y-m-d')));
+            if($day === 'Fri') $weekEndDate = (new DateTime($startDate->format('Y-m-d')));
             
             // assign week's First date so that we can make title relavent to the week start and end date
             if($day === 'Mon') $weekStartDate = (new DateTime($startDate->format('Y-m-d')));
 
             // Skip the date if it is saturday or sunday because saturday or sunday is not required in report.
-            // if(!in_array($day, ['Sat', 'Sun']))
+            if(!in_array($day, ['Sat', 'Sun']))
                 $week[] = $startDate->format('d/m/Y') . ' - ' . $day;
             
             // In any case if start date or end date is same we have to make sure the current week itration is end right away
@@ -172,7 +172,7 @@ class Schedule_controller extends MY_Controller
             // Push week to WeekChunk if Day is monday and also we have five in dates in week array
             // OR
             // Push week to weekChunck in case the start date or end date is same because
-            if($startDate == $endDate || ($day === "Sun"))
+            if($startDate == $endDate || ($day === "Fri"))
             {
                 // get Week title based on week start and end dates.
                 $title = $this->getWeekTitle($weekStartDate, $weekEndDate);
@@ -180,7 +180,7 @@ class Schedule_controller extends MY_Controller
             };
 
             // Reset $week Array after pushing to chumk of weeks on every monday
-            if($day == 'Sun')
+            if($day == 'Fri')
                 $week = [];
 
             // Increment a day after every condition.

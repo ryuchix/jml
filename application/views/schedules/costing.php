@@ -113,8 +113,9 @@
     #table tr:nth-child(2n+1) > td {
         background: #f9f9f9 !important;
     }
-    #table tr th:nth-child(10n+7), 
-    #table tr td:nth-child(10n+7)
+    #table tr th:nth-child(7), 
+    #table tr td:nth-child(7),  
+    .dark-left
     {
         border-right-color: #000 !important;
     }
@@ -251,9 +252,9 @@
                                                 <th>Notes</th>
                                                 <th>Freq</th>
                                                 <template v-for="week in weeks">
-                                                    <template v-for="day in week">
+                                                    <template v-for="(day,index) in week">
                                                         <th>{{ day[13] }}</th>
-                                                        <th>R</th>
+                                                        <th :class="{'dark-left': index==week.length-1 }">R</th>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -269,9 +270,9 @@
                                                 <td data-toggle="tooltip" data-container="body" :title="job.job_title">{{ job.job_title }}</td>
                                                 <td data-toggle="tooltip" data-container="body" :title="job.every_no_day>0? job.every_no_day + job.frequency: job.frequency">{{ job.every_no_day>0? job.every_no_day: '' }} {{ job.frequency }}</td>
                                                 <template v-for="week in weeks">
-                                                    <template v-for="day in week">
+                                                    <template v-for="(day,index) in week">
                                                         <td align="center" v-html="getNumberOfBins(job, day)"></td>
-                                                        <td align="center" v-html="getRevenue(job, day)"></td>
+                                                        <td align="center" v-html="getRevenue(job, day)" :class="{'dark-left': index==week.length-1 }"></td>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -286,9 +287,9 @@
                                                 <th>Total Bins</th>
                                                 <th>&nbsp;</th>
                                                 <template v-for="week in weeks">
-                                                    <template v-for="day in week">
+                                                    <template v-for="(day,index) in week">
                                                         <th>{{ getTotalBins(day) }}</th>
-                                                        <th></th>
+                                                        <th :class="{'dark-left': index==week.length-1 }"></th>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -301,9 +302,9 @@
                                                 <th style="border-right: none; border-left: none">Total Revenue</th>
                                                 <th style="border-left: none;">&nbsp;</th>
                                                 <template v-for="week in weeks">
-                                                    <template v-for="day in week">
+                                                    <template v-for="(day,index) in week">
                                                         <th></th>
-                                                        <th>${{ getTotalRevenue(day) }}</th>
+                                                        <th :class="{'dark-left': index==week.length-1 }">${{ getTotalRevenue(day) }}</th>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -316,9 +317,9 @@
                                                 <th style="border-right: none; border-left: none">&nbsp;</th>
                                                 <th style="border-left: none">&nbsp;</th>
                                                 <template v-for="week in weeks">
-                                                    <template v-for="day in week">
+                                                    <template v-for="(day,index) in week">
                                                         <th>{{ day[13] }}</th>
-                                                        <th>C</th>
+                                                        <th :class="{'dark-left': index==week.length-1 }">C</th>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -331,9 +332,9 @@
                                                 <td style="border-right: none; border-left: none"><strong>{{ item.cost_title }}</strong></td>
                                                 <td style="border-left: none;">&nbsp;</td>
                                                 <template v-for="week in weeks">
-                                                    <template v-for="day in week">
+                                                    <template v-for="(day,index) in week">
                                                         <td>&nbsp;</td>
-                                                        <td align=center>${{ parseFloat(item.daily_cost) }}</td>
+                                                        <td align=center :class="{'dark-left': index==week.length-1 }">${{ parseFloat(item.daily_cost) }}</td>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -346,9 +347,9 @@
                                                 <td style="border-right: none; border-left: none"><strong>Total Cost</strong></td>
                                                 <td style="border-left: none;">&nbsp;</td>
                                                 <template v-for="week in weeks">
-                                                    <template v-for="day in week">
+                                                    <template v-for="(day,index) in week">
                                                         <td>&nbsp;</td>
-                                                        <td align=center><strong>${{ totalCost() }}</strong></td>
+                                                        <td align=center :class="{'dark-left': index==week.length-1 }"><strong>${{ totalCost() }}</strong></td>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -361,9 +362,9 @@
                                                 <td style="border-right: none; border-left: none"><strong>Profit/Loss</strong></td>
                                                 <td style="border-left: none;">&nbsp;</td>
                                                 <template v-for="week in weeks">
-                                                    <template v-for="day in week">
+                                                    <template v-for="(day,index) in week">
                                                         <td :style="getStyle(day)">&nbsp;</td>
-                                                        <td align='center' :style="getStyle(day)"><strong>${{ (getTotalRevenue(day) - totalCost()).toFixed(2) }}</strong></td>
+                                                        <td align='center' :class="{'dark-left': index==week.length-1 }" :style="getStyle(day)"><strong>${{ (getTotalRevenue(day) - totalCost()).toFixed(2) }}</strong></td>
                                                     </template>
                                                 </template>
                                             </tr>
@@ -410,22 +411,22 @@
 
 <script>
 
-    $(function () {
+    // $(function () {
 
-        $('.date').datetimepicker({
-             format: 'DD/MM/YYYY'
-        }).on('change', function (ev) {
-            alert('changed');
-        });
+    //     $('.date').datetimepicker({
+    //          format: 'DD/MM/YYYY'
+    //     }).on('change', function (ev) {
+    //         alert('changed');
+    //     });
 
-    });
+    // });
 
     var app = new Vue({
         el: '#scheduleBinLiner',
         data:{
             form: {
-                fromDate: '',
-                toDate: '',
+                fromDate: "",
+                toDate: "",
                 status: 1,
                 clientType: '',
                 withEmpty: 1,

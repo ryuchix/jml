@@ -464,3 +464,18 @@ function hexToHsl($hex) {
 
     return array('h' => $h, 's' => $s, 'l' => $l);
 }
+
+function getDatesInBetween($from, $to, $format = "d/m/Y"){
+    // $date_from = date_create_from_format($format, $from);
+    $date_from = strtotime($from); // Convert date to a UNIX timestamp  
+    
+    // Specify the end date. This date can be any English textual format  
+    // $date_to = date_create_from_format($format, $to);
+    $date_to = strtotime($to); // Convert date to a UNIX timestamp  
+    
+    $output = [];
+    // Loop from the start date to end date and output all dates inbetween  
+    for ($i=$date_from; $i<=$date_to; $i+=86400)
+        $output[] = date($format, $i);
+    return $output;
+}
