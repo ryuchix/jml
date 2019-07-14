@@ -306,6 +306,7 @@ $(function () {
             $('#addItem').on('click', this.addItemRow);
             $('#deleteItem').on('click', this.showDeleteBtns);
             $('#lineItemTable').on('change', 'tr td select', this.serviceSelected);
+            this.intializeRowCalculation();
         },
         loadVisitForm: e => {
             // get clicked anchor
@@ -395,6 +396,7 @@ $(function () {
                     this.date.html($dateHtml);
 
                     $('[data-dismiss="modal"]').trigger('click');
+                    window.location.reload();
                 }
             });
         },
@@ -415,7 +417,7 @@ $(function () {
             $('#lineItemTable tbody .deleteRow').show('slow');
         },
         getRowTemplate: (data) => {
-            var i = this.itemRowNumber++;
+            var i = JobVisit.itemRowNumber++;
             var row = `<tr>
                         <td>
                             <div class="form-group">
@@ -463,6 +465,16 @@ $(function () {
             else{
                 $(this).addClass('active');
             }
+        },
+        intializeRowCalculation: () => {
+            $(document).on('input', '.itemQty, .itemCost', function(e){
+                let $this = $(this);
+                $this.val($this.val().replace(/[^\d\.{1}]/g, ""));
+                let $row = $this.parents('tr');
+                let qty = parseFloat($row.find('td:eq(1) input').val());
+                let price = parseFloat($row.find('td:eq(2) input').val());
+                $row.find('td:eq(3) input').val('$' + (qty? qty: 0) * (price? price:0));
+            });
         }
     };
 

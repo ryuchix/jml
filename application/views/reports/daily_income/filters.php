@@ -141,8 +141,8 @@
         el: '#dailyCostingReport',
         data:{
             form: {
-                fromDate: "01/07/2019",
-                toDate: "06/07/2019",
+                fromDate: "",
+                toDate: "",
             },
             isLoading: false,
             jobs: [],

@@ -833,12 +833,13 @@ class Jobs extends MY_Controller
 			$this->Job_visit_crew_model->insert_batch($data);
 		}
 
-		$sql = "DELETE FROM job_visit_item WHERE visit_id IN (SELECT id from job_visits WHERE job_id = " . $post['job_id'] . ")";
+		$sql = "DELETE FROM job_visit_item WHERE visit_id IN (SELECT id from job_visits WHERE completed = 0 AND job_id = " . $post['job_id'] . ")";
 		if($this->db->simple_query($sql))
 		{
+			
 			$data = [];
 			
-			$results = $this->db->query("SELECT id as visit_id FROM job_visits Where job_id = ?", [$post['job_id']])->result();
+			$results = $this->db->query("SELECT id as visit_id FROM job_visits Where completed = 0 AND job_id = ?", [$post['job_id']])->result();
 			foreach($post['lineItems'] as $item)
 			{
 				foreach ( $results as $visit_id ){
