@@ -80,7 +80,7 @@ class Daily_income_controller extends MY_Controller
 				foreach($db_date_range as $date)
 				{
 					$visit = $j->visits->where('date', $date)->first();
-					$dates[$date] = $visit? $visit->items->first()->pivot->total: 0;
+					$dates[$date] = $visit? (float)$visit->items->first()->pivot->total: 0;
 				}
 				$jobsArray[$j->property_id]->property = $j->property->address;
 				$jobsArray[$j->property_id]->client = $j->client->name;
