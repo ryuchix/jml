@@ -3,6 +3,7 @@
         <tr>
             <th>Lead Type</th>
             <th>Description</th>
+            <th>Color</th>
             <th>Action</th>
         </tr>
     </thead>
@@ -11,6 +12,7 @@
     <tr class="<?php echo ($row->id == $modified_item_id)?"animated tada\" style=\"background: #fff;\"":""; ?>">
         <td><?php echo $row->type; ?></td>
         <td><?php echo $row->description; ?></td>
+        <td><span class='badge' style="background-color: <?php echo $row->color; ?>"><?php echo $row->color; ?></span></td>
         <td>
           <div class="btn-group">
                 <button data-toggle="dropdown" class="dropdown-toggle btn btn-icon-toggle btn-default ink-reaction">

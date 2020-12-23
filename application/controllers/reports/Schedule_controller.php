@@ -43,6 +43,16 @@ class Schedule_controller extends MY_Controller
 
         $this->set_data('users', $users);
 
+        if($this->input->get('export'))
+        {
+            $html = $this->load->view('schedules/schedule_list_pdf_view', compact('job_visits'), true);
+            $pdf = new Dompdf\Dompdf();
+            $pdf->load_html($html);
+            $pdf->render();
+            $pdf->stream('Schedule list.pdf');
+            return;
+        }
+
         // JobVisit::whereDate()->get();
         $this->load->view('schedules/list', $this->get_data());
     }
@@ -116,7 +126,7 @@ class Schedule_controller extends MY_Controller
                 $q->selectRaw('id, CONCAT(address, " ", address_suburb) as address');
             }]);
         }, 'job.category' => function($q){ 
-            $q->select('type', 'id'); 
+            $q->select('type', 'id', 'color'); 
         }])->whereBetween('date', [$startDate, $endDate])->get();
 
         return $this->sendResponse($visits->toArray());

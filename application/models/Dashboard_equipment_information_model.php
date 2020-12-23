@@ -22,7 +22,7 @@ class Dashboard_equipment_information_model extends Dashboard_table_base_model
     			CONCAT(users.first_name, ' ', users.last_name) AS assigned_user
 			FROM
 			    equipment
-			JOIN equipment_type ON equipment_type.id = equipment.equipment_type_id
+			JOIN equipment_type ON equipment_type.id = equipment.equipment_type_id AND equipment.active = 1
 			LEFT JOIN(
 			    SELECT
 			        last_equipment_service.id,

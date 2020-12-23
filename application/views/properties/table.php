@@ -50,6 +50,7 @@
                     <li><?php echo anchor(site_url("Property_consumable_equipment/save/$row->id"),'<i class="fa fa-hourglass"></i> Consumable Equipment')?></li>
                     <li><?php echo anchor(site_url("property/map/$row->id"),'<i class="fa fa-map-marker"></i> Map', ' data-remote="false" data-toggle="modal" data-target="#myModal" class=""')?></li>
                     <li><?php echo anchor(site_url("property_video/lists/$row->id"),'<i class="fa fa-video-camera"></i> Videos')?></li>
+                     <li><?php echo anchor(site_url("property_video/lists/$row->id"),'<i class="fa fa-pencil-square-o"></i> Meter Reading')?></li>
                 </ul>
             </div>
         </td>

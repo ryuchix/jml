@@ -1,4 +1,0 @@
-[19-Jun-2019 14:59:55 Australia/Perth] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 4096 bytes) in /home/jean/public_html/jmlcleaningservices.com.au/jml/application/controllers/Jobs.php on line 452
-[19-Jun-2019 15:01:05 Australia/Perth] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 4096 bytes) in /home/jean/public_html/jmlcleaningservices.com.au/jml/application/controllers/Jobs.php on line 452
-[19-Jun-2019 15:06:27 Australia/Perth] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 4096 bytes) in /home/jean/public_html/jmlcleaningservices.com.au/jml/application/controllers/Jobs.php on line 452
-[19-Jun-2019 15:21:43 Australia/Perth] PHP Fatal error:  Allowed memory size of 536870912 bytes exhausted (tried to allocate 4096 bytes) in /home/jean/public_html/jmlcleaningservices.com.au/jml/application/controllers/Jobs.php on line 452

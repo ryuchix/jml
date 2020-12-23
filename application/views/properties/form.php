@@ -92,6 +92,16 @@
                                 <textarea class="form-control" rows="3" name="data[notes]" placeholder="Notes"><?php echo set_value('data[notes]', $record->notes); ?></textarea>
                             </div>
 
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" value="1" name="allow_contractors" 
+                                            <?php echo ((isset($_POST['allow_contractors']) && $_POST['allow_contractors'] == "1") || $record->allow_contractors)? 'checked': ''; ?>>
+                                        Allow Contractors
+                                    </label>
+                                </div>
+                            </div>
+
                             <div class="form-group <?php echo form_error('services[]')? 'has-error':''; ?>">
                                 <label for="strata_plan">Choose Services</label>
                                 <?php foreach ($services as $key => $value): ?>

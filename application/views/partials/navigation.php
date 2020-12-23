@@ -689,7 +689,39 @@
                 </ul>
 
             </li>
+            
+            
+            
+            <?php endif; // end if daily balance access
+
+            if ($controller->hasAccess(['add-master-meter', 'view-master-meter'])): ?>
+
+            <li class="treeview <?php set_active_menu('master_meter_reading', $active_menu); ?>">
+
+                <a href="#"><i class="fa fa-clipboard"></i> <span>Meter Reading Master Files</span> <i class="fa fa-angle-left pull-right"></i></a>
+
+                <ul class="treeview-menu">
+                    
+                    <?php if ($controller->hasAccess('add-master-meter')) { ?>
+                    <li class="<?php echo set_sub_menu('add_bin_cleaning_costing', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'bin-cleaning-costing/create' ); ?>"><i class="fa fa-circle-o"></i> Add new master file</a>
+                    </li>
+                    <?php } ?>
+
+                    <?php if ($controller->hasAccess('view-master-meter')) { ?>
+                    <li class="<?php echo set_sub_menu('view_bin_cleaning_costing', $sub_menu); ?>">
+                        <a href="<?php echo site_url( 'meter_reading' ); ?>"><i class="fa fa-circle-o"></i> View master files</a>
+                    </li>
+                    <?php } ?>
+
+                </ul>
+
+            </li>
             <?php endif; ?>
+            
+            
+            
+            
 
             <li class="<?php set_active_menu('reports', $active_menu); ?>">
                 

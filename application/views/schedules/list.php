@@ -53,7 +53,8 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" onclick="$('#exportInput').remove()" class="btn btn-primary">Submit</button>
+                            <button type="submit" onclick="$('form').append('<input name=\'export\' value=\'true\' type=hidden id=exportInput />')" class="btn btn-info">Export PDF</button>
                         </div>
                     </div>
                 </div>
@@ -73,6 +74,7 @@
                                                 <th>Property Address</th>
                                                 <th>Category job</th>
                                                 <th>Job title</th>
+                                                <th>Instructions</th>
                                                 <th>Assigned to</th>
                                             </tr>
                                         </thead>
@@ -82,6 +84,7 @@
                                                 <td><?php echo $visit->job->property->full_address ?></td>
                                                 <td><?php echo $visit->job->category->type; ?></td>
                                                 <td><?php echo $visit->job->job_title . ' ' . ($visit->job->job_type == JOB_TYPE_RECURRING? "(R)": "(O)"); ?></td>
+                                                <td><?php echo $visit->job->instruction ?></td>
                                                 <td>
                                                     <?php // echo $job->crews->implode('name', ',   '); ?>
                                                     <?php 

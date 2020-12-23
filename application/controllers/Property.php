@@ -52,6 +52,7 @@ class Property extends MY_Controller
 		
 		if ($id) {
 			$record->load($id);
+			// dd($record);
 			$this->set_data( 'selected_services', $this->Property_services_model->get_dropdown_lists_by_property_id($record->id) );
 		}else{
 			$this->set_data('sub_menu', 'add_property');
@@ -85,6 +86,7 @@ class Property extends MY_Controller
 					$record->{$field} = $value;
 				}
 				$record->active = $id? $record->active: 1;
+				$record->allow_contractors = $this->input->post('allow_contractors')? 1: 0;
 				$inserted_result = $record->save();
 
 				if ( $inserted_property_id = $id? $id: $inserted_result ) {

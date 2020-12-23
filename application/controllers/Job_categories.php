@@ -32,12 +32,9 @@ class Job_categories extends MY_Controller
 
 		$this->set_data('sub_menu', 'add_job_category');
 
-		$record = new Job_category_model();
+		$record = new JobCategory();
 
-		if ($id) 
-		{
-			$record->load($id);
-		}
+		if ($id) $record = JobCategory::find($id);
 
 		$this->set_data('record', $record);
 
@@ -45,7 +42,6 @@ class Job_categories extends MY_Controller
 
 		if( isset($_POST['submit']) )
 		{
-
        		if ($id) {
        			$this->form_validation->set_rules('data[type]','Job Category','required|callback_custom_job_categories_check['.$id.']');
        		}else{
@@ -58,11 +54,8 @@ class Job_categories extends MY_Controller
 				return;
 			}
 
-			foreach ($this->input->post('data') as $field => $value) {
-				$record->{$field} 	= $value;
-			}
+			$record->fill($this->input->post('data'));
 
-			$record->{$id? 'updated_by':'added_by'} = $this->session->userdata('user_id');
 
 			if ($record->save()) {
 				set_flash_message(0, "Record Submitted Successfully!");

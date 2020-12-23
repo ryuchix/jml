@@ -75,9 +75,11 @@ class BinCleaningCostingController extends MY_Controller
 	function destroy($id)
 	{
 		$costing = BinCleaningCosting::find($id);
-		$costing->delete();
-		set_flash_message(0, "Record deleted Successfully!");
-		redirect('bin-cleaning-costing');
+		if ($costing != null) {
+			$costing->delete();
+			set_flash_message(0, "Record deleted Successfully!");
+			redirect('bin-cleaning-costing');
+		}
 	}
 
 	function validate_fields()

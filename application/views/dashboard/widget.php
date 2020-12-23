@@ -1,6 +1,6 @@
 <div class="row">
 	<?php if(has_access('dashboard')): ?>
-
+	
 	<?php if (false): ?>
 	<div class="col-lg-3 col-xs-6">
       <!-- small box -->
@@ -202,6 +202,23 @@
         </div>
     </div>
   <?php endif ?>
+  
+  
+  	<?php if ( $controller->hasAccess('view-meter-reading') ): ?>
+	<div class="col-lg-3 col-xs-6">
+      	<!-- small box -->
+      	<div class="small-box bg-aqua">
+        	<div class="inner">
+              	<h3><?php echo $count_open_or_assigned_complaints; ?></h3>
+              	<p>Meter Reading</p>
+        	</div>
+            <div class="icon">
+              	<i class="ion ion-clipboard"></i>
+            </div>
+            <a href="<?php echo site_url( 'complaints/' ); ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+      	</div>
+    </div>
+	<?php endif ?>
 
 </div>
 

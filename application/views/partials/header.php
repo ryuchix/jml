@@ -88,6 +88,7 @@
       </header>
  
 	  <?php 
+	  //echo "hello".$this->session->userdata('user_id');
       // x($this->session->userdata());
       // if ($this->session->userdata('user_id')==1)
       //     $this->session->set_userdata('user_role', 2);

@@ -16,8 +16,8 @@ $config['QBDataSource'] = "QBO";
 
 
 $config['site_info'] = array(
-	'company_name'=>'JML Group Pty Ltd',
-	'version' => '2.0'
+	'company_name'=>'The Bin Experts',
+	'version' => '1.0'
 	);
 
 $config['asset_version'] = 1.03;

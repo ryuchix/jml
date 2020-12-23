@@ -72,7 +72,8 @@
 								</td>
 								<td>
 									<a href="<?php echo site_url("gallery/gallery_slider/$gallery->id") ?>" data-remote="false" data-toggle="modal" data-target="#photoModel" class="">View</a> | 
-									<a href="#" class="propcess-gallery" data-id="<?php echo $gallery->id; ?>">Proccess</a>
+									<a href="#" class="propcess-gallery" data-id="<?php echo $gallery->id; ?>">Proccess</a> |
+									<a href="<?= site_url("gallery/download/$gallery->id") ?>">Download</a>
 								</td>
 
 							</tr>

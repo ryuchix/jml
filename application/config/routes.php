@@ -58,3 +58,5 @@ $route['bin-cleaning-costing/store'] = 'BinCleaningCostingController/store';
 $route['bin-cleaning-costing/(:num)/edit'] = 'BinCleaningCostingController/edit/$1';
 $route['bin-cleaning-costing/(:num)/update'] = 'BinCleaningCostingController/update/$1';
 $route['bin-cleaning-costing/(:num)/delete'] = 'BinCleaningCostingController/destroy/$1';
+
+$route['ciqb-integrator'] = 'Qb_oauth_endpoint/index';

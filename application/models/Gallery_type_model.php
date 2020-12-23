@@ -12,6 +12,7 @@ class Gallery_type_model extends MY_Model
     public $type;
     public $description;
     public $active = 1;
+    public $wa_top_cc = 0;
     public $added_by;
     public $updated_by;
 

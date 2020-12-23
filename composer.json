@@ -16,13 +16,15 @@
 		"symfony/var-dumper": "^4.1",
 		"dompdf/dompdf": "^0.8.3",
 		"illuminate/database": "^5.8",
-		"nesbot/carbon": "^2.14"
+		"nesbot/carbon": "^2.14",
+		"league/oauth2-client": "^2.6",
+		"quickbooks/v3-php-sdk": "^5.4"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
 	},
 	"require-dev": {
-		"mikey179/vfsStream": "1.1.*",
+		"mikey179/vfsstream": "1.1.*",
 		"phpunit/phpunit": "4.* || 5.*"
 	},
 	"autoload":{
@@ -32,5 +34,8 @@
 		"classmap": [
 			"application/eloquents/"
 		]
+	},
+	"config": {
+		"platform-check": false
 	}
 }

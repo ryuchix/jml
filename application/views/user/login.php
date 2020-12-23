@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>JML Group Pty. Ltd. | Log in</title>
+    <title>The Bin Experts | Log in</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
@@ -30,7 +30,7 @@
     <div class="login-box">
       
       <div class="login-logo">
-        <a href="<?php echo site_url(); ?>"><b>JML Group Pty. Ltd.</b></a>
+        <a href="<?php echo site_url(); ?>"><b>The Bin Experts</b></a>
       </div><!-- /.login-logo -->
 
       <?php if ( isset($flash_message) ) { ?>

@@ -21,6 +21,7 @@ class Property_model extends MY_Model
     public $address_post_code;
     public $address_location;
     public $active = 1;
+    public $allow_contractors = 0;
 
     function get_dropdown_lists($first_empty=1, $active=1)
     {

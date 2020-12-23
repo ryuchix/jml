@@ -53,6 +53,8 @@ class Gallery_type extends MY_Controller
 				}
 				$record->active = $id ? $record->active : 1;
 
+				$record->wa_top_cc = $this->input->post('data[wa_top_cc]') ?? 0;
+
 				$record->{$id? 'updated_by':'added_by'} = $this->session->userdata('user_id');
 
 				if ($record->save()) {

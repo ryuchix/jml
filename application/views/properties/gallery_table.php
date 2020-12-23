@@ -20,8 +20,6 @@
                   <i class="fa fa-ellipsis-v "></i>
                 </button>
                 <ul class="dropdown-menu">
-
-
                     <li><?php echo anchor(site_url("gallery/download/$row->id"), '<i class="fa fa-download"></i> Download') ?></li>
                     <li><?php echo anchor(site_url("property/edit_gallery/$row->id"),'<i class="fa fa-pencil"></i> Edit Gallery')?></li>
                     <li><?php echo anchor(site_url("property/append_gallery/$row->id"),'<i class="fa fa-plus"></i> Add Images')?></li>

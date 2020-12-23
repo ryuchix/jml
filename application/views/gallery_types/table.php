@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>Gallery Type</th>
+            <th>WA TOP CC</th>
             <th>Description</th>
             <th>Action</th>
         </tr>
@@ -10,6 +11,7 @@
     <?php foreach($records as $row){ ?>
     <tr class="<?php echo ($row->id == $modified_item_id)?"animated tada\" style=\"background: #fff;\"":""; ?>">
         <td><?php echo $row->type; ?></td>
+        <td><?php echo $row->wa_top_cc? '<i class="fa fa-check text-success"></i>': ''; ?></td>
         <td><?php echo $row->description; ?></td>
         <td>
           <div class="btn-group">

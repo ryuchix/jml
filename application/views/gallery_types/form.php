@@ -37,6 +37,13 @@
                                 <textarea class="form-control" rows="3" name="data[description]" placeholder="Description..."><?php echo set_value('data[description]', $record->description); ?></textarea>
                             </div>
 
+                            <div class="form-group">
+                                <label>
+                                    <input type="checkbox" name="data[wa_top_cc]" value="1" <?php echo (isset($_POST['data']['wa_top_css']) || $record->wa_top_cc)? 'checked': ''; ?>>
+                                    WA Top Class
+                                </label>
+                            </div>
+                            
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">

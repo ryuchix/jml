@@ -121,7 +121,6 @@ class Jobs extends MY_Controller
 					$job_id = $id? $id : $job_id;
 					$this->add_crew_members( $job_id, $this->input->post('users') );
 					$this->add_line_items( $job_id, $this->input->post('line_items') );
-					
 					if ( !$id || $this->input->post('regenerate_visits') == 'yes' ) {
 						$end_date = $this->input->post('end_date')? $this->input->post('end_date'): $this->input->post('start_date');
 						$this->Job_visits_model->deleteWhere( ['job_id' => $job_id, 'completed'=>0] );
@@ -310,9 +309,8 @@ class Jobs extends MY_Controller
 			$period = new DatePeriod($begin, $interval, $end->modify('+1 day'));
 			// dd($this->input->post('start_date'), $end_date);
 			foreach ( $period as $dt ){ $dates[] = $dt->format( "Y-m-d" ); }
-		}else{
-
-            $day = date('l');
+		}else{			
+			$day = date('l');
             $engDay = date('jS');
 			switch ($this->input->post('data[visit_frequency]')) {
 				case 'custom':
@@ -496,7 +494,13 @@ class Jobs extends MY_Controller
 						}
 					}
 				}
-				$start_date->modify("first day of next month");
+				if($this->input->post('every_no_month') > 1){
+					for ($i = 0; $i < $this->input->post('every_no_month')?? 1; $i++) {
+						$start_date->modify("first day of next month");
+					}
+				}else{
+					$start_date->modify("first day of next month");
+				}
 			} while ($start_date <= $end_date);
 		}else{
 			do {
@@ -541,8 +545,10 @@ class Jobs extends MY_Controller
 		$start_date = new DateTime( db_date($this->input->post('start_date')) );
 		$dates = [$start_date->format('Y-m-d')];
 
+		$everyXmonth = isset($_POST['every_no_month'])? $_POST['every_no_month']: 1;
+		// dd($everyXmonth);
 		for ($i=1; $i < $this->input->post('data[duration]'); $i++) { 
-			$start_date->modify("+1 month");
+			$start_date->modify("+$everyXmonth month");
 			$dates[] = $start_date->format('Y-m-d');
 		}
 		return $dates;

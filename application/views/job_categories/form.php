@@ -38,6 +38,11 @@
                                 <textarea class="form-control" rows="3" name="data[description]" placeholder="Description..."><?php echo set_value('data[description]', $record->description); ?></textarea>
                             </div>
 
+                            <div class="form-group">
+                                <label for="color">color</label>
+                                <input type="color" name="data[color]" class="form-control" placeholder="Please pick a color" value="<?php echo set_value('data[color]', $record->color); ?>">
+                            </div>
+
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">

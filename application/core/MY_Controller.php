@@ -33,7 +33,6 @@ class MY_Controller extends CI_Controller
         $this->set_data('roles', $authenticatedUser->getAllowedPermissions());
         $this->set_data('controller', $this);
 
-
         // $authenticatedUser = new User_model();
         // $authenticatedUser->load(16);
         // echo "<pre>";
